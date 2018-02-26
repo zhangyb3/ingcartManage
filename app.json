@@ -1,0 +1,30 @@
+{
+  "pages":[
+    "pages/index/index",
+		"pages/index/processing",
+    "pages/maintenance/call",
+		"pages/maintenance/records",
+    "pages/scanresult/index",
+    "pages/bill/list",
+    "pages/my/display",
+    "pages/my/history",
+		"pages/my/record_repair",
+    "pages/wallet/total",
+    "pages/wallet/charge",
+    "pages/register/register",
+    "pages/stopFee/stopFee",
+    "pages/store/storeInfo",
+		"pages/store/cancelStore",
+		"pages/repository/supply",
+		"pages/monitor/carStatus",
+		"pages/monitor/recordCar",
+		"pages/zone/record",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "婴咖出行",
+    "navigationBarTextStyle":"white"
+  }
+}

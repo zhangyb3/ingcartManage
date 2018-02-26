@@ -1,0 +1,38 @@
+
+#history_record_list_container{
+
+  
+	color: gray;
+}
+
+#record_item{
+  font-weight: 100;
+	font-family: sans-serif;
+	color: #4E4E4E;
+}
+
+.hour_minute{
+
+  width: 40%;
+  font-size: 36rpx;
+  text-align: center;
+
+}
+
+.duration{
+
+  width: 30%;
+  font-size: 36rpx;
+  text-align: center;
+
+}
+
+.amount{
+
+  width: 30%;
+  font-size: 36rpx;
+  text-align: center;
+
+}
+
+@import "../section/line_item.wxss";

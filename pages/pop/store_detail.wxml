@@ -1,0 +1,49 @@
+
+
+<template name="store_detail">
+
+   <!-- <view class="pop_container " bindtap="returnToIndexPage"> -->
+    
+    <view style="height:20rpx;"></view>
+
+    <view id="store_detail_container"  >
+      
+      <view id="store_image_container">
+        <image src="../../images/store_detail.png"></image>
+      </view>
+
+      <view id="store_description">
+
+        <view id="store_name">
+          {{check_store.name}}
+        </view>
+
+				<view style='height:20rpx;'></view>
+
+        <view id="business_hours" class="row_display">
+          <!-- <image src="../../images/business_hours.png"></image> -->
+					<text>剩余布套：</text>
+          <text style="color: red;">{{check_store.bagNum}}</text>
+        </view>
+
+        <view id="store_address" class="row_display">
+          <!-- <image src="../../images/address.png"></image> -->
+					<text>店铺编码：</text>
+          <text style="color: gray;">{{check_store.locationName}}</text>
+        </view>
+
+				<view id="store_address" class="row_display">
+          <!-- <image src="../../images/address.png"></image> -->
+					<text>店铺地址：</text>
+          <text>{{check_store.description}}</text>
+        </view>
+
+      </view>
+      
+
+     </view> 
+    
+
+  <!-- </view> -->
+
+</template>

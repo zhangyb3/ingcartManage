@@ -1,0 +1,21 @@
+
+
+<template name="unlock_progress">
+
+   
+    <view class="unlock_progress_container"  >
+    
+      <view class="cart_gif_container">
+        <image class="cart_gif" src="../../images/cart.gif"></image>
+      </view>
+
+      <progress id="unlock_progress_percent" percent="99" stroke-width="12" active color="orange" show-info/>
+
+      <view class="progress_hint">耐心等待，正在开锁···</view>
+    
+    </view>
+    
+
+
+
+</template>

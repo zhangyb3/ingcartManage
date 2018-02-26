@@ -1,0 +1,4 @@
+
+
+<import src="../section/group_list.wxml" />
+<template is="group_list"  data="{{scrollHeight,history_record,history_date}}"></template>
