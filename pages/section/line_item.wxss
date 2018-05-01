@@ -21,7 +21,7 @@
   height: 1px;
   background-color: lightgray;
 }
-
+ 
 .line_include_item_container{
   padding-top: 30rpx;
   padding-bottom: 30rpx;

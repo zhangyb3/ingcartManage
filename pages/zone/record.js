@@ -11,13 +11,39 @@ Page({
   data: {
 		cityName:null,
 		operationZoneName:null,
+		price:null,
+		giving:null,
+		higherLevelId:null,
 		chooseLevel: 'none',
+		higherLevel:null,
+		chooseWhetherEndSelf: false,
+		whetherEndSelf:null,
+		whetherEndSelfs:[
+			{
+				status: 0,
+				name: '人工',
+			},
+			{
+				status: 1,
+				name: '自动',
+			},
+			{
+				status: 2,
+				name: '热点',
+			},
+		],
+		servicePhone:null,
+		mode:null,
+
+		chooseZone:false,
+		zones:[],
+		zone:'',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function (parameters) {
 		var that = this;
 		wx.getSystemInfo({
 			success: function (res) {
@@ -28,6 +54,10 @@ Page({
 				})
 			}
 		})
+
+		that.setData({
+			mode: parameters.mode,
+		});
   },
 
   /**
@@ -42,23 +72,28 @@ Page({
    */
   onShow: function () {
 		var that = this;
-		wx.request({
-			url: config.PytheRestfulServerURL + '/select/level',
-			data: {
-				
-			},
-			method: 'GET',
-			success: function(res) {
-				if(res.data.status == 200)
-				{
-					that.setData({
-						levels: res.data.data
-					});
-				}
-			},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
+
+		if(that.data.mode == 'insert')
+		{
+			wx.request({
+				url: config.PytheRestfulServerURL + '/select/one/level',
+				data: {
+					managerId: wx.getStorageSync(user.ManagerID),
+				},
+				method: 'GET',
+				success: function (res) {
+					if (res.data.status == 200) {
+						that.setData({
+							levels: res.data.data
+						});
+					}
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			});
+		}
+		
+		
   },
 
 
@@ -74,16 +109,39 @@ Page({
 		console.log('operationZoneName', that.data.operationZoneName);
 	},
 
+	getPrice: function (e) {
+		var that = this;
+		that.data.price = e.detail.value;
+		console.log('price', that.data.price);
+	},
+
+	getGiving: function (e) {
+		var that = this;
+		that.data.giving = e.detail.value;
+		console.log('giving', that.data.giving);
+	},
+
+	getServicePhone:function(e){
+		var that = this;
+		that.data.servicePhone = e.detail.value;
+
+	},
+
 	managerRecordOperationZone:function(){
 		var that = this;
-		if(that.data.cityName != null && that.data.operationZoneName != null)
+		if(that.data.cityName != null && that.data.operationZoneName != null && that.data.mode == 'insert')
 		{
 			wx.request({
 				url: config.PytheRestfulServerURL + '/insert/attraction/',
 				data: {
 					city: that.data.cityName,
 					name: that.data.operationZoneName,
-					level: that.data.zoneType,
+					price: that.data.price,
+					giving: that.data.giving,
+					higherLevelId: that.data.higherLevel.c1Id,
+					status: that.data.whetherEndSelf.status,
+					managerId: wx.getStorageSync(user.ManagerID),
+					phoneNum: that.data.servicePhone,
 				},
 				method: 'POST',
 				success: function(res) {
@@ -101,18 +159,60 @@ Page({
 						});
 
 					}
+					else {
+						wx.showModal({
+							title: '',
+							content: res.data.msg,
+							confirmText: '我知道了',
+						})
+					}
 				},
 				fail: function(res) {},
 				complete: function(res) {},
 			})
 		}
+		else if(that.data.mode == 'update')
+		{
+			wx.request({
+				url: config.PytheRestfulServerURL + '/update/attraction/',
+				data: {
+					level: that.data.zone.level,
+					price: that.data.price,
+					giving: that.data.giving,
+					status: that.data.status,
+					managerId: wx.getStorageSync(user.ManagerID),
+					phoneNum: that.data.servicePhone,
+				},
+				method: 'POST',
+				success: function (res) {
+					{
+						wx.showModal({
+							title: '',
+							content: res.data.msg,
+							confirmText: '我知道了',
+						})
+					}
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			})
+		}
 	},
 
-	chooseZoneType: function (e) {
+	chooseHigherLevel: function (e) {
 		var that = this;
+		
 		that.setData({
-			chooseLevel: 'block'
+			chooseLevel: 'block',
+			tempLevel: null,
 		})
+
+		if (that.data.levels.length == 1 || that.data.tempLevel == null) {
+			that.setData({
+				tempLevel: that.data.levels[0],
+				higherLevelName: that.data.levels[0].name,
+			})
+		}
 	},
 
 	changeLevel: function (e) {
@@ -121,7 +221,7 @@ Page({
 		var that = this;
 
 		that.setData({
-			tempLevel: that.data.levels[e.detail.value[0]].level,
+			tempLevel: that.data.levels[e.detail.value[0]],
 		})
 
 
@@ -132,7 +232,8 @@ Page({
 		var that = this;
 		that.setData({
 			chooseLevel: 'none',
-			
+			chooseWhetherEndSelf: false,
+			chooseZone: false,
 		})
 	},
 
@@ -142,16 +243,137 @@ Page({
 		var that = this;
 		if (that.data.levels.length == 1) {
 			that.setData({
-				tempLevel: that.data.levels[0].level,
+				tempLevel: that.data.levels[0],
 			})
 		}
 		that.setData({
 			chooseLevel: 'none',
-			zoneType: that.data.tempLevel,
-			
+			higherLevelName: that.data.tempLevel.c1Name,
+			higherLevel: that.data.tempLevel
 		});
 
 	
+	},
+
+
+	whetherEndSelf:function (e) {
+		var that = this;
+		that.setData({
+			chooseWhetherEndSelf: true,
+			tempWhetherEndSelf:null,
+		})
+
+		if (that.data.whetherEndSelfs.length == 1 || that.data.tempWhetherEndSelf == null) {
+			that.setData({
+				tempWhetherEndSelf: that.data.whetherEndSelfs[0],
+				endSelf: that.data.whetherEndSelfs[0].name,
+			})
+		}
+	},
+
+	changeWhetherEndSelf: function (e) {
+
+
+		var that = this;
+
+		that.setData({
+			tempWhetherEndSelf: that.data.whetherEndSelfs[e.detail.value[0]],
+		})
+	
+
+	},
+
+	
+
+	// 确定按钮
+	sureWhetherEndSelf: function (e) {
+		
+		var that = this;
+		if (that.data.whetherEndSelfs.length == 1) {
+			that.setData({
+				tempWhetherEndSelf: that.data.whetherEndSelfs[0],
+			})
+		}
+		that.setData({
+			chooseWhetherEndSelf: false,
+			endSelf: that.data.tempWhetherEndSelf.name,
+			whetherEndSelf: that.data.tempWhetherEndSelf
+		});
+
+
+	},
+
+	selectZone: function (e) {
+		var that = this;
+		that.setData({
+			zone:[],
+			chooseZone: true,
+			tempZone: null,
+		})
+
+		if (that.data.mode == 'update') {
+			wx.request({
+				url: config.PytheRestfulServerURL + '/select/all/area',
+				data: {
+					managerId: wx.getStorageSync(user.ManagerID),
+				},
+				method: 'GET',
+				success: function (res) {
+					if (res.data.status == 200) {
+						that.setData({
+							zones: res.data.data
+						});
+					}
+					if (that.data.zones.length == 1 || that.data.tempZone == null) {
+						that.setData({
+							tempZone: that.data.zones[0],
+							zoneName: that.data.zones[0].name,
+						})
+					}
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			});
+		}
+		
+	},
+
+
+	changeZone: function (e) {
+
+
+		var that = this;
+
+		that.setData({
+			tempZone: that.data.zones[e.detail.value[0]],
+		})
+
+
+	},
+
+
+
+	// 确定按钮
+	sureZone: function (e) {
+
+		var that = this;
+		if (that.data.zones.length == 1) {
+			that.setData({
+				tempZone: that.data.zones[0],
+			})
+		}
+		that.setData({
+			chooseZone: false,
+			zoneName: that.data.tempZone.name,
+			zone: that.data.tempZone,
+			price: that.data.tempZone.price,
+			giving: that.data.tempZone.giving,
+			servicePhone: that.data.tempZone.phoneNum,
+			endSelf: that.data.whetherEndSelfs[that.data.tempZone.status].name,
+			status: that.data.tempZone.status,
+		});
+
+
 	},
 
 

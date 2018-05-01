@@ -13,14 +13,24 @@ Page({
     },
 
     cardQuantity: 0,
+
+		managementClass: null,
   },
 // 页面加载
-  onLoad:function(){
+  onLoad:function(parameters){
     // 设置本页导航标题
     wx.setNavigationBarTitle({
-      title: '个人中心'
+      title: '管理中心'
     })
 
+		this.setData({
+			level: wx.getStorageSync(user.Level),
+		});
+
+		var that = this;
+		that.setData({
+			managementClass: parameters.managementClass,
+		});
 		
    
   },
@@ -29,40 +39,7 @@ Page({
 
 		
     var that = this;
-    wx.request({
-      url: config.PytheRestfulServerURL + '/customer/select',
-      data: {
-        customerId: wx.getStorageSync(user.CustomerID)
-      },
-      method: 'GET',
-      dataType: '',
-      success: function(res) {
-        console.log(res);
-        var info = res.data.data;
-        that.data.account = info;
-
-        wx.setStorageSync(user.CustomerID, info.customerId);
-        wx.setStorageSync(user.Description, info.description);
-        wx.setStorageSync(user.Status, info.status);
-        wx.setStorageSync(user.UsingCar, info.carId);
-        wx.setStorageSync(user.RecordID, info.recordId);
-        wx.setStorageSync(user.UsingCarStatus, info.carStatus);
-      },
-      fail: function(res) {},
-      complete: function(res) {
-
-        var showPhoneNum = util.replaceStr(that.data.account.phoneNum,3,7,"····");
-        console.log(showPhoneNum);
-        that.setData({
-          avatarUrl: wx.getStorageSync("avatarUrl"),
-          wxNickName: wx.getStorageSync("wxNickName"),
-          showPhoneNum: showPhoneNum,
-          account: that.data.account,
-          cardQuantity: that.data.cardQuantity,
-        });
-      },
-    })
-
+		
     
 
   },
@@ -106,6 +83,12 @@ Page({
 		})
 	},
 
+	toUpdateCarPosition:function(){
+		wx.navigateTo({
+			url: '../monitor/carPosition'
+		})
+	},
+
   stopFee:function(){
     wx.navigateTo({
       url: '../stopFee/stopFee',
@@ -130,9 +113,16 @@ Page({
 		})
 	},
 
-	carStatusQuery: function () {
+	carStatusQuery: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
 		wx.navigateTo({
-			url: '../monitor/carStatus',
+			url: '../monitor/carStatus?queryAll=' + queryAll,
+		})
+	},
+
+	carUsingQuery: function () {
+		wx.navigateTo({
+			url: '../monitor/carUsing',
 		})
 	},
 
@@ -144,7 +134,19 @@ Page({
 
 	recordOperationZone: function () {
 		wx.navigateTo({
-			url: '../zone/record',
+			url: '../zone/record?mode=insert',
+		})
+	},
+
+	updateOperationZone: function () {
+		wx.navigateTo({
+			url: '../zone/record?mode=update',
+		})
+	},
+
+	callRepair: function () {
+		wx.navigateTo({
+			url: '../maintenance/call',
 		})
 	},
 
@@ -153,5 +155,89 @@ Page({
 			url: '../maintenance/records',
 		})
 	},
+
+	quitMaintenance:function(){
+		wx.navigateTo({
+			url: '../maintenance/quit',
+		})
+	},
+
+	refundAll: function (e) {
+		var refundType = e.currentTarget.dataset.type;
+
+		wx.navigateTo({
+			url: '../monitor/refundAll?type=' + refundType,
+		})
+	},
+
+	specialRefund: function () {
+		wx.navigateTo({
+			url: '../monitor/specialRefund?operatorLevel=2',
+		})
+	},
+
+	manageOperator: function (e) {
+		var managerLevel = e.currentTarget.dataset.manager_level;
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/manageOperator?managerLevel=' + managerLevel + '&queryAll=' + queryAll,
+		})
+	},
+
+	checkAttraction: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/managerRecord?checkType=attraction&queryAll=' + queryAll,
+		})
+	},
+
+	managerRecord: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/managerRecord?checkType=manager&queryAll=' + queryAll,
+		})
+	},
+
+	checkManagerUsing: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/managerRecord?checkType=cart&queryAll=' + queryAll,
+		})
+	},
+
+	zoneStatistics: function () {
+		wx.navigateTo({
+			url: '../monitor/statistics',
+		})
+	},
+
+	newCompany:function(){
+		wx.navigateTo({
+			url: '../catalog/new',
+		})
+	},
+
+	recordCompanyHead:function(e){
+		var managerLevel = e.currentTarget.dataset.manager_level;
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/manageOperator?action=recordCompanyHead&&managerLevel=' + managerLevel + '&queryAll=' + queryAll,
+		})
+	},
+
+	deleteAttraction: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/managerRecord?act=deleteAttraction',
+		})
+	},
+
+	deleteGroup: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/managerRecord?act=deleteGroup',
+		})
+	},
+
 
 })

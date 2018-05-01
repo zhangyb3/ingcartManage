@@ -1,0 +1,16 @@
+
+
+		<view class="maintenance_car_id_container" >
+      <view class="maintenance_scan_image_container" bindtap="scanCar">
+        <image id="maintenance_scan_image" src="../../images/scan_call.png"></image>
+      </view>
+      <view class="maintenance_scan_car_id_container">
+        <view class="maintenance_car_id">
+          <input class="maintenance_car_id_input" placeholder="点图标扫码或手输车号" value="{{qrId}}" bindinput="carIdInput"/>
+        </view>
+        <!--<view class="maintenance_scan_operation" bindtap="scanFaultCar">轻触左边按钮扫码或上方手动输入车号</view>-->
+      </view>
+    </view>
+
+
+		<button class='hand-in' bindtap='quitMaintenance'>录入</button>

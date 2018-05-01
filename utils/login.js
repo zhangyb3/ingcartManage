@@ -134,7 +134,7 @@ var remoteLogin = (success, fail) => {
                     code: loginRes.code,
                     // AppID: config.AppID,
                     // AppSecret: config.AppSecret,
-										userType: 1,
+										userType: 1,//旧版wx.ingcart.com没有此参数
                 },
                 complete: function (res) {
                     if (res.statusCode != 200) {//失败

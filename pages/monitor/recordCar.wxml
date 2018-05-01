@@ -1,12 +1,12 @@
-
-		<view class=''>
-					<view class='choose-name'>选择城市</view>
-					<view class='getName' bindtap='chooseCityName'>{{cityName}}</view>
+ 
+		<view class='' >
+					<view class='choose-name'>请选择</view>
+					<view class='getName' bindtap='chooseLevel1'>{{level1Name}}</view>
 		</view> 
 		
-		<view class=''>
-					<view class='choose-name'>选择景区</view>
-					<view class='getName' bindtap='chooseZoneName'>{{zoneName}}</view>
+		<view class='' >
+					<view class='choose-name'>请选择</view>
+					<view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
 		</view> 
 		
 		<view class="maintenance_car_id_container" >
@@ -15,7 +15,7 @@
       </view>
       <view class="maintenance_scan_car_id_container">
         <view class="maintenance_car_id">
-          <input class="maintenance_car_id_input" placeholder="点图标扫码或手输车号" value="{{qrId}}" bindinput="carIdInput"/>
+          <input class="maintenance_car_id_input" placeholder="点图标扫码" value="{{qrId}}" bindinput="carIdInput" disabled='true'/>
         </view>
         <!--<view class="maintenance_scan_operation" bindtap="scanFaultCar">轻触左边按钮扫码或上方手动输入车号</view>-->
       </view>
@@ -34,6 +34,12 @@
 		</view>
 		
 	</scroll-view>
+
+	<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;">
+		<text style="width:50%;font-size:30rpx;text-align:center;color:lightgray;">余量</text>
+		<text style="width:50%;font-size:32rpx;text-align:center;color:red;" >{{cartQuantity}}</text>
+	</view>
+
 
 	<button class='hand-in' bindtap='recordCarInPosition'>录入</button>
 
@@ -65,6 +71,40 @@
                  <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeZone">
                    <picker-view-column id="zone_column">
                       <view wx:for="{{zones}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureLevel1'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel1">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{level1}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel2 == true}}">      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureLevel2'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel2">
+                   <picker-view-column id="zone_column">
+                      <view wx:for="{{level2}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
                    </picker-view-column>
                    
                  </picker-view>

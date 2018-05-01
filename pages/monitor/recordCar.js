@@ -16,10 +16,20 @@ Page({
 		winHeight: 0,
 		chooseCityName:'none',
 		chooseZoneName: 'none',
-
+		tempCityName:null,
+		tempZone:null,
 		cities:[],
 		zones:[],
 		selectedZone: null,
+
+		chooseLevel1: false,
+		chooseLevel2: false,
+		tempLevel1: null,
+		tempLevel2: null,
+		level1: [],
+		level2: [],
+		level: '0',
+
   },
 
   /**
@@ -50,25 +60,331 @@ Page({
    */
   onShow: function () {
 		var that = this;
+		
+
+		that.setData({
+			tempLevel1: null,
+			tempLevel2: null,
+			level1: [],
+			level2: [],
+		});
 		wx.request({
-			url: config.PytheRestfulServerURL + '/select/all/city',
+			url: config.PytheRestfulServerURL + '/select/one/level',
 			data: {
-				
+				managerId: wx.getStorageSync(user.ManagerID),
+
 			},
 			method: 'GET',
-			success: function(res) {
-				if(res.data.status == 200)
-				{
-					var cities = res.data.data;
+			success: function (res) {
+				if (res.data.status == 200) {
+					var level1 = res.data.data;
 					that.setData({
-						cities: cities,
+						level1: level1,
 					});
+
+					if (level1.length == 1) {
+						that.setData({
+							tempLevel1: level1[0],
+							level1Name: level1[0].c1Name,
+
+						});
+						that.data.level = that.data.tempLevel1.c1Id;
+
+					if (that.data.level != '0') {
+							wx.request({
+								url: config.PytheRestfulServerURL + '/select/two/level',
+								data: {
+									c1_id: that.data.level,
+									managerId: wx.getStorageSync(user.ManagerID),
+									level: wx.getStorageSync(user.Level),
+									catalog_id: wx.getStorageSync(user.CatalogID),
+								},
+								method: 'GET',
+								success: function (res) {
+									console.log(res.data.data);
+									if (res.data.status == 200) {
+										that.setData({
+											level2: res.data.data,
+											level2Name: '',
+											// tempLevel2: null,
+										});
+									}
+									if (that.data.level2.length == 1) {
+										that.setData({
+											tempLevel2: that.data.level2[0],
+											level2Name: that.data.level2[0].name,
+											level: that.data.level2[0].id,
+										});
+
+										wx.request({
+											url: config.PytheRestfulServerURL + '/select/car/point/',
+											data: {
+												level: that.data.level,
+												pageNum: 1,
+												pageSize: 10,
+											},
+											method: 'GET',
+											success: function (res) {
+												if (res.data.status == 200) {
+													var result = res.data.data;
+
+													that.setData({
+														carts: [],
+													});
+													if (result == null) {
+														that.data.pageNum = 1;
+														that.setData({
+															cartQuantity: 0,
+														});
+													}
+													else {
+														that.data.carts = that.data.carts.concat(result);
+														that.setData({
+															carts: that.data.carts,
+															cartQuantity: that.data.carts.length,
+														});
+													}
+
+												}
+											},
+											fail: function (res) { },
+											complete: function (res) { },
+										});
+
+									}
+								},
+								fail: function (res) { },
+								complete: function (res) { },
+							});
+						}
+
+					}
+
+
 				}
 			},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
+			fail: function (res) { },
+			complete: function (res) { },
+		});
+
   },
+
+
+	//  点击选择一级的框
+	chooseLevel1: function (e) {
+		var that = this;
+		that.setData({
+			chooseLevel1: true,
+		})
+
+		if (that.data.level1.length == 1 || that.data.tempLevel1 == null) {
+			that.setData({
+				tempLevel1: that.data.level1[0],
+			})
+		}
+	},
+
+	//  点击选择二级的框
+	chooseLevel2: function (e) {
+		var that = this;
+		console.log('choose level2', that.data.level2);
+		that.setData({
+			chooseLevel2: true,
+			tempLevel2: null,
+			level2: that.data.level2,
+		});
+
+		if (that.data.level2.length == 1 || that.data.tempLevel2 == null) {
+			that.setData({
+				tempLevel2: that.data.level2[0],
+				level2Name: that.data.level2[0].name,
+				level: that.data.level2[0].id,
+			})
+		}
+
+	},
+
+	changeLevel1: function (e) {
+
+		console.log("level1", e);
+		var that = this;
+
+
+		that.setData({
+			tempLevel1: that.data.level1[e.detail.value[0]],
+			level2:[],
+		})
+
+
+	},
+
+	changeLevel2: function (e) {
+
+		console.log("level2", e);
+		var that = this;
+
+		if (that.data.level2.length == 1 || that.data.templevel2 == null) {
+			that.setData({
+				tempLevel2: that.data.level2[e.detail.value[0]],
+			})
+		}
+
+	},
+
+	//  取消按钮
+	close: function () {
+		var that = this;
+		that.setData({
+			chooseLevel1: false,
+			chooseLevel2: false,
+		})
+	},
+
+	// 确定按钮
+	sureLevel1: function (e) {
+
+		var that = this;
+		if (that.data.level1.length == 1) {
+			that.setData({
+				tempLevel1: that.data.level1[0],
+			})
+		}
+
+		that.setData({
+			chooseLevel1: 'none',
+			level1Name: that.data.tempLevel1.c1Name,
+			level2Name: '',
+			// level2: [],
+		});
+		that.data.level = that.data.tempLevel1.c1Id;
+
+
+		if (that.data.level != '0') {
+			wx.request({
+				url: config.PytheRestfulServerURL + '/select/two/level',
+				data: {
+					c1_id: that.data.level,
+					managerId: wx.getStorageSync(user.ManagerID),
+					level: wx.getStorageSync(user.Level),
+					catalog_id: wx.getStorageSync(user.CatalogID),
+				},
+				method: 'GET',
+				success: function (res) {
+					console.log(res.data.data);
+					if (res.data.status == 200) {
+						that.setData({
+							level2: res.data.data,
+							level2Name: '',
+							// tempLevel2: null,
+						});
+					}
+					if (that.data.level2.length == 1 ) {
+						that.setData({
+							tempLevel2: that.data.level2[0],
+							level2Name: that.data.level2[0].name,
+							level: that.data.level2[0].id,
+						});
+
+						wx.request({
+							url: config.PytheRestfulServerURL + '/select/car/point/',
+							data: {
+								level: that.data.level,
+								pageNum: 1,
+								pageSize: 10,
+							},
+							method: 'GET',
+							success: function (res) {
+								if (res.data.status == 200) {
+									var result = res.data.data;
+
+									that.setData({
+										carts: [],
+									});
+									if (result == null) {
+										that.data.pageNum = 1;
+										that.setData({
+											cartQuantity: 0,
+										});
+									}
+									else {
+										that.data.carts = that.data.carts.concat(result);
+										that.setData({
+											carts: that.data.carts,
+											cartQuantity: that.data.carts.length,
+										});
+									}
+
+								}
+							},
+							fail: function (res) { },
+							complete: function (res) { },
+						});
+
+					}
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			});
+		}
+
+	
+
+	},
+
+	// 确定按钮
+	sureLevel2: function (e) {
+
+		var that = this;
+		if (that.data.level2.length == 1) {
+			that.setData({
+				tempLevel2: that.data.level2[0],
+			})
+		}
+		that.setData({
+			chooseLevel2: false,
+			level2Name: that.data.tempLevel2.name,
+
+		});
+		that.data.level = that.data.tempLevel2.id;
+		that.data.carStatusList = [];
+
+		wx.request({
+			url: config.PytheRestfulServerURL + '/select/car/point/',
+			data: {
+				level: that.data.level,
+				pageNum: 1,
+				pageSize: 10,
+			},
+			method: 'GET',
+			success: function (res) {
+				if (res.data.status == 200) {
+					var result = res.data.data;
+
+					that.setData({
+						carts: [],
+					});
+					if (result == null) {
+						that.data.pageNum = 1;
+						that.setData({
+							cartQuantity: 0,
+						});
+					}
+					else {
+						that.data.carts = that.data.carts.concat(result);
+						that.setData({
+							carts: that.data.carts,
+							cartQuantity: that.data.carts.length,
+						});
+					}
+
+				}
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		});
+
+	},
+
 
 	// 输入单车编号
 	carIdInput: function (e) {
@@ -102,16 +418,13 @@ Page({
 	//录入定点车辆
 	recordCarInPosition:function(e){
 		var that = this;
-		if(that.data.qrId == null)
+		if (that.data.qrId == null || that.data.level == null)
 		{
 			wx.showModal({
 				title: '提示',
-				content: '尚未输入车号',
-				showCancel: true,
-				cancelText: '',
-				cancelColor: '',
-				confirmText: '',
-				confirmColor: '',
+				content: '请扫码录入车辆',
+				showCancel: false,
+				confirmText: '我知道了',
 				success: function(res) {},
 				fail: function(res) {},
 				complete: function(res) {},
@@ -123,7 +436,7 @@ Page({
 				url: config.PytheRestfulServerURL + '/update/car/point/',
 				data: {
 					qrId: that.data.qrId,
-					areaId: that.data.selectedZone.id,
+					level: that.data.level,
 				},
 				method: 'POST',
 				success: function(res) {
@@ -143,6 +456,7 @@ Page({
 						that.data.carts.unshift(that.data.qrId);
 						that.setData({
 							carts: that.data.carts,
+							cartQuantity: that.data.carts.length,
 						});
 					}
 					else {
@@ -151,7 +465,6 @@ Page({
 							content: res.data.msg,
 							showCancel:false,
 							confirmText: '我知道了',
-							confirmColor: '',
 							success: function (res) { },
 							fail: function (res) { },
 							complete: function (res) { },
@@ -173,20 +486,28 @@ Page({
 		wx.showModal({
 			title: '提示',
 			content: '是否取消该定点车辆？',
+			showCancel:true,
+			cancelText:'取消',
+			confirmText: '确定',
 			success: function(res) {
 				if(res.confirm)
 				{
 					wx.request({
 						url: config.PytheRestfulServerURL + '/delete/car/point/',
 						data: {
+							level: that.data.level,
+							managerId: wx.getStorageSync(user.ManagerID),
 							qrId: qrId,
-							areaId: that.data.selectedZone.id,
+							// areaId: that.data.selectedZone.id,
 						},
 						method: 'POST',
 						success: function(res) {
 							if(res.data.status == 200)
 							{
 								that.data.carts.splice(index, 1);
+								that.setData({
+									cartQuantity: that.data.carts.length,
+								});
 							}
 							else {
 								wx.showModal({
@@ -194,7 +515,6 @@ Page({
 									content: res.data.msg,
 									showCancel:false,
 									confirmText: '我知道了',
-									confirmColor: '',
 									success: function (res) { },
 									fail: function (res) { },
 									complete: function (res) { },
@@ -222,14 +542,27 @@ Page({
 		that.setData({
 			chooseCityName: 'block'
 		})
+
+		if (that.data.cities.length == 1 || that.data.tempCityName == null) {
+			that.setData({
+				tempCityName: that.data.cities[0].city,
+			})
+		}
 	},
 
 	//  点击选择景区的框
 	chooseZoneName: function (e) {
 		var that = this;
+	
 		that.setData({
 			chooseZoneName: 'block'
 		})
+
+		if (that.data.zones.length == 1 || that.data.tempZone == null) {
+			that.setData({
+				tempZone: that.data.zones[0],
+			})
+		}
 	},
 
 	changeCity: function (e) {
@@ -242,7 +575,7 @@ Page({
 				tempCityName: that.data.cities[e.detail.value[0]].city,
 			})
 		
-		
+			
 	},
 
 	changeZone: function (e) {
@@ -255,58 +588,55 @@ Page({
 				tempZone: that.data.zones[e.detail.value[0]],
 			})
 		
-		
+			
 	},
 
-	//  取消按钮
-	close: function () {
-		var that = this;
-		that.setData({
-			chooseCityName: 'none',
-			chooseZoneName: 'none',
-		})
-	},
+	
 
 	// 确定按钮
 	sureCity: function (e) {
-		console.log("city", e);
+		
 		var that = this;
 		if (that.data.cities.length == 1) {
 			that.setData({
 				tempCityName: that.data.cities[0].city,
 			})
 		}
+		
+
 		that.setData({
 			chooseCityName: 'none',
 			cityName: that.data.tempCityName,
+			zoneName: '',
 			zones: [],
 		});
+
 
 		wx.request({
 			url: config.PytheRestfulServerURL + '/select/all/area',
 			data: {
 				city: that.data.cityName,
-				pageNum: 1,
-				pageSize: 10,
+
 			},
 			method: 'GET',
-			success: function(res) {
-				if(res.data.status == 200)
-				{
+			success: function (res) {
+
+				if (res.data.status == 200) {
 					that.data.zones = res.data.data;
 					that.setData({
 						zones: that.data.zones,
 					});
 				}
 			},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
+			fail: function (res) { },
+			complete: function (res) { },
+		});
+		
 	},
 
 	// 确定按钮
 	sureZone: function (e) {
-		console.log("zone", e);
+		
 		var that = this;
 		if (that.data.zones.length == 1) {
 			that.setData({
@@ -322,6 +652,7 @@ Page({
 		var carts = JSON.parse(that.data.selectedZone.carIds);
 		that.setData({
 			carts: carts,
+			cartQuantity: carts.length,
 		});
 	},
 

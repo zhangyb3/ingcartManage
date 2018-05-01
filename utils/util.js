@@ -11,7 +11,34 @@ function formatTime(date) {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
+function formatDate(time) {
+	let _time = time
+	if (typeof _time !== 'number' || _time < 0) {
+		return _time
+	}
+	if (_time.toString().length === 10) {
+		_time = parseInt(_time.toString().concat('000'))
+	}
 
+	let date = new Date(_time)
+
+	return ([
+		// date.getFullYear(), 
+		date.getMonth() + 1,
+		date.getDate()
+	]).map(function (item) {
+		let _item = item.toString()
+		return _item[1] ? _item : '0'.concat(_item)
+	}).join("-").concat(" ").
+		concat(([
+			date.getHours(),
+			date.getMinutes(),
+			// date.getSeconds()
+		]).map(function (item) {
+			let _item = item.toString()
+			return _item[1] ? _item : '0'.concat(_item)
+		}).join(":"))
+}
 
 function formatNumber(n) {
   n = n.toString()
@@ -63,6 +90,7 @@ function encode(input) {
 
 module.exports = {
   formatTime: formatTime,
+	formatDate: formatDate,
   replaceStr: replaceStr,
   encode: encode
 }

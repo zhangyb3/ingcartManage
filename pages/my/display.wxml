@@ -1,65 +1,80 @@
 
 <view class="container">
-    <view class="user-info">
+
+    <!-- <view class="user-info">
     <block wx:if="{{avatarUrl != null}}">
         <image src="{{avatarUrl}}"></image>
     </block>
         <text>{{showPhoneNum}}</text>
-    </view>
+    </view> -->
     
     
-
-     <!-- <view class="line_item_container" bindtap="toWallet">
-      <view class="line_item">
-        <view class="line_include_item_container account_name">
-          <text>余额</text>
-        </view>
-        <view class="line_include_item_container account_amount">
-          <text style="color:orange;">{{account.amount}}</text>
-          <text>元</text>
-        </view>
-        <view class="line_include_item_container account_operation">
-          <image src="../../images/to_charge.png"></image>
-        </view>
-      </view>
-      <view class="split_line"></view>
-    </view>  -->
-
-    <!-- <view class="line_item_container" bindtap="toCard">
-      <view class="line_item">
-        <view class="line_include_item_container card_name">
-          <text >卡券</text>
-        </view>
-        <view class="line_include_item_container card_quantity">
-          <text style="color:orange;">{{cardQuantity}}</text>
-          <text>张</text>
-        </view>
-        <view class="line_include_item_container card_operation">
-          <image id="operation" src="../../images/more.png"></image>
-        </view>
-      </view>
-      <view class="split_line"></view>   
-    </view> -->
-
-    <!-- <view class="line_item_container" bindtap="toHistory">
-      <view class="line_item">
-        <view class="line_include_item_container history_record">
-          <text >历史行程</text>
-        </view>
-        <view class="line_include_item_container record_quantity">
-          <text></text>
-        </view>
-        <view class="line_include_item_container record_operation">
-          <image id="operation" src="../../images/more.png"></image>
-        </view>
-      </view>
-      <view class="split_line"></view>
-    </view> -->
-
-		<view class="line_item_container" bindtap="toRecordRepair">
+		<view class="line_item_container" bindtap="newCompany" wx:if="{{managementClass == 'person' && level >= 5}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >检修记录</text>
+          <text >创建集团</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		
+		<view class="line_item_container" bindtap="recordOperationZone" data-all='no' wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >景区关联集团</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+    <view class="line_item_container" bindtap="updateOperationZone" data-all='no' wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >更新景区信息</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+		
+
+		<view class="line_item_container" data-manager_level="4" data-all='no' bindtap="manageOperator" wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >添加婴咖运营经理④</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="recordCompanyHead" data-all='no' data-manager_level="3" wx:if="{{managementClass == 'person' && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >添加集团负责人③</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -72,7 +87,145 @@
     </view>
 
 
-    <view class="line_item_container" bindtap="stopFee">
+		<view class="line_item_container" data-manager_level="2" data-all='no' bindtap="manageOperator" wx:if="{{managementClass == 'person'  && level >= 3}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >添加景区运营经理②</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		<view class="line_item_container" data-manager_level="1" data-all='no' bindtap="manageOperator" wx:if="{{managementClass == 'person'  && level >= 2}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >添加运营专员①</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="checkAttraction" data-all='yes' wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查询景区添加纪录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="managerRecord" data-all='yes' wx:if="{{managementClass == 'person'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查询人员添加纪录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="checkManagerUsing" data-all='yes' wx:if="{{managementClass == 'person'  && level >= 2}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >运营人员使用纪录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" data-manager_level="5" data-all='no' bindtap="deleteGroup" wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >删除集团</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" data-manager_level="5" data-all='no' bindtap="deleteAttraction" wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >删除集团属下景区</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		
+
+		
+		<!-- <view class="line_item_container" bindtap="toRecordRepair">
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >检修记录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> -->
+
+		<!-- <view class="line_item_container" bindtap="toUpdateCarPosition">
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >更新车辆位置</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> -->
+
+    <view class="line_item_container" bindtap="stopFee" wx:if="{{managementClass == 'expense'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >停止计费</text>
@@ -87,7 +240,7 @@
       <view class="split_line"></view>
     </view>
     
-     <view class="line_item_container" bindtap="storeInfo">
+     <!-- <view class="line_item_container" bindtap="storeInfo">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >添加店铺信息</text>
@@ -100,9 +253,9 @@
         </view>
       </view>
       <view class="split_line"></view>
-    </view>
+    </view> -->
 
-		<view class="line_item_container" bindtap="cancelStore">
+		<!-- <view class="line_item_container" bindtap="cancelStore">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >删除店铺信息</text>
@@ -115,9 +268,9 @@
         </view>
       </view>
       <view class="split_line"></view>
-    </view>
+    </view> -->
 
-		<view class="line_item_container" bindtap="repositorySupply">
+		<!-- <view class="line_item_container" bindtap="repositorySupply">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >布套补仓</text>
@@ -130,13 +283,13 @@
         </view>
       </view>
       <view class="split_line"></view>
-    </view> 
+    </view>  -->
 
 
-		<view class="line_item_container" bindtap="carStatusQuery">
+		<view class="line_item_container" bindtap="carStatusQuery" data-all='yes' wx:if="{{managementClass == 'cart'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >车辆信息查询</text>
+          <text >车群信息查询</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -148,10 +301,10 @@
       <view class="split_line"></view>
     </view>
     
-		<!-- <view class="line_item_container" bindtap="recordCarInPosition">
+		 <view class="line_item_container" bindtap="recordCarInPosition" wx:if="{{managementClass == 'cart'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >录入定点车辆</text>
+          <text >车辆关联景区</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -161,9 +314,40 @@
         </view>
       </view>
       <view class="split_line"></view>
-    </view> -->
+    </view>  
 
-		<!-- <view class="line_item_container" bindtap="recordOperationZone">
+		<view class="line_item_container" bindtap="carPositionQuery" wx:if="{{managementClass == 'cart'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >车辆位置查询</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+
+		<view class="line_item_container" bindtap="carUsingQuery" wx:if="{{managementClass == 'cart'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查询某用户最近行车记录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		 <!-- <view class="line_item_container" bindtap="recordOperationZone">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >录入景区信息</text>
@@ -176,9 +360,24 @@
         </view>
       </view>
       <view class="split_line"></view>
-    </view> -->
+    </view>  -->
 
-		<view class="line_item_container" bindtap="checkCallRepair">
+		<view class="line_item_container" bindtap="callRepair" wx:if="{{managementClass == 'maintenance'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >提交报修</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="checkCallRepair" wx:if="{{managementClass == 'maintenance'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >查看报修纪录</text>
@@ -193,6 +392,129 @@
       <view class="split_line"></view>
     </view> 
 
-    <!--<button bindtap="loginORlogout" class="switchID" >切换账号</button>-->
+		<view class="line_item_container" bindtap="quitMaintenance" wx:if="{{managementClass == 'maintenance'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >解除报修（用车有效）</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		<view class="line_item_container" data-type='no_distance' bindtap="refundAll" wx:if="{{managementClass == 'expense'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >全额退款（无行程）</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>  
+
+		<view class="line_item_container" data-type='distance' bindtap="refundAll" wx:if="{{managementClass == 'expense' && level >= 2}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >全额退款（有行程未结束）</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		<view class="line_item_container" data-type='unconditional' bindtap="refundAll" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >全额退款（无条件）</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" data-type='no_distance_batch' bindtap="refundAll" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >批量退款（当天无行程）</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" data-type='queryRefund' bindtap="refundAll" wx:if="{{managementClass == 'expense' && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查询退款账单</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" data-type='faultToGift' bindtap="refundAll" wx:if="{{managementClass == 'expense' && level >= 2}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >换车送券</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		 <!-- <view class="line_item_container" bindtap="specialRefund" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >无条件退款</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>  -->
+
+	
+
+
+    <!-- <button bindtap="switchAccount" class="switchID" >切换账号</button> -->
     
 </view>

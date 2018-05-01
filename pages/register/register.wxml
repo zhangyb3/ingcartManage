@@ -20,7 +20,7 @@
 
         </view>
         <view class="action-submit">
-            <button class="submit-btn"  loading="{{loading}}" bindtap="customerRegister" >注册</button>
+            <button class="submit-btn"  bindtap='customerRegister'  >注册</button>
         </view>
 
 				<view id="admin_hint">仅供管理员使用</view>

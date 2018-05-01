@@ -9,11 +9,11 @@
 }
 
 .getName {
-  margin: 10px auto;
-  width: 50%;
+  margin: 5px auto;
+  width: 90%;
   text-align: center;
-  height: 60px;
-  line-height: 60px;
+  height: 30px;
+  line-height: 30px;
   background-color: #ddd;
 }
 

@@ -1,0 +1,42 @@
+<view class='rechargePage' style='min-height:{{windowHeight}}px;'>
+
+	<view class='input_store_code'>
+				<input type='number' placeholder='输入电话号码'  bindinput='getPhoneNum'></input>
+				
+	</view>
+
+  <view style='min-height:{{windowHeight-150}}px;'>
+     <view class='recharge-sum'>选择退款金额</view>
+     
+     <view class='recharge-list'>
+
+		 		<view wx:for="{{combos}}" wx:for-item="item" wx:for-index="index">
+					<view class='recharge-choice'>
+               <view class="sum {{addStyle==index?'sumColor':' '}}" bindtap='moneyChoice' data-refund='{{item}}' data-giving="{{item.giving}}" data-class='{{index}}'>{{item.price}}元</view>
+          </view>
+				</view>
+
+           <!-- <view class='recharge-choice'>
+               <view class="sum {{addStyle==0?'sumColor':' '}}" bindtap='moneyChoice' data-refund='30' data-class='0'>30元</view>
+           </view>
+
+           <view class='recharge-choice'>
+               <view class="sum {{addStyle==1?'sumColor':' '}}" bindtap='moneyChoice' data-refund='50' data-class='1'>50元</view>
+           </view> -->
+
+           <view class='recharge-choice'>
+               <view class="sum {{addStyle=='random'?'sumColor':' '}}" bindtap='moneyChoice' data-refund='0' data-giving='0' data-class='random'>其他金额</view>
+           </view>
+     </view>
+  </view>
+  <!-- <button class='recharge-money' hidden='{{isShow}}' bindtap='charge'>确定充值</button> -->
+</view>
+
+<view class='randow-recharge' style='height:{{windowHeight}}px;' hidden='{{isRandow}}'>
+      <view class='recharge-content'>
+            <view class='close-layer' bindtap='closeLayer'>关闭</view>           
+            <view class='randow-title'>输入退款金额（元）</view> 
+            <input type='number' class='money-sum' bindinput='inputMoney' cursor-spacing='100'></input>
+            <button class='recharge-money' bindtap='refund'>确定退款</button>
+      </view>
+</view>

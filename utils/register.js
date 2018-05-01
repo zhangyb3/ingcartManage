@@ -3,7 +3,9 @@ var config = require('./config')
 var user = require('./user')
 var app = getApp();
 
-const CHECK_REGISTER_URL = `${config.PytheRestfulServerURL}/customer/register/check`;//校验是否注册
+const CHECK_REGISTER_URL = `${config.PytheRestfulServerURL}/manage/register/check/`;//校验管理员是否注册
+
+// const CHECK_REGISTER_URL = `${config.PytheRestfulServerURL}/customer/register/check/`;//app版校验管理员是否注册
 
 const SEND_PHONENUM_REGISTER_URL = `${config.PytheRestfulServerURL}/message/verification/`;//发送手机号注册
 
@@ -18,6 +20,7 @@ var checkRegister = (success,fail) => {
         openId : wx.getStorageSync(user.OpenID),
         unionId: wx.getStorageSync(user.UnionID),
 				type: 0,//小程序注册类型为0
+				
       },
       method: 'POST', 
       success: function(res){
@@ -62,7 +65,8 @@ function commitRegister(the, success, fail)
   
 
     wx.request({
-      url: config.PytheRestfulServerURL + '/customer/register/',
+			url: config.PytheRestfulServerURL + '/manage/register',//小程序版管理员注册
+			// url: config.PytheRestfulServerURL + '/customer/register',//app版管理员注册
       data: {
         
         name: wx.getStorageSync('wxNickName'),
@@ -93,8 +97,9 @@ function commitRegister(the, success, fail)
           });
         }
         else if (res.data.status == 200) {
+					
           wx.setStorageSync(user.CustomerID, res.data.data.customerId);
-
+					wx.setStorageSync(user.ManagerID, res.data.data.id);
           wx.setStorageSync(user.Description, res.data.data.description);
           wx.setStorageSync(user.Status, res.data.data.status);
 
@@ -103,6 +108,8 @@ function commitRegister(the, success, fail)
           wx.setStorageSync(user.UsingCarStatus, res.data.data.carStatus);
 
 					wx.setStorageSync(user.Level, res.data.data.level);
+
+					wx.setStorageSync(user.CatalogID, res.data.data.catalogId);
 
           //判断注册是否成功，成功则返回index页面
           wx.setStorageSync('alreadyRegister', 'yes');

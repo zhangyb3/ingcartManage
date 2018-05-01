@@ -37,7 +37,7 @@ App({
       type: "gcj02",
       success: (res) => {
         wx.setStorageSync('last_latitude', res.latitude);
-        wx.setStorageSync('last_longtitude', res.longitude);
+        wx.setStorageSync('last_longitude', res.longitude);
       }
     });
 

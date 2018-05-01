@@ -17,7 +17,7 @@ const UNLOCK_URL = `${config.PytheRestfulServerURL}/use/unlock`;
 const LOCK_URL = `${config.PytheRestfulServerURL}/use/lock`;
 
 //管理员关锁
-const MANAGER_LOCK_URL = `${config.PytheRestfulServerURL}/manager/lock`;
+const MAGER_LOCK_URL = `${config.PytheRestfulServerURL}/manager/lock`;
 
 //保留用车
 const HOLD_URL = `${config.PytheRestfulServerURL}/use/hold`;
@@ -147,7 +147,7 @@ function getUnlockFrame(carId, token, success, fail) {
 }
 
 
-function unlock(the, customerId, carId, success, fail){
+function unlock(the, managerId, carId, success, fail){
 
   var that = the;
 
@@ -168,7 +168,7 @@ function unlock(the, customerId, carId, success, fail){
 	// 								wx.openBluetoothAdapter({
 	// 									success: function (res) {
 
-	// 										unlock(that, customerId, carId);
+	// 										unlock(that, managerId, carId);
 
 	// 									},
 	// 									fail: function (res) { },
@@ -224,167 +224,168 @@ function unlock(the, customerId, carId, success, fail){
 	// }
 	
 			
-	wx.request({
-		url: UNLOCK_PREPARE_URL,
-		data: {
-			customerId: wx.getStorageSync(user.CustomerID),
-			carId: carId,
+	// wx.request({
+	// 	url: UNLOCK_PREPARE_URL,
+	// 	data: {
+	// 		managerId: wx.getStorageSync(user.ManagerID),
+	// 		carId: carId,
 		
-		},
-		method: 'GET',
-		success: function (res) {
-			var result = res.data;
-			if (result.status == 200) 
-			{
-				//通过检查，可以开锁
+	// 	},
+	// 	method: 'GET',
+	// 	success: function (res) {
+	// 		var result = res.data;
+	// 		if (result.status == 200) 
+	// 		{
+	// 			//通过检查，可以开锁
 
-				var deviceId;
-				//android、ios分情况处理
-				if(wx.getStorageSync('platform') == 'android')
-				{
-					deviceId = carId;
-					//直接开锁
-					unlockOperation(that, deviceId, carId,
-						(res)=>{
-							typeof success == "function" && success(res.data);
-						},
-						(res)=>{
-							typeof fail == "function" && fail(res);
+				
+
+
+
+
+	// 		}
+	// 		else {
+	// 			if (result.status == 300) {
+	// 				that.setData({
+	// 					unlock_progress: false,
+	// 					notify_arrearage: true,
+	// 					arrearage_amount: result.data,
+	// 				});
+	// 			}
+	// 			else {
+	// 				that.setData({
+	// 					unlock_progress: false,
+	// 					// unlock_status: true,
+	// 					// unlock_status_image: '/images/unlock_' + result.status + '.png',
+	// 				});
+
+	// 				wx.showModal({
+	// 					title: '提示',
+	// 					content: result.msg,
+	// 					showCancel: false,
+	// 					confirmText: '我知道了',
+	// 					confirmColor: '',
+	// 					success: function(res) {
+	// 						wx.navigateBack({
+	// 							delta: 1,
+	// 						})
+	// 					},
+	// 					fail: function(res) {},
+	// 					complete: function(res) {},
+	// 				})
+	// 			}
+
+	// 		}
+
+
+	// 	},
+	// 	fail: function (res) {
+	// 		typeof fail == "function" && fail(res);
+			
+	// 	},
+	// 	complete: function(res){
+			
+	// 	}
+	// });
+
+	var deviceId;
+	//android、ios分情况处理
+	if (wx.getStorageSync('platform') == 'android') {
+		
+		deviceId = carId;
+		//直接开锁
+		unlockOperation(that, deviceId, carId,
+			(res) => {
+				typeof success == "function" && success(res.data);
+			},
+			(res) => {
+				typeof fail == "function" && fail(res);
+			}
+
+		);
+
+	}
+	if (wx.getStorageSync('platform') == 'ios') {
+		
+		//找出跟MAC对应的deviceId
+		wx.stopBluetoothDevicesDiscovery({
+			success: function (res) {
+
+				wx.getBluetoothDevices({
+					success: function (res) {
+						var devices = res.devices;
+
+						for (var count = 0; count < devices.length; count++) {
+							console.log(count, devices[count]);
+
+							console.log('deviceId: ', devices[count].deviceId);
+							var macBuff = (devices[count].advertisData).slice(2, 8);
+							console.log('MAC: ', parseMAC(macBuff));
+							var macAddress = parseMAC(macBuff);
+							if (macAddress == that.data.carId) {
+								deviceId = devices[count].deviceId;
+								wx.setStorageSync('DeviceID', deviceId);
+								break;
+							}
+
 						}
 
-					);
-					
-				}
-				if (wx.getStorageSync('platform') == 'ios') 
-				{
-					
-					//找出跟MAC对应的deviceId
-					wx.stopBluetoothDevicesDiscovery({
-						success: function (res) {
+						//找到目标，停止查找，开锁
+						unlockOperation(that, deviceId, carId,
+							(res) => {
+								typeof success == "function" && success(res.data);
+							},
+							(res) => {
+								typeof fail == "function" && fail(res);
+							}
 
-							wx.getBluetoothDevices({
-								success: function (res) {
-									var devices = res.devices;
+						);
+					},
+					fail: function (res) { },
+					complete: function (res) { },
+				});
 
-									for (var count = 0; count < devices.length; count++) {
-										console.log(count, devices[count]);
-
-										console.log('deviceId: ', devices[count].deviceId);
-										var macBuff = (devices[count].advertisData).slice(2, 8);
-										console.log('MAC: ', parseMAC(macBuff));
-										var macAddress = parseMAC(macBuff);
-										if (macAddress == that.data.carId) {
-											deviceId = devices[count].deviceId;
-											wx.setStorageSync('DeviceID', deviceId);
-											break;
-										}
-
-									}
-
-									//找到目标，停止查找，开锁
-									unlockOperation(that, deviceId, carId,
-										(res) => {
-											typeof success == "function" && success(res.data);
-										},
-										(res) => {
-											typeof fail == "function" && fail(res);
-										}
-
-									);
-								},
-								fail: function (res) { },
-								complete: function (res) { },
-							});
-
-						},
-						fail: function (res) { },
-						complete: function (res) { },
-					})
-					
-					
-
-					// wx.onBluetoothDeviceFound(function(res){
-						
-					// 		console.log('deviceId: ', res.devices[0]);
-					// 		var macBuff = wx.base64ToArrayBuffer(res.devices[0].advertisData).slice(2, 8);
-					// 		console.log('MAC: ', parseMAC(macBuff));
-					// 		var macAddress = parseMAC(macBuff);
-					// 		if (macAddress == carId) 
-					// 		{
-					// 			deviceId = res.devices[0].deviceId;
-					// 			wx.setStorageSync('DeviceID', deviceId);
-					// 			wx.stopBluetoothDevicesDiscovery({
-					// 				success: function(res) {
-
-					// 					//找到目标，停止查找，开锁
-					// 					unlockOperation(that, deviceId, carId,
-					// 						(res) => {
-					// 							typeof success == "function" && success(res.data);
-					// 						},
-					// 						(res) => {
-					// 							typeof fail == "function" && fail(res);
-					// 						}
-											
-					// 					);
-										
-					// 				},
-					// 				fail: function(res) {},
-					// 				complete: function(res) {},
-					// 			})
-					// 		}
-						
-					// });
-
-				}
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
 
 
 
+		// wx.onBluetoothDeviceFound(function(res){
 
+		// 		console.log('deviceId: ', res.devices[0]);
+		// 		var macBuff = wx.base64ToArrayBuffer(res.devices[0].advertisData).slice(2, 8);
+		// 		console.log('MAC: ', parseMAC(macBuff));
+		// 		var macAddress = parseMAC(macBuff);
+		// 		if (macAddress == carId) 
+		// 		{
+		// 			deviceId = res.devices[0].deviceId;
+		// 			wx.setStorageSync('DeviceID', deviceId);
+		// 			wx.stopBluetoothDevicesDiscovery({
+		// 				success: function(res) {
 
-			}
-			else {
-				if (result.status == 300) {
-					that.setData({
-						unlock_progress: false,
-						notify_arrearage: true,
-						arrearage_amount: result.data,
-					});
-				}
-				else {
-					that.setData({
-						unlock_progress: false,
-						// unlock_status: true,
-						// unlock_status_image: '/images/unlock_' + result.status + '.png',
-					});
+		// 					//找到目标，停止查找，开锁
+		// 					unlockOperation(that, deviceId, carId,
+		// 						(res) => {
+		// 							typeof success == "function" && success(res.data);
+		// 						},
+		// 						(res) => {
+		// 							typeof fail == "function" && fail(res);
+		// 						}
 
-					wx.showModal({
-						title: '提示',
-						content: result.msg,
-						showCancel: false,
-						confirmText: '我知道了',
-						confirmColor: '',
-						success: function(res) {
-							wx.navigateBack({
-								delta: 1,
-							})
-						},
-						fail: function(res) {},
-						complete: function(res) {},
-					})
-				}
+		// 					);
 
-			}
+		// 				},
+		// 				fail: function(res) {},
+		// 				complete: function(res) {},
+		// 			})
+		// 		}
 
+		// });
 
-		},
-		fail: function (res) {
-			typeof fail == "function" && fail(res);
-			
-		},
-		complete: function(res){
-			
-		}
-	});
+	}
+
 
 }
 
@@ -487,15 +488,16 @@ function connectDevice(the, deviceId, success, fail){
 
 function unlockOperation(the, deviceId, carId, success, fail, complete){
 	var that = the;
+	console.log('deviceId',deviceId);
 	wx.createBLEConnection({
 		deviceId: deviceId,
 		success: function (res) {
-			console.log(res);
+			console.log('connect ble',res);
 
 			wx.getBLEDeviceServices({
 				deviceId: deviceId,
 				success: function (res) {
-					console.log(res);
+					console.log('device services',res);
 
 					wx.setStorageSync('ServiceID', res.services[0].uuid);
 
@@ -503,7 +505,7 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 						deviceId: deviceId,
 						serviceId: wx.getStorageSync('ServiceID'),
 						success: function (res) {
-							console.log(res);
+							console.log('device characteristics',res);
 							wx.setStorageSync('characteristicIdToWrite', res.characteristics[0].uuid);
 							wx.setStorageSync('characteristicIdToRead', res.characteristics[1].uuid);
 
@@ -515,7 +517,7 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 								characteristicId: wx.getStorageSync('characteristicIdToRead'),
 								state: true,
 								success: function (res) {
-									console.log(res);
+									console.log('notify change',res);
 								},
 								fail: function (res) { 
 									typeof fail == "function" && fail('fallback');
@@ -623,6 +625,22 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 												deviceId: deviceId,
 												success: function (res) {
 													wx.hideLoading();
+
+													//纪录管理员开锁行为
+													wx.request({
+														url: config.PytheRestfulServerURL + '/manage/unlock',
+														data: {
+															qrId: wx.getStorageSync('unlock_qr'),
+															managerId: wx.getStorageSync(user.ManagerID),
+															latitude: wx.getStorageSync('last_latitude'),
+															longitude: wx.getStorageSync('last_longitude'),
+														},
+														method: 'POST',
+														success: function(res) {},
+														fail: function(res) {},
+														complete: function(res) {},
+													});
+													
 													wx.navigateBack({
 														delta: 1,
 													});
@@ -643,7 +661,7 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 											// 			url: UNLOCK_URL,
 											// 			data: {
 											// 				carId: carId,
-											// 				customerId: wx.getStorageSync(user.CustomerID),
+											// 				managerId: wx.getStorageSync(user.ManagerID),
 											// 				longitude: res.longitude,
 											// 				latitude: res.latitude,
 											// 			},
@@ -651,7 +669,7 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 											// 			success: function (res) { 
 
 											// 				normalUpdateCustomerStatus(
-											// 					wx.getStorageSync(user.CustomerID),
+											// 					wx.getStorageSync(user.ManagerID),
 											// 					() => {
 
 											// 						wx.navigateBack({
@@ -715,13 +733,14 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 
 		},
 		fail: function (res) {
+			console.log('connect false');
 			typeof fail == "function" && fail('fallback');
 		},
 		complete: function (res) { },
 	});
 }
 
-function lock(customerId, carId, recordId, success, fail){
+function lock(managerId, carId, recordId, success, fail){
 
 	
 
@@ -732,7 +751,7 @@ function lock(customerId, carId, recordId, success, fail){
         // url: LOCK_URL,
 				url: MANAGER_LOCK_URL,//目前只有管理员版
         data: {
-          customerId: customerId,
+          managerId: managerId,
           carId: carId,
           recordId: recordId,
           latitude: res.latitude,
@@ -742,7 +761,7 @@ function lock(customerId, carId, recordId, success, fail){
         success: function (res) {
           var result = res;
           normalUpdateCustomerStatus(
-            customerId,
+            managerId,
             () => {
               typeof success == "function" && success(result.data);
             });
@@ -757,12 +776,12 @@ function lock(customerId, carId, recordId, success, fail){
 
 }
 
-function hold(customerId, carId, appointmentTime, recordId, success, fail){
+function hold(managerId, carId, appointmentTime, recordId, success, fail){
 
   wx.request({
     url: HOLD_URL,
     data: {
-      customerId: customerId,
+      managerId: managerId,
       carId: carId,
       appointmentTime: appointmentTime,
       recordId: recordId,
@@ -771,7 +790,7 @@ function hold(customerId, carId, appointmentTime, recordId, success, fail){
     success: function (res) {
       var result = res;
       normalUpdateCustomerStatus(
-        customerId,
+        managerId,
         () => {
           typeof success == "function" && success(result.data);
         });
@@ -783,12 +802,12 @@ function hold(customerId, carId, appointmentTime, recordId, success, fail){
 
 }
 
-function computeFee(customerId, carId, recordId, formId, success, fail){
+function computeFee(managerId, carId, recordId, formId, success, fail){
 
   wx.request({
     url: COMPUTEFEE_URL,
     data: {
-      customerId: customerId,
+      managerId: managerId,
       carId: carId,
       recordId: recordId,
       formId: formId
@@ -797,7 +816,7 @@ function computeFee(customerId, carId, recordId, formId, success, fail){
     success: function (res) {
       var result = res;
       normalUpdateCustomerStatus(
-        customerId,
+        managerId,
         () => {
           typeof success == "function" && success(result.data);
         });
@@ -821,7 +840,7 @@ function checkUsingMinutes(carId, success, fail) {
       success: function (res) {
         var result = res;
         normalUpdateCustomerStatus(
-          wx.getStorageSync(user.CustomerID),
+          wx.getStorageSync(user.ManagerID),
           () => {
             typeof success == "function" && success(result.data);
           });
@@ -835,19 +854,19 @@ function checkUsingMinutes(carId, success, fail) {
 
 }
 
-function checkHoldingMinutes(customerId, success, fail) {
+function checkHoldingMinutes(managerId, success, fail) {
 
-  if (customerId != null && wx.getStorageSync(user.UsingCarStatus) == 2)  {
+  if (managerId != null && wx.getStorageSync(user.UsingCarStatus) == 2)  {
     wx.request({
       url: config.PytheRestfulServerURL + '/save/time',
       data: {
-        customerId: customerId
+        managerId: managerId
       },
       method: 'GET',
       success: function (res) {
         var result = res;
         normalUpdateCustomerStatus(
-          customerId,
+          managerId,
           () => {
             typeof success == "function" && success(result.data);
           });
@@ -862,19 +881,19 @@ function checkHoldingMinutes(customerId, success, fail) {
 }
 
 
-function cancelHolding(customerId, success, fail){
+function cancelHolding(managerId, success, fail){
 
   wx.request({
     url: CANCEL_HOLDING_URL,
     data: {
-      customerId: customerId,
+      managerId: managerId,
     },
     method: 'GET',
     dataType: '',
     success: function(res) {
       var result = res;
       normalUpdateCustomerStatus(
-        customerId,
+        managerId,
         () => {
           typeof success == "function" && success(result.data);
         });
@@ -887,12 +906,12 @@ function cancelHolding(customerId, success, fail){
 }
 
 
-function normalUpdateCustomerStatus(customerId, success, fail)
+function normalUpdateCustomerStatus(managerId, success, fail)
 {
   wx.request({
     url: UPDATE_CUSTOMER_STATUS_URL,
     data: {
-      customerId: wx.getStorageSync(user.CustomerID)
+      managerId: wx.getStorageSync(user.ManagerID)
     },
     method: 'GET',
     dataType: '',
@@ -900,7 +919,7 @@ function normalUpdateCustomerStatus(customerId, success, fail)
       // console.log(res);
       var info = res.data.data;
 
-      wx.setStorageSync(user.CustomerID, info.customerId);
+      wx.setStorageSync(user.ManagerID, info.id);
       wx.setStorageSync(user.Description, info.description);
       wx.setStorageSync(user.Status, info.status);
       wx.setStorageSync(user.UsingCar, info.carId);
@@ -926,12 +945,12 @@ function notifyPayInfo(){
 
 }
 
-function receiveGift(customerId, dealerId, out_trade_no, prepay_id, success,fail)
+function receiveGift(managerId, dealerId, out_trade_no, prepay_id, success,fail)
 {
   wx.request({
     url: `${config.PytheRestfulServerURL}/mai/bag`,
     data: {
-      customerId: customerId,
+      managerId: managerId,
       dealerId: dealerId,
       out_trade_no: out_trade_no,
       prepay_id: prepay_id
@@ -1040,7 +1059,7 @@ function loginSystem(the, success, fail) {
 
 						//转至注册页面
 						wx.navigateTo({
-							url: '../register/register',
+							url: '../register/accedit',
 							success: function (res) { },
 							fail: function (res) { },
 							complete: function (res) { },
@@ -1049,6 +1068,7 @@ function loginSystem(the, success, fail) {
 
 					else {
 						wx.setStorageSync('alreadyRegister', 'yes');
+						wx.setStorageSync(user.ManagerID, registerInfo.id);
 						wx.setStorageSync(user.CustomerID, registerInfo.customerId);
 						wx.setStorageSync(user.Description, registerInfo.description);
 						wx.setStorageSync(user.Status, registerInfo.status);
@@ -1059,6 +1079,7 @@ function loginSystem(the, success, fail) {
 
 						wx.setStorageSync(user.Level, registerInfo.level);
 						wx.setStorageSync(user.PhoneNum, registerInfo.phoneNum);
+						wx.setStorageSync(user.CatalogID, registerInfo.catalogId);
 
 						wx.showToast({
 							title: '已登录',
@@ -1135,7 +1156,7 @@ function managerLock(the) {
 
 	if (wx.getStorageSync(user.Level) == 1) {
 		lock(
-			wx.getStorageSync(user.CustomerID),
+			wx.getStorageSync(user.ManagerID),
 			wx.getStorageSync(user.UsingCar),
 			wx.getStorageSync(user.RecordID),
 			(result) => {

@@ -33,3 +33,5 @@
 button[plain]{
   border:1px solid #fff;width:40rpx;height:40rpx;
 }
+
+@import '../monitor/carStatus.wxss';

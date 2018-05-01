@@ -8,6 +8,7 @@ module.exports = {
     SessionID : 'SessionID',
     UserID: 'UserID',
     CustomerID: 'CustomerID',
+		ManagerID: 'ManagerID',
     StudentID: 'StudentID',
     TeacherID: 'TeacherID',
     OrganizationID: 'OrganizationID',
@@ -24,4 +25,5 @@ module.exports = {
 		UsingCarDevice: "UsingCarDevice",
 		Level: "Level",
 		PhoneNum: "PhoneNum",
+		CatalogID: "CatalogID",
 }

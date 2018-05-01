@@ -1,0 +1,82 @@
+
+<view class="container">
+    <view class="user-info">
+    <block wx:if="{{avatarUrl != null}}">
+        <image src="{{avatarUrl}}"></image>
+    </block>
+        <text>{{showPhoneNum}}</text>
+    </view>
+    
+    
+
+		<view class="line_item_container" data-class="person" bindtap="toDisplay" wx:if='{{ level >= 2}}'>
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >人员管理</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		
+
+    <view class="line_item_container" data-class="expense" bindtap="toDisplay">
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >费用管理</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+    
+    
+		<view class="line_item_container" data-class="cart" bindtap="toDisplay">
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >车辆管理</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+    
+		 
+
+		<view class="line_item_container" data-class="maintenance" bindtap="toDisplay">
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >维修管理</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
+		
+
+		
+    <button bindtap="switchAccount" class="switchID" >切换账号</button>
+    
+</view>

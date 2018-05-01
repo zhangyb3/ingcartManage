@@ -154,7 +154,9 @@ Page({
               qrId: that.data.maintenanceQRId,
               longitude: wx.getStorageSync(user.Longitude),
               latitude: wx.getStorageSync(user.Latitude),
-              annotation: "haha"
+              annotation: "haha",
+							phoneNum: wx.getStorageSync(user.PhoneNum),
+							level: wx.getStorageSync(user.Level),
             },
             method: 'POST',
             success: function (res) {
@@ -182,9 +184,7 @@ Page({
 
 									},
 								});
-								wx.navigateBack({
-									delta: 1,
-								});
+								
 							}
               
             }

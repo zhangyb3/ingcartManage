@@ -1,0 +1,111 @@
+
+
+page{
+  background-color: #ffffff;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.user-info{
+	background-color: #f6f6f6;
+	padding-top: 50rpx;
+}
+.user-info image{
+	display: block;
+	width: 150rpx;
+	height: 150rpx;
+	border-radius: 50%;
+	margin: 0 auto ;
+	box-shadow: 0 0 20rpx rgba(0,0,0,.2);
+}
+.user-info text{
+  
+	display: block;
+	text-align: center;
+	padding: 20rpx 0;
+	/*margin-bottom: 20rpx;*/
+}
+.switchID{
+	position: absolute;
+	bottom: 0rpx;
+	width: 100%;
+	background-color: lightgray;
+  border: none;
+}
+
+.account_name{
+  width: 50%;
+  text-align: left;
+}
+
+.account_amount{
+  width: 20%;
+  text-align: right;
+  display: float;
+  /*flex-direction: row;*/
+}
+
+.account_operation{
+  width: 30%;
+  text-align: right;
+}
+
+.account_operation image{
+  width: 160rpx;
+  height: 60rpx;
+}
+
+.card_name{
+  width: 50%;
+  text-align: left;
+}
+
+.card_quantity{
+  width: 20%;
+  text-align: right;
+  display: float;
+  /*flex-direction: row;*/
+}
+
+.card_operation{
+  width: 30%;
+  text-align: right;
+}
+
+.history_record{
+  width: 50%;
+  text-align: left;
+}
+
+.record_quantity{
+  width: 20%;
+  text-align: right;
+}
+
+.record_operation{
+  width: 30%;
+  text-align: right;
+}
+
+.repair_entrance{
+  width: 50%;
+  text-align: left;
+}
+
+.repair_quantity{
+  width: 20%;
+  text-align: right;
+}
+
+.repair_operation{
+  width: 30%;
+  text-align: right;
+}
+
+#operation{
+  width: 45rpx;
+  height: 45rpx;
+}
+
+
+
+@import "../section/line_item.wxss";

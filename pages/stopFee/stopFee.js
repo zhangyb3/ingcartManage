@@ -1,6 +1,8 @@
 //logs.js
 var util = require('../../utils/util.js');
 var config = require("../../utils/config.js");
+var operation = require("../../utils/operation.js");
+var user = require("../../utils/user.js");
 
 const date = new Date()
 const years = []
@@ -46,6 +48,7 @@ Page({
     winHeight:0,
     display:'none',  //是否显示弹窗
     checkTel:'none', //是否显示手机号码格式
+		checkResult:'',
     years: years,
     _year: date.getFullYear(),
     year: date.getFullYear(),
@@ -63,6 +66,8 @@ Page({
     minute: date.getMinutes(),
     value: [0,0,0,0,0],
 		chargingStartTime: '尚未查询',
+		qr: '尚未查询',
+		phone: '尚未查询',
   },
   onLoad: function () {
     var that=this;
@@ -138,7 +143,7 @@ Page({
   checkTelRight:function(e){
     var inputTel=e.detail.value;
     var regExp=/0?(13|14|15|17|18)[0-9]{9}/;
-    if (!regExp.test(inputTel)){
+    if (!regExp.test(inputTel) || inputTel.length != 7){
       this.setData({
         checkTel: 'block'
       })
@@ -155,14 +160,11 @@ Page({
 		this.data.customerPhoneNum = e.detail.value;
 		var regExp = /0?(13|14|15|18)[0-9]{9}/;
 		// if (!regExp.test(this.data.customerPhoneNum)) {
-		if (this.data.customerPhoneNum.length != 11 && this.data.customerPhoneNum.length != 7) {
-			this.setData({
-				checkTel: 'block'
-			})
-		} else {
+		if (this.data.customerPhoneNum.length == 7 || this.data.customerPhoneNum.length == 11) {
 			this.setData({
 				checkTel: 'none'
 			});
+
 			var that = this;
 			//格式正确，查询该号码用户情况
 			wx.request({
@@ -174,26 +176,37 @@ Page({
 				method: 'POST',
 				success: function (res) {
 					if (res.data.status == 200) {
+						var result = res.data.data;
 						that.setData({
-							chargingStartTime: (res.data.data.start_time),
+							chargingStartTime: result.start_time,
+							qr: result.qr_id,
+							phone: result.phone_num,
 						});
 					}
 					if (res.data.status == 400) {
-						wx.showModal({
-							title: '提示',
-							content: res.data.msg,
-							showCancel: false,
-							confirmText: '我知道了',
-							confirmColor: '',
-							success: function (res) { },
-							fail: function (res) { },
-							complete: function (res) { },
-						})
+						// wx.showModal({
+						// 	title: '提示',
+						// 	content: res.data.msg,
+						// 	showCancel: false,
+						// 	confirmText: '我知道了',
+						// 	confirmColor: '',
+						// 	success: function (res) { },
+						// 	fail: function (res) { },
+						// 	complete: function (res) { },
+						// })
+						that.setData({
+							// checkResult: res.data.msg
+						});
 					}
 				},
 				fail: function (res) { },
 				complete: function (res) { },
-			})
+			});
+		} else {
+			this.setData({
+				checkTel: 'block'
+			});
+			
 
 		}
 	},
@@ -201,10 +214,12 @@ Page({
 	managerStopFee:function(e){
 		var that = this;
 		wx.request({
-			url: config.PytheRestfulServerURL + '/manage/urgent/lock/',
+			url: config.PytheRestfulServerURL + '/manage/urgent/refund/',//小程序版退费
+			// url: config.PytheRestfulServerURL + '/manage/urgent/lock/',//app版
 			data: {
 				phoneNum: that.data.customerPhoneNum,
 				date: that.data._year+'-'+that.data._month+'-'+that.data._day+' '+that.data._hour+':'+that.data._minute+':00',
+				managerId: wx.getStorageSync(user.CustomerID),
 			},
 			method: 'POST',
 			success: function (res) {
@@ -239,5 +254,62 @@ Page({
 			complete: function (res) { },
 		})
 	},
+
+	//扫描车牌
+	scanCar: function (e) {
+		var that = this;
+		wx.scanCode({
+			onlyFromCamera: true,
+			success: function (res) {
+				console.log(res);
+				if (res.errMsg == 'scanCode:ok') {
+					var parameters = operation.urlProcess(res.result);
+					that.data.customerPhoneNum = parameters.id;
+					wx.request({
+						url: config.PytheRestfulServerURL + '/select/cr',
+						data: {
+							phoneNum: that.data.customerPhoneNum,
+							// date: that.data._year + '-' + that.data._month + '-' + that.data._day + ' ' + that.data._hour + ':' + that.data._minute + ':00',
+						},
+						method: 'POST',
+						success: function (res) {
+							if (res.data.status == 200) {
+								var result = res.data.data;
+								that.setData({
+									chargingStartTime: result.start_time,
+									qr: result.qr_id,
+									phone: result.phone_num,
+								});
+							}
+							if (res.data.status == 400) {
+								// wx.showModal({
+								// 	title: '提示',
+								// 	content: res.data.msg,
+								// 	showCancel: false,
+								// 	confirmText: '我知道了',
+								// 	confirmColor: '',
+								// 	success: function (res) { },
+								// 	fail: function (res) { },
+								// 	complete: function (res) { },
+								// })
+								that.setData({
+									// checkResult: res.data.msg
+								});
+							}
+						},
+						fail: function (res) { },
+						complete: function (res) { },
+					});
+					that.data.qrId = parameters.id;
+					that.setData({
+						qrId: parameters.id,
+					})
+				}
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		});
+	},
+
 
 })

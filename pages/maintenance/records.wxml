@@ -1,32 +1,75 @@
 
+<view class=''>
+					<view class='choose-name'>请选择</view>
+					<view class='getName' bindtap='chooseLevel1'>{{level1Name}}</view>
+		</view> 
+		
+		<view class=''>
+					<view class='choose-name'>请选择</view>
+					<view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
+		</view>
 
-<scroll-view class='toolKit-notes' style='min-height:{{deviceHeight}}px' lower-threshold='0' bindscrolltolower='getMoreCallRepair'>
+<scroll-view class='toolKit-notes' style='height:{{deviceHeight*0.6}}px;border-top:1px solid gray;' lower-threshold='0' bindscrolltolower='getMoreCallRepair' scroll-y>
 
-    <view style='min-height:{{deviceHeight-60}}px'>
+    
       <view class='tk-noteList' wx:for='{{callRepairList}}' wx:key='unique' >
-				<view class="tk-note-item" data-cart='{{item}}' bindtap='findTargetOnMap' >
-            <view class='tk-note-title' style='color:red;' >车辆编号：{{item.qrId}}</view>
-            <view class='tk-note-subtitle' style='{{notesHeight[index]}}'>{{item.type}}</view>
+				<view class="tk-note-item" wx:if="{{visibles[index]}}" >
+            <view class='tk-note-title' style='color:red;' data-cart='{{item}}'  bindtap='findTargetOnMap'>车辆编号：{{item.qrId}}</view>
+            <view class='tk-note-subtitle' style='{{notesHeight[index]}}' data-cart='{{item}}'  bindtap='findTargetOnMap'>{{item.type}}</view>
 
-            <view class='notes-info'>
-                  <view class='notes' style='max-height:{{notesHeight2[index]}}rpx;' >{{item.annotation}}</view>
+            <view class='notes-info' >
+                  <view class='notes' style='max-height:{{notesHeight2[index]}}rpx;' data-cart='{{item}}'  bindtap='findTargetOnMap'>{{item.annotation}}</view>
 
                   <view class='note-mark-info'>
-                        <text class='noted-time'>{{item.callTime}}</text>
+                        <text class='noted-time'>{{item.time}}</text>
                         <!-- <image class='notes-share' src='../../images/share.png' bindtap='toShare' data-nid="{{item.id}}" data-title='{{item.title}}' data-content='{{item.content}}' data-note='{{item.note}}'></image>  -->
                         <!-- <button plain='true' class='shareBtn' open-type="share">
                           <image class='notes-share' src='../../images/share.png'></image>
                         </button> -->
 
-                        <view class='notes-fold' bindtap='foldMore' data-fold='{{index}}' data-param='{{param[index]}}' data-not_redirect='true'>{{foldTxt[index]}}</view>
-                        <view class='del-notes' bindtap='alreadyFindTarget' wx:if="{{visibleArray[index]}}" data-index='{{index}}' data-not_redirect='true'>捕获</view>
-												
+                        <view class='notes-fold' bindtap='foldMore' data-fold='{{index}}' data-param='{{param[index]}}' >{{foldTxt[index]}}</view>
+                        <view class='del-notes' bindtap='alreadyFindTarget' wx:if="{{visibleArray[index]}}" data-id='{{item.id}}' data-index='{{index}}' >捕获</view>
+												<view class='del-notes' bindtap='deleteFixRecord' wx:if="{{visibleArray[index]}}" data-id='{{item.id}}' data-index='{{index}}' >删除纪录</view>
 
                   </view>
             </view>
 				</view>
       </view> 
-    </view>
+    
 
 
 </scroll-view>
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureLevel1'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel1">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{level1}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel2 == true}}">      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureLevel2'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel2">
+                   <picker-view-column id="zone_column">
+                      <view wx:for="{{level2}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>

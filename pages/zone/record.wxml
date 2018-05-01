@@ -1,31 +1,58 @@
 <scroll-view class='scroll' bindscroll='scroll' scroll-y scroll-top="{{scrollTop}}" style='height:{{scrollViewHeight}}px;'>
 <view class='store-info' style='min-height:{{winHeight}}px;padding-bottom:{{addPadding}}px;'>
-      <view class='store-title'>添加景区</view>
+      
+			<view class='' wx:if="{{mode == 'update'}}">
+						<view class='choose-name'>选择景区</view>
+						<view class='getName' bindtap='selectZone'>{{zoneName}}</view>
+			</view>
 
-      <view class='input-store-info'>
-            <view class='column-info'>
+      <view class='input-store-info' >
+
+            <view class='column-info' wx:if="{{mode == 'insert'}}">
                   <text>景区所在城市（举例：XX市）</text>
                   <input type='text' class='store-name' maxlength='8' bindinput='getCityName'></input>
                   <view class='txt-num'>8字</view>
             </view>
 
-            
+           
 
-            
-
-            <view class='column-info' style='margin-top:48rpx' hidden='{{isTextarea}}'>
+            <view class='column-info' style='margin-top:0rpx' hidden='{{isTextarea}}'  wx:if="{{mode == 'insert'}}">
                   <text>景区名字</text>
                   <textarea maxlength='30' bindinput='getOperationZoneName' bindfocus='focuPadding1' bindblur='blurPadding'></textarea>
                   <view class='txt-num'>30字</view>
             </view>
 
 
-						<view class=''>
-									<view class='choose-name'>选择类型</view>
-									<view class='getName' bindtap='chooseZoneType'>{{zoneType}}</view>
-						</view> 
+					<view class='column-info'>
+								<text>租金</text>
+								<input type='digit' class='store-name' value='{{price}}' bindfocus='getPrice' bindinput='getPrice'></input>
+								
+					</view>
+
+					<view class='column-info' style="margin-top:10px;">
+								<text>押金</text>
+								<input type='digit' class='store-name' value='{{giving}}' bindfocus='getGiving' bindinput='getGiving'></input>
+								
+					</view>
+
+					<view class='column-info' style="margin-top:10px;">
+								<text>客服电话</text>
+								<input type='text' class='store-name' value='{{servicePhone}}' bindfocus='getServicePhone' bindinput='getServicePhone'></input>
+								
+					</view>
+						
 
       </view>
+
+			<view class=''  wx:if="{{mode == 'insert'}}">
+						<view class='choose-name'>请选择隶属集团</view>
+						<view class='getName' bindtap='chooseHigherLevel'>{{higherLevelName}}</view>
+			</view> 
+
+			<view class=''>
+						<view class='choose-name'>结束行程模式</view>
+						<view class='getName' value="{{endSelf || ''}}" bindtap='whetherEndSelf'>{{endSelf}}</view>
+			</view> 
 
       <button class='hand-in' bindtap='managerRecordOperationZone'>提交</button>
       
@@ -45,7 +72,39 @@
                  <view style='height:40px;line-height:40px;text-align:center;'></view>
                  <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel">
                    <picker-view-column id="city_column">
-                      <view wx:for="{{levels}}" wx:key='unique' style="line-height: 50px">{{item.level}}</view>
+                      <view wx:for="{{levels}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if='{{chooseWhetherEndSelf}}'>      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureWhetherEndSelf'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeWhetherEndSelf">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{whetherEndSelfs}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if='{{chooseZone}}'>      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureZone'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeZone">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{zones}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
                    </picker-view-column>
                    
                  </picker-view>

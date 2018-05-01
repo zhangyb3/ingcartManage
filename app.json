@@ -4,21 +4,46 @@
 		"pages/index/processing",
     "pages/maintenance/call",
 		"pages/maintenance/records",
+		"pages/maintenance/quit",
     "pages/scanresult/index",
     "pages/bill/list",
+		"pages/my/managementClass",
     "pages/my/display",
     "pages/my/history",
 		"pages/my/record_repair",
     "pages/wallet/total",
     "pages/wallet/charge",
     "pages/register/register",
+		"pages/register/accedit",
     "pages/stopFee/stopFee",
     "pages/store/storeInfo",
+
+
+
+
+
+
+
+
+
+
+
+
+		
 		"pages/store/cancelStore",
 		"pages/repository/supply",
 		"pages/monitor/carStatus",
+		"pages/monitor/carPosition",
+		"pages/monitor/carUsing",
 		"pages/monitor/recordCar",
+		"pages/monitor/refundAll",
+		"pages/monitor/manageOperator",
+		"pages/monitor/managerRecord",
+		"pages/monitor/specialRefund",
+		"pages/monitor/statistics",
 		"pages/zone/record",
+
+		"pages/catalog/new",
     "pages/logs/logs"
   ],
   "window":{

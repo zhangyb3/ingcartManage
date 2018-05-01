@@ -1,0 +1,4 @@
+
+@import '../stopFee/stopFee.wxss';
+
+@import 'carStatus.wxss';

@@ -66,7 +66,7 @@ Page({
 				wx.setStorageSync('platform', res.platform);
 				console.log('platform', res.platform);
 				this.setData({
-					mapHeight: res.windowHeight - 60,
+					mapHeight: res.windowHeight ,
 					holding: false,
 					timing: false,
 				});
@@ -90,7 +90,7 @@ Page({
 				() => {
 
 					wx.hideLoading();
-					// checkBluetooth(that);
+					checkBluetooth(that);
 					refreshPage(that);
 
 					// checkUsingCarStatus(that,
@@ -222,7 +222,7 @@ Page({
 		{
 			var that = this;
 			
-			// checkBluetooth(that);
+			checkBluetooth(that);
 			
 			// wx.showLoading({
 			// 	title: '加载中',
@@ -420,18 +420,27 @@ Page({
           var that = this;
 					// if (wx.getStorageSync(user.UsingCar) == null || wx.getStorageSync(user.UsingCarStatus) == 2)
 					{
-			
+						wx.getLocation({
+							type: "gcj02",
+							success: (res) => {
+								wx.setStorageSync('last_latitude', res.latitude);
+								wx.setStorageSync('last_longitude', res.longitude);
+							}
+						});
+
 						wx.scanCode({
 							onlyFromCamera: true,
 							success: function (res) {
 								console.log(res);
 								if (res.errMsg == 'scanCode:ok') {
 									var parameters = operation.urlProcess(res.result); console.log(parameters);
+
+									wx.setStorageSync('unlock_qr', parameters.id);
 									operation.qr2mac(parameters.id,
 										(result)=>{
 
 											var carId = result.id;
-											var customerId = wx.getStorageSync(user.CustomerID);
+											var managerId = wx.getStorageSync(user.ManagerID);
 											var recordId = wx.getStorageSync(user.RecordID);
 
 
@@ -553,7 +562,7 @@ Page({
 				
 				
 						wx.navigateTo({
-							url: '../my/display'
+							url: '../my/managementClass'
 						});
 					
 				
@@ -606,7 +615,7 @@ Page({
 			complete: function (res) { },
 		})
     var that = this;
-    operation.cancelHolding(wx.getStorageSync(user.CustomerID),
+    operation.cancelHolding(wx.getStorageSync(user.ManagerID),
     (result)=>{
       
       that.setData({
@@ -614,7 +623,7 @@ Page({
         notify_bill: true,
         price: result.data.price,
         duration: result.data.time,
-				mapHeight: wx.getStorageSync('windowHeight') -60,
+				mapHeight: wx.getStorageSync('windowHeight') ,
       });
 
 			wx.closeBluetoothAdapter({
@@ -683,7 +692,7 @@ Page({
             show_store_detail: true,
 						holding: false,
             check_store: res.data.data,
-						mapHeight: wx.getStorageSync('windowHeight') - 120 -60,
+						mapHeight: wx.getStorageSync('windowHeight') - 120,
           });
         },
         fail: function(res) {},
@@ -701,7 +710,7 @@ Page({
 
   disappearStoreDetail:function(e){
     this.setData({
-			mapHeight: wx.getStorageSync('windowHeight') - 60,
+			mapHeight: wx.getStorageSync('windowHeight') ,
 			show_store_detail: false,
 			holding: false,
 		});
@@ -766,7 +775,7 @@ function showControls(the){
 				iconPath: '/images/location.png',
 				position: {
 					left: 15,
-					top: wx.getStorageSync('windowHeight') - 60 -80,
+					top: wx.getStorageSync('windowHeight')  -80,
 					
 					width: 40,
 					height: 40
@@ -778,7 +787,7 @@ function showControls(the){
 				iconPath: '/images/use.png',
 				position: {
 					left: wx.getStorageSync('windowWidth') / 2 - 105,
-					top: wx.getStorageSync('windowHeight') - 72 -80,
+					top: wx.getStorageSync('windowHeight') -12 -80,
 					
 					width: 210,
 					height: 51
@@ -814,7 +823,7 @@ function showControls(the){
 				iconPath: '/images/avatar.png',
 				position: {
 					left: wx.getStorageSync('windowWidth') - 50,
-					top: wx.getStorageSync('windowHeight') - 60 -80,
+					top: wx.getStorageSync('windowHeight')  -80,
 					
 					width: 40,
 					height: 40
@@ -890,7 +899,7 @@ function refreshUsingMinutes(the){
 						// timing: true,
 						holding: false,
 						usingMinutes: result.data.time,
-						mapHeight: wx.getStorageSync('windowHeight') - 180 - 60,
+						mapHeight: wx.getStorageSync('windowHeight') - 180 ,
 					});
 					//此时图标不可点
 					that.data.markerClickable = false;
@@ -910,7 +919,7 @@ function refreshHoldingMinutes(the) {
 	if (wx.getStorageSync(user.UsingCarStatus) == 2)
 	{
 		operation.checkHoldingMinutes(
-			wx.getStorageSync(user.CustomerID),
+			wx.getStorageSync(user.ManagerID),
 			(result) => {
 				if (result.status == 200) {
 					that.data.holdingMinutes = result.data.time;
@@ -928,7 +937,7 @@ function refreshHoldingMinutes(the) {
 						notify_bill: true,
 						price: result.data.price,
 						duration: result.data.time,
-						mapHeight: wx.getStorageSync('windowHeight') - 60,
+						mapHeight: wx.getStorageSync('windowHeight') ,
 					});
 					//此时图标可点
 					that.data.markerClickable = true;
@@ -956,7 +965,7 @@ function checkUsingCarStatus(the, success, fail)
 		{
 			//检查是否保留用车，显示
 			operation.checkHoldingMinutes(
-				wx.getStorageSync(user.CustomerID),
+				wx.getStorageSync(user.ManagerID),
 				(result) => {
 					if (result.status == 200) {
 						that.data.holdingMinutes = result.data.time;
@@ -981,7 +990,7 @@ function checkUsingCarStatus(the, success, fail)
 							notify_bill: true,
 							price: result.data.price,
 							duration: result.data.time,
-							mapHeight: wx.getStorageSync('windowHeight') -60,
+							mapHeight: wx.getStorageSync('windowHeight') ,
 						});
 						//此时图标不可点
 						that.data.markerClickable = false;
@@ -1006,7 +1015,7 @@ function checkUsingCarStatus(the, success, fail)
 							// timing: true,
 							holding: false,
 							usingMinutes: result.data.time,
-							mapHeight: wx.getStorageSync('windowHeight') - 180 -60,
+							mapHeight: wx.getStorageSync('windowHeight') - 180 ,
 						});
 						//此时图标不可点
 						that.data.markerClickable = false;
@@ -1034,7 +1043,7 @@ function checkUsingCarStatus(the, success, fail)
 			that.setData({
 				timing: false,
 				holding: false,
-				mapHeight: wx.getStorageSync('windowHeight') -60,
+				mapHeight: wx.getStorageSync('windowHeight') ,
 			});
 			//此时图标可点
 			that.data.markerClickable = true;

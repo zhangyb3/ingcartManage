@@ -1,0 +1,6 @@
+
+@import 'recordCar.wxss';
+
+@import 'carStatus.wxss';
+
+@import '../section/password_pop.wxss';

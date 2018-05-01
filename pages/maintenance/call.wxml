@@ -27,8 +27,8 @@
         </checkbox-group>        
     </view>
 
-     <view class="text_edit_textarea_container"  style="width:80%;margin-left:10%;min-height:200rpx;">
-        <textarea class="text_edit_textarea" bindinput="getTextInput" maxlength="140"  value='{{original}}' auto-height='true' placeholder="备注" placeholder-style="font-size: 12px;color:gray;" style="margin-left: 5%;padding-top: 20rpx;padding-bottom: 20rpx;"/>
+     <view class="text_edit_textarea_container"  style="width:80%;margin-left:10%;">
+        <textarea class="text_edit_textarea" bindinput="getTextInput"  maxlength="140" style="height:60px;overflow-y:auto;" value='{{original}}'placeholder="备注" placeholder-style="font-size: 12px;color:gray;" style="margin-left: 5%;padding-top: 20rpx;padding-bottom: 20rpx;"/>
     </view>
 
     <view style="height:20rpx;"></view>

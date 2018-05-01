@@ -51,7 +51,6 @@ Page({
 				unlock_progress: true,
 			});			
 
-
 			
 			operation.unlock(
 				that,
@@ -71,7 +70,8 @@ Page({
 					// 	);
 					// }
 				},
-				()=>{
+				(res)=>{
+					console.log("fail",res);
 					wx.navigateBack({
 						delta: 1,
 					})
