@@ -219,7 +219,7 @@ Page({
 			data: {
 				phoneNum: that.data.customerPhoneNum,
 				date: that.data._year+'-'+that.data._month+'-'+that.data._day+' '+that.data._hour+':'+that.data._minute+':00',
-				managerId: wx.getStorageSync(user.CustomerID),
+				managerId: wx.getStorageSync(user.ManagerID),
 			},
 			method: 'POST',
 			success: function (res) {

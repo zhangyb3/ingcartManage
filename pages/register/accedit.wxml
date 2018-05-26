@@ -6,7 +6,7 @@
     
     <view class='accedit-button'>
        <view class='accedit-txt'><image src='/images/wx_log.png'></image>微信用户快速登录</view>
-       <button class='acceditBtn' plain='true' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
+       <button class='acceditBtn' plain='true' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" ></button>
     </view>
 
     <view class='other-loginWay' bindtap='redirectToNormalRegister'>输入手机号码登录/注册</view>

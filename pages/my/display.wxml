@@ -192,7 +192,20 @@
       <view class="split_line"></view>
     </view>
 
-		
+		<view class="line_item_container" bindtap="generateIdentifyCode" wx:if="{{managementClass == 'person' }}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >生成验证码</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
 
 		
 		<!-- <view class="line_item_container" bindtap="toRecordRepair">
@@ -210,20 +223,7 @@
       <view class="split_line"></view>
     </view> -->
 
-		<!-- <view class="line_item_container" bindtap="toUpdateCarPosition">
-      <view class="line_item">
-        <view class="line_include_item_container repair_entrance">
-          <text >更新车辆位置</text>
-        </view>
-        <view class="line_include_item_container repair_quantity">
-          <text></text>
-        </view>
-        <view class="line_include_item_container repair_operation">
-          <image id="operation" src="../../images/more.png"></image>
-        </view>
-      </view>
-      <view class="split_line"></view>
-    </view> -->
+		
 
     <view class="line_item_container" bindtap="stopFee" wx:if="{{managementClass == 'expense'}}" >
       <view class="line_item">
@@ -286,10 +286,25 @@
     </view>  -->
 
 
-		<view class="line_item_container" bindtap="carStatusQuery" data-all='yes' wx:if="{{managementClass == 'cart'}}" >
+		<view class="line_item_container" bindtap="usingCarStatusQuery" data-all='yes' wx:if="{{managementClass == 'cart'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >车群信息查询</text>
+          <text >车群使用信息查询</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+		<view class="line_item_container" bindtap="unUseCarStatusQuery" data-all='yes' wx:if="{{managementClass == 'cart'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >车群使用次数查询</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -316,6 +331,21 @@
       <view class="split_line"></view>
     </view>  
 
+		 <view class="line_item_container" bindtap="toUpdateCarPosition" wx:if="{{managementClass == 'cart'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >更新车辆位置</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
+
 		<view class="line_item_container" bindtap="carPositionQuery" wx:if="{{managementClass == 'cart'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
@@ -336,6 +366,22 @@
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >查询某用户最近行车记录</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+
+		<view class="line_item_container" bindtap="mobileFaultQuery" wx:if="{{managementClass == 'cart' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查看手机故障情况</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>

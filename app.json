@@ -26,8 +26,7 @@
 
 
 
-
-
+		"pages/monitor/generateCode",
 
 		
 		"pages/store/cancelStore",
@@ -42,6 +41,8 @@
 		"pages/monitor/specialRefund",
 		"pages/monitor/statistics",
 		"pages/zone/record",
+		"pages/monitor/modelFault",
+		"pages/monitor/mobileFault",
 
 		"pages/catalog/new",
     "pages/logs/logs"

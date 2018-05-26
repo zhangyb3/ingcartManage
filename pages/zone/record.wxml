@@ -110,3 +110,6 @@
                  </picker-view>
            </view>
 </view>
+
+<import src="../section/password_pop.wxml" />
+<template is="password_pop"  data="{{passwordFlag,password,focusOnPasswordPop}}"></template>

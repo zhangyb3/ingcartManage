@@ -26,4 +26,5 @@ module.exports = {
 		Level: "Level",
 		PhoneNum: "PhoneNum",
 		CatalogID: "CatalogID",
+		Token: "Token",
 }

@@ -1,0 +1,14 @@
+
+
+<view style='min-height:{{winHeight*0.25}}px;'>
+      <view class='tel-title'>输入电话</view>
+      <view class='input-tel'>
+           <input type='number' placeholder='电话号码'  bindinput='getPhoneNum'></input>
+           
+					 
+      </view>
+
+      
+
+</view>
+<button class='hand-in' bindtap='generateIdentityCode'>生成验证码</button>

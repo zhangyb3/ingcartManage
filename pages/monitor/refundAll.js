@@ -422,19 +422,21 @@ Page({
 				},
 				method: 'POST',
 				success: function (res) {
-					if (res.data.status == 200) {
-						wx.showToast({
-							title: res.data.msg,
-							icon: '',
-							image: '',
-							duration: 3000,
-							mask: true,
-							success: function (res) { },
-							fail: function (res) { },
-							complete: function (res) { },
-						})
-					}
-					if (res.data.status == 400) {
+					// if (res.data.status == 200) 
+					// {
+					// 	wx.showToast({
+					// 		title: res.data.msg,
+					// 		icon: '',
+					// 		image: '',
+					// 		duration: 3000,
+					// 		mask: true,
+					// 		success: function (res) { },
+					// 		fail: function (res) { },
+					// 		complete: function (res) { },
+					// 	})
+					// }
+					// if (res.data.status == 400) 
+					{
 						wx.showModal({
 							title: '提示',
 							content: res.data.msg,

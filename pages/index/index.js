@@ -1,10 +1,11 @@
-
+var app = getApp();
 var register = require("../../utils/register.js");
 var config = require("../../utils/config.js");
 var user = require("../../utils/user.js");
 var login = require("../../utils/login.js");
 // var JSEncrypt = require("../../utils/jsencrypt.js");
 var operation = require("../../utils/operation.js");
+var IngcartSdk = require('../../lib/ingcart-lock-manager');
 
 var app = getApp()
 Page({
@@ -38,6 +39,8 @@ Page({
 // 页面加载
   onLoad: function (parameters) {
 
+		wx.setStorageSync('unlock_mode', 'ble');
+		
 		wx.setStorageSync('alreadyRegister', 'no');
 
 		this.data.fromPage = parameters.from;
@@ -434,113 +437,130 @@ Page({
 								console.log(res);
 								if (res.errMsg == 'scanCode:ok') {
 									var parameters = operation.urlProcess(res.result); console.log(parameters);
-
+									var qrId = parameters.id;
 									wx.setStorageSync('unlock_qr', parameters.id);
-									operation.qr2mac(parameters.id,
-										(result)=>{
 
-											var carId = result.id;
-											var managerId = wx.getStorageSync(user.ManagerID);
-											var recordId = wx.getStorageSync(user.RecordID);
+									if (qrId.length == 8 )
+									{
+										wx.navigateTo({
+											url: 'processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock',
+											success: function (res) { },
+											fail: function (res) {
 
-
-											if (wx.getStorageSync('platform') == 'ios') 
-											{
-												//据说每次都要先关闭再打开适配器清理缓存,试一下
-												wx.closeBluetoothAdapter({
-													success: function (res) {
-
-														wx.openBluetoothAdapter({
-															success: function (res) {
-
-																//开锁
-																wx.startBluetoothDevicesDiscovery({
-																	services: ['FEE7'],
-																	allowDuplicatesKey: true,
-																	interval: 0,
-																	success: function (res) {
-																		
-																		
-																	},
-																	fail: function (res) {
-
-																	},
-																	complete: function (res) {
-
-																	},
-																});
-
-																setTimeout(
-																	function(){
-																		wx.navigateTo({
-																			url: 'processing?from=index&carId=' + carId + '&operation=unlock',
-																			success: function (res) { },
-																			fail: function (res) {
-
-																			},
-																			complete: function (res) { },
-																		});
-																	},
-																	1000
-																);
-
-															},
-															fail: function (res) {
-
-															},
-															complete: function (res) { },
-														});
-
-													},
-													fail: function (res) {
-
-													},
-													complete: function (res) {
-													},
-												})
-
-												
-											}
-											else {
-												//android版开锁
-												wx.closeBluetoothAdapter({
-													success: function(res) {
-
-														wx.openBluetoothAdapter({
-															success: function(res) {
-
-																wx.navigateTo({
-																	url: 'processing?from=index&carId=' + carId + '&operation=unlock',
-																	success: function (res) { },
-																	fail: function (res) {
-
-																	},
-																	complete: function (res) { },
-																});
-
-															},
-															fail: function(res) {},
-															complete: function(res) {},
-														})
-													},
-													fail: function(res) {},
-													complete: function(res) {},
-												})
-												
-											}
-
-										},
-										(result)=>{
-											wx.showModal({
-												title: '',
-												content: result,
-												confirmText: '我知道了',
-											})
-										}
-									);
+											},
+											complete: function (res) { },
+										});
+									}
+								
+									else
+									{
 									
-									
+										// app.ingcartLockManager = null;
+										operation.qr2mac(qrId,
+											(result)=>{
+												console.log('!!!!!!!!!! nodelock type ',result);
+												var carId = result.mac;
+												var managerId = wx.getStorageSync(user.ManagerID);
+												var recordId = wx.getStorageSync(user.RecordID);
 
+
+												if (wx.getStorageSync('platform') == 'ios') 
+												{
+													//据说每次都要先关闭再打开适配器清理缓存,试一下
+													wx.closeBluetoothAdapter({
+														success: function (res) {
+
+															wx.openBluetoothAdapter({
+																success: function (res) {
+
+																	//开锁
+																	wx.startBluetoothDevicesDiscovery({
+																		services: ['FEE7'],
+																		allowDuplicatesKey: true,
+																		interval: 0,
+																		success: function (res) {
+
+
+																		},
+																		fail: function (res) {
+
+																		},
+																		complete: function (res) {
+
+																		},
+																	});
+
+																	setTimeout(
+																		function(){
+																			wx.navigateTo({
+																				url: 'processing?from=index&carId=' + carId + '&qrId=' + qrId + '&operation=unlock',
+																				success: function (res) { },
+																				fail: function (res) {
+
+																				},
+																				complete: function (res) { },
+																			});
+																		},
+																		1000
+																	);
+
+																},
+																fail: function (res) {
+
+																},
+																complete: function (res) { },
+															});
+
+														},
+														fail: function (res) {
+
+														},
+														complete: function (res) {
+														},
+													})
+
+
+												}
+												else {
+													//android版开锁
+													wx.closeBluetoothAdapter({
+														success: function(res) {
+
+															wx.openBluetoothAdapter({
+																success: function(res) {
+
+																	wx.navigateTo({
+																		url: 'processing?from=index&carId=' + carId + '&qrId=' + qrId + '&operation=unlock',
+																		success: function (res) { },
+																		fail: function (res) {
+
+																		},
+																		complete: function (res) { },
+																	});
+
+																},
+																fail: function(res) {},
+																complete: function(res) {},
+															})
+														},
+														fail: function(res) {},
+														complete: function(res) {},
+													})
+
+												}
+
+											},
+											(result)=>{
+												wx.showModal({
+													title: '',
+													content: result,
+													confirmText: '我知道了',
+												})
+											}
+										);
+									}
+									
+																		
 								}
 
 							},
@@ -762,7 +782,8 @@ function refreshPage(the){
   // 3.设置地图控件的位置及大小，通过设备宽高定位
   showControls(that);
 
-  
+	//4.运动轨迹画线
+	showPolyline(that);
 
 }
 
@@ -831,6 +852,23 @@ function showControls(the){
 				clickable: true
 			}
 		]
+	});
+}
+
+function showPolyline(the) {
+	console.log('show polyline !!!!!');
+	var that = the;
+	that.setData({
+		polyline:
+		[
+			{
+				points: that.data.cartPoints,
+				color: "#ff0000",
+				width: 5,
+				dottedLine: true,
+				arrowLine: true,
+			},
+		],
 	});
 }
 
@@ -1081,7 +1119,7 @@ function checkBluetooth(the){
 				 },
 				fail: function (res) { },
 				complete: function (res) { 
-					// checkBluetooth(that);
+					checkBluetooth(that);
 				},
 			})
 		},
@@ -1089,6 +1127,11 @@ function checkBluetooth(the){
 			// wx.hideLoading();
 		 },
 	});
+
+	//万一进来时没打开蓝牙
+	if (app.ingcartLockManager == null) {
+		app.ingcartLockManager = new IngcartSdk.IngcartLockManager(app.options);
+	}
 
 }
 

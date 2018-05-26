@@ -1,8 +1,10 @@
 
+var app = getApp();
 var config = require('./config')
 var user = require('./user')
 var login = require('./login')
 var register = require('./register')
+var IngcartSdk = require('../lib/ingcart-lock-manager');
 
 //二维码ID换MAC
 const QR_TO_MAC_URL = `${config.PytheRestfulServerURL}/use/QR2MAC`;
@@ -147,7 +149,7 @@ function getUnlockFrame(carId, token, success, fail) {
 }
 
 
-function unlock(the, managerId, carId, success, fail){
+function unlock(the, managerId, carId, qrId, success, fail){
 
   var that = the;
 
@@ -294,7 +296,7 @@ function unlock(the, managerId, carId, success, fail){
 		
 		deviceId = carId;
 		//直接开锁
-		unlockOperation(that, deviceId, carId,
+		unlockOperation(that, deviceId, carId, qrId,
 			(res) => {
 				typeof success == "function" && success(res.data);
 			},
@@ -331,7 +333,7 @@ function unlock(the, managerId, carId, success, fail){
 						}
 
 						//找到目标，停止查找，开锁
-						unlockOperation(that, deviceId, carId,
+						unlockOperation(that, deviceId, carId, qrId,
 							(res) => {
 								typeof success == "function" && success(res.data);
 							},
@@ -366,7 +368,7 @@ function unlock(the, managerId, carId, success, fail){
 		// 				success: function(res) {
 
 		// 					//找到目标，停止查找，开锁
-		// 					unlockOperation(that, deviceId, carId,
+		// 					unlockOperation(that, deviceId, carId, qrId,
 		// 						(res) => {
 		// 							typeof success == "function" && success(res.data);
 		// 						},
@@ -430,7 +432,7 @@ function connectDevice(the, deviceId, success, fail){
 							getLockToken(
 								wx.getStorageSync(user.UsingCar),
 								(encryptedFrameStr) => {
-
+									
 									wx.writeBLECharacteristicValue({
 										deviceId: deviceId,
 										serviceId: wx.getStorageSync('ServiceID'),
@@ -486,7 +488,7 @@ function connectDevice(the, deviceId, success, fail){
 	});
 }
 
-function unlockOperation(the, deviceId, carId, success, fail, complete){
+function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 	var that = the;
 	console.log('deviceId',deviceId);
 	wx.createBLEConnection({
@@ -527,9 +529,11 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 
 							//读取锁连接后的随机令牌
 							getLockToken(
-								carId,
+								// carId,
+								qrId,
 								(encryptedFrameStr) => {
-
+									console.log('get lock ', qrId);
+									console.log('get token string', encryptedFrameStr);
 									wx.writeBLECharacteristicValue({
 										deviceId: deviceId,
 										serviceId: wx.getStorageSync('ServiceID'),
@@ -560,7 +564,9 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 
 								//解密载有令牌的通信帧
 								decryptFrame(
-									wx.arrayBufferToBase64(encryptedTokenFrame), carId,
+									wx.arrayBufferToBase64(encryptedTokenFrame), 
+									// carId,
+									qrId,
 									(res) => {
 										console.log('decrypt token frame: ', res);
 										var tokenFrameHexStr = (ab2hex(wx.base64ToArrayBuffer(res)));
@@ -577,6 +583,7 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 												data: {
 													deviceId: deviceId,
 													carId: carId,
+													carId: qrId,
 												},
 												method: 'POST',
 												success: function (res) {
@@ -588,7 +595,8 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 
 											//后台用token+密码组成加密帧
 											getUnlockFrame(
-												carId,
+												// carId,
+												qrId,
 												wx.getStorageSync('token'),
 												(encryptedFrameStr) => {
 
@@ -634,9 +642,12 @@ function unlockOperation(the, deviceId, carId, success, fail, complete){
 															managerId: wx.getStorageSync(user.ManagerID),
 															latitude: wx.getStorageSync('last_latitude'),
 															longitude: wx.getStorageSync('last_longitude'),
+															ble: 1,
 														},
 														method: 'POST',
-														success: function(res) {},
+														success: function(res) {
+															console.log('!!!!!! manager unlock',res);
+														},
 														fail: function(res) {},
 														complete: function(res) {},
 													});
@@ -1081,10 +1092,58 @@ function loginSystem(the, success, fail) {
 						wx.setStorageSync(user.PhoneNum, registerInfo.phoneNum);
 						wx.setStorageSync(user.CatalogID, registerInfo.catalogId);
 
+						wx.setStorageSync(user.Token, registerInfo.token);
+						wx.setStorageSync('ybToken', registerInfo.ybToken);
+
 						wx.showToast({
 							title: '已登录',
 							duration: 1200
 						});
+
+						//登录成功，初始化锁管理器
+
+						// wx.request({
+						// 	url: 'https://abj-elogic-test1-cap.yunba.io/check_captcha',
+						// 	data: {
+						// 		appkey: "5af943b55332c642348031b8",
+						// 		phone: wx.getStorageSync(user.Token),
+						// 		captcha: "",
+						// 	},
+						// 	method: 'POST',
+						// 	success: function (res) {
+						// 		console.log(res);
+						// 		if (res.statusCode == 200) {
+
+						// 			app.appkey = "5af943b55332c642348031b8";
+						// 			app.options = {
+						// 				appkey: "5af943b55332c642348031b8",
+						// 				token: res.data.token,
+						// 			};
+						// 			console.log(app.options);
+
+						// 		}
+						// 		console.log('init lock manager !!!!!!!!!!!!!!!!!!!!', app.options);
+						// 		app.ingcartLockManager = new IngcartSdk.IngcartLockManager(app.options);
+
+						// 		typeof success == "function" && success('login success');
+						// 	},
+						// 	fail: function (res) { },
+						// 	complete: function (res) { },
+						// })
+
+						{
+
+							app.appkey = "5af943b55332c642348031b8";
+							app.options = {
+								appkey: "5af943b55332c642348031b8",
+								token: wx.getStorageSync('ybToken'),
+							};
+							console.log(app.options);
+
+						}
+						console.log('init lock manager !!!!!!!!!!!!!!!!!!!!', app.options);
+						app.ingcartLockManager = new IngcartSdk.IngcartLockManager(app.options);
+
 						typeof success == "function" && success('login success');
 						
 					}
@@ -1119,6 +1178,7 @@ function qr2mac(qrId, success, fail){
 		url: QR_TO_MAC_URL,
 		data: {
 			qrId: qrId,
+			carId: qrId,
 		},
 		method: 'POST',
 		success: function(res) {
@@ -1181,6 +1241,27 @@ function managerLock(the) {
 
 }
 
+function reportMobileModelFault(the, qrId, phoneNum, model, success, fail) {
+	var that = the;
+	wx.request({
+		url: config.PytheRestfulServerURL + '/insert/fault',
+		data: {
+			car_id: qrId,
+			phone_num: phoneNum,
+			phone_model: model,
+		},
+		method: 'POST',
+		success: function (res) {
+			console.log("report fault", res.data);
+			typeof success == "function" && success(res.data.data);
+		},
+		fail: function (res) {
+			typeof fail == "function" && fail(res.data.data);
+		},
+		complete: function (res) { },
+	})
+}
+
 module.exports = {
 
 	UNLOCK_URL: UNLOCK_URL,
@@ -1209,6 +1290,9 @@ module.exports = {
 	loginSystem: loginSystem,
 	qr2mac: qr2mac,
 
-	managerLock: managerLock
+	managerLock: managerLock,
+
+	reportMobileModelFault: reportMobileModelFault,
+
 
 }

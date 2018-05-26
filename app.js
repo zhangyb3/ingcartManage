@@ -4,6 +4,11 @@
 
 var app = getApp();
 
+var IngcartSdk = require('/lib/ingcart-lock-manager');
+// var options = {
+// 	appkey: '56a0a88c4407a3cd028ac2fe',
+// 	token: 'EgKIFBJJuoh8KpBaiEwvXQBQ93Rxlk3NAIAGybx/0cWAmQPrC2HKv4tLWVzB4q4Y8HGCTnG0I/IkuVaM5tK1XA=='
+// };
 App({
   data: {
     userInfo: null,
@@ -31,7 +36,6 @@ App({
     wx.setStorageSync('alreadyRegister', 'no');
     // wx.setStorageSync('logoutSystem', 'yes');
 
-   
 
     wx.getLocation({
       type: "gcj02",
@@ -40,6 +44,8 @@ App({
         wx.setStorageSync('last_longitude', res.longitude);
       }
     });
+
+		// this.ingcartLockManager = new IngcartSdk.IngcartLockManager(options);
 
     
 
@@ -68,6 +74,8 @@ App({
       })
     }
   },
+
+	ingcartLockManager: null,
   
   globalData: {
 

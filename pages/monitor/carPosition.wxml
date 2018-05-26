@@ -1,10 +1,28 @@
 
 <view id="record_repair_scan_container">
 
-	<view id="record_repair_scan_hint">上传已关锁车辆位置</view>
+	<view id="record_repair_scan_hint" wx:if="{{operation == 'update'}}">上传车辆位置</view>
 
-	<image id="record_repair_scan" src="../../images/record_repair_scan.png" bindtap='updateCarPosition'></image>
+	<view id="record_repair_scan_hint" wx:if="{{operation == 'query'}}">查询车辆位置</view>
 
+	<!-- <image id="record_repair_scan" src="../../images/record_repair_scan.png" bindtap='updateCarPosition'></image> -->
+
+	<view class="maintenance_car_id_container" >
+      <view class="maintenance_scan_image_container" bindtap="scanCar">
+        <image id="maintenance_scan_image" src="../../images/scan_call.png"></image>
+      </view>
+      <view class="maintenance_scan_car_id_container">
+        <view class="maintenance_car_id">
+          <input class="maintenance_car_id_input" placeholder="点图标扫码或手输车号" value="{{qrId}}" bindinput="carIdInput"/>
+        </view>
+        <!--<view class="maintenance_scan_operation" bindtap="scanFaultCar">轻触左边按钮扫码或上方手动输入车号</view>-->
+      </view>
+    </view>
+
+
+	<button class='hand-in' bindtap='updateCarPosition' wx:if="{{operation == 'update'}}">确定</button>
+
+	<button class='hand-in' bindtap='queryCarPosition' wx:if="{{operation == 'query'}}">确定</button>
 
 </view>
 

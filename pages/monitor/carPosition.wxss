@@ -1,3 +1,5 @@
 
 
+@import 'carStatus.wxss';
+
 @import '../my/record_repair.wxss';

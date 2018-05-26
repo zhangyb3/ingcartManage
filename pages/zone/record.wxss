@@ -1,5 +1,6 @@
 @import '../store/storeInfo.wxss';
 
+@import '../section/password_pop.wxss';
 
 .choose-name {
   text-align: center;

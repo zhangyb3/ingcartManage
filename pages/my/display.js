@@ -85,7 +85,13 @@ Page({
 
 	toUpdateCarPosition:function(){
 		wx.navigateTo({
-			url: '../monitor/carPosition'
+			url: '../monitor/carPosition?operation=update'
+		})
+	},
+
+	carPositionQuery: function () {
+		wx.navigateTo({
+			url: '../monitor/carPosition?operation=query'
 		})
 	},
 
@@ -113,10 +119,17 @@ Page({
 		})
 	},
 
-	carStatusQuery: function (e) {
+	usingCarStatusQuery: function (e) {
 		var queryAll = e.currentTarget.dataset.all;
 		wx.navigateTo({
-			url: '../monitor/carStatus?queryAll=' + queryAll,
+			url: '../monitor/carStatus?queryAll=' + queryAll + "&use=1",
+		})
+	},
+
+	unUseCarStatusQuery: function (e) {
+		var queryAll = e.currentTarget.dataset.all;
+		wx.navigateTo({
+			url: '../monitor/carStatus?queryAll=' + queryAll + "&use=0",
 		})
 	},
 
@@ -239,5 +252,24 @@ Page({
 		})
 	},
 
+	mobileFaultQuery:function(e){
+		
+		wx.navigateTo({
+			url: '../monitor/modelFault',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
+
+	generateIdentifyCode: function (e) {
+
+		wx.navigateTo({
+			url: '../monitor/generateCode',
+			success: function (res) { },
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
 
 })

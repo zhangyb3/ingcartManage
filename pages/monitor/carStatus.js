@@ -31,6 +31,7 @@ Page({
 		this.getDevice();
 		var that = this;
 		that.data.queryAll = parameters.queryAll;
+		that.data.use = parameters.use;
   },
 
   /**
@@ -65,7 +66,10 @@ Page({
 			tempLevel2: null,
 			level1: [],
 			level2: [],
+			use: that.data.use,
 		});
+
+		
 		wx.request({
 			url: config.PytheRestfulServerURL + '/select/one/level',
 			data: {
@@ -112,8 +116,15 @@ Page({
 											level: that.data.level2[0].id,
 										})
 										
+										var url;
+										if (that.data.use == 1) {
+											url = config.PytheRestfulServerURL + '/count/car/condition';
+										}
+										if (that.data.use == 0) {
+											url = config.PytheRestfulServerURL + '/select/car/counter';
+										}
 										wx.request({
-											url: config.PytheRestfulServerURL + '/count/car/condition',
+											url: url,
 											data: {
 												level: that.data.level,
 												pageNum: 1,
@@ -132,13 +143,19 @@ Page({
 														that.setData({
 															carStatusList: [],
 															carMargin: 0,
+															endNum: result.end_num,
 														});
 													}
 													else {
-														that.data.carStatusList = that.data.carStatusList.concat(result.user);
+														if(that.data.use == 1)
+															that.data.carStatusList = that.data.carStatusList.concat(result.user);
+														if (that.data.use == 0)
+															that.data.carStatusList = that.data.carStatusList.concat(result);
+
 														that.setData({
 															carStatusList: that.data.carStatusList,
 															carMargin: result.size,
+															endNum: result.end_num,
 														});
 													}
 
@@ -161,32 +178,53 @@ Page({
 			complete: function (res) { },
 		});
 
-		wx.request({
-			url: config.PytheRestfulServerURL + '/count/car/condition',
-			data: {
-				level: that.data.level,
-				pageNum: 1,
-				pageSize: 10,
-			},
-			method: 'GET',
-			success: function (res) {
-				if(res.data.status == 200)
-				{
-					var result = res.data.data;
-					that.setData({
-						carStatusList: [],
-					});
-					that.setData({
-						carMargin: result.size,
-					});
-
-					that.setData({
-						carStatusList: result.user,
-					});
-					
-				}
+		if (that.data.level == '0')
+		{
+			var url;
+			if(that.data.use == 1)
+			{
+				url = config.PytheRestfulServerURL + '/count/car/condition';
 			}
-		});
+			if (that.data.use == 0) {
+				url = config.PytheRestfulServerURL + '/select/car/counter';
+			}
+			wx.request({
+				url: url,
+				data: {
+					level: that.data.level,
+					pageNum: 1,
+					pageSize: 10,
+				},
+				method: 'GET',
+				success: function (res) {
+					if (res.data.status == 200) {
+						var result = res.data.data;
+						that.setData({
+							carStatusList: [],
+						});
+						that.setData({
+							carMargin: result.size,
+							endNum: result.end_num,
+						});
+
+						if(that.data.use == 1)
+						{
+							that.setData({
+								carStatusList: result.user,
+							});
+						}
+						if (that.data.use == 0) {
+							that.setData({
+								carStatusList: result,
+							});
+						}
+						
+
+					}
+				}
+			});
+		}
+	
   },
 
   
@@ -311,8 +349,15 @@ Page({
 						
 					}
 
+					var url;
+					if (that.data.use == 1) {
+						url = config.PytheRestfulServerURL + '/count/car/condition';
+					}
+					if (that.data.use == 0) {
+						url = config.PytheRestfulServerURL + '/select/car/counter';
+					}
 					wx.request({
-						url: config.PytheRestfulServerURL + '/count/car/condition',
+						url: url,
 						data: {
 							level: that.data.level,
 							pageNum: 1,
@@ -322,22 +367,30 @@ Page({
 						success: function (res) {
 							if (res.data.status == 200) {
 								var result = res.data.data;
-
+								
 								that.setData({
 									carStatusList: [],
 								});
-								if (result.user == null) {
+								if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) 
+								{
 									that.data.pageNum = 1;
 									that.setData({
 										carStatusList: [],
 										carMargin: 0,
+										endNum: result.end_num,
 									});
 								}
-								else {
-									that.data.carStatusList = that.data.carStatusList.concat(result.user);
+								else 
+								{console.log('fukck');
+									if(that.data.use == 1)
+										that.data.carStatusList = that.data.carStatusList.concat(result.user);
+									if (that.data.use == 0)
+										that.data.carStatusList = that.data.carStatusList.concat(result);
+
 									that.setData({
 										carStatusList: that.data.carStatusList,
 										carMargin: result.size,
+										endNum: result.end_num,
 									});
 								}
 
@@ -371,8 +424,15 @@ Page({
 		that.data.level = that.data.tempLevel2.id;
 		that.data.carStatusList = [];
 
+		var url;
+		if (that.data.use == 1) {
+			url = config.PytheRestfulServerURL + '/count/car/condition';
+		}
+		if (that.data.use == 0) {
+			url = config.PytheRestfulServerURL + '/select/car/counter';
+		}
 		wx.request({
-			url: config.PytheRestfulServerURL + '/count/car/condition',
+			url: url,
 			data: {
 				level: that.data.level,
 				pageNum: 1,
@@ -386,18 +446,25 @@ Page({
 					that.setData({
 						carStatusList: [],
 					});
-					if (result.user == null) {
+					if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) 
+					{
 						that.data.pageNum = 1;
 						that.setData({
 							carStatusList: [],
 							carMargin: 0,
+							endNum: result.end_num,
 						});
 					}
 					else {
-						that.data.carStatusList = that.data.carStatusList.concat(result.user);
+						if (that.data.use == 1)
+							that.data.carStatusList = that.data.carStatusList.concat(result.user);
+						if (that.data.use == 0)
+							that.data.carStatusList = that.data.carStatusList.concat(result);
+						
 						that.setData({
 							carStatusList: that.data.carStatusList,
 							carMargin: result.size,
+							endNum: result.end_num,
 						});
 					}
 
@@ -419,9 +486,15 @@ Page({
 		var that = this;
 		that.data.pageNum = that.data.pageNum + 1;
 
-
+		var url;
+		if (that.data.use == 1) {
+			url = config.PytheRestfulServerURL + '/count/car/condition';
+		}
+		if (that.data.use == 0) {
+			url = config.PytheRestfulServerURL + '/select/car/counter';
+		}
 		wx.request({
-			url: config.PytheRestfulServerURL + '/count/car/condition',
+			url: url,
 			data: {
 				level: that.data.level,
 				pageNum: that.data.pageNum,
@@ -433,14 +506,20 @@ Page({
 					var result = res.data.data;
 				
 
-					if(result.user == null){
+					if(result.user == null || result == null){
 						that.data.pageNum = that.data.pageNum -1;
 					}
 					else{
-						that.data.carStatusList = that.data.carStatusList.concat(result.user);
+
+						if(that.data.use == 1)
+							that.data.carStatusList = that.data.carStatusList.concat(result.user);
+						if (that.data.use == 0)
+							that.data.carStatusList = that.data.carStatusList.concat(result);
+
 						that.setData({
 							carStatusList: that.data.carStatusList,
 							carMargin: result.size,
+							endNum: result.end_num,
 						});
 					}
 					

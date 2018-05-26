@@ -38,6 +38,12 @@ Page({
 		chooseZone:false,
 		zones:[],
 		zone:'',
+
+		password: null,
+		focusOnPasswordPop: false,//控制input 聚焦
+		passwordFlag: false,//密码输入遮罩
+		cancelIntervalVar: null,
+		permission: false,
   },
 
   /**
@@ -131,6 +137,7 @@ Page({
 		var that = this;
 		if(that.data.cityName != null && that.data.operationZoneName != null && that.data.mode == 'insert')
 		{
+			
 			wx.request({
 				url: config.PytheRestfulServerURL + '/insert/attraction/',
 				data: {
@@ -169,33 +176,72 @@ Page({
 				},
 				fail: function(res) {},
 				complete: function(res) {},
-			})
+			});
 		}
 		else if(that.data.mode == 'update')
 		{
-			wx.request({
-				url: config.PytheRestfulServerURL + '/update/attraction/',
-				data: {
-					level: that.data.zone.level,
-					price: that.data.price,
-					giving: that.data.giving,
-					status: that.data.status,
-					managerId: wx.getStorageSync(user.ManagerID),
-					phoneNum: that.data.servicePhone,
-				},
-				method: 'POST',
+			wx.showModal({
+				title: '提示',
+				content: '确定要更新吗？',
+				showCancel: true,
+				cancelText: '取消',
+				confirmText: '确定',
 				success: function (res) {
-					{
-						wx.showModal({
-							title: '',
-							content: res.data.msg,
-							confirmText: '我知道了',
-						})
+					if (res.confirm) {
+						that.setData({
+							passwordFlag: true,
+							level: that.data.level,
+						});
+
+						var cancelIntervalVar = setInterval(
+							function () {
+
+								if (that.data.permission == true) {
+									clearInterval(cancelIntervalVar);
+
+									//更新景区信息
+									wx.request({
+										url: config.PytheRestfulServerURL + '/update/attraction/',
+										data: {
+											level: that.data.zone.level,
+											price: that.data.price,
+											giving: that.data.giving,
+											status: that.data.status,
+											managerId: wx.getStorageSync(user.ManagerID),
+											phoneNum: that.data.servicePhone,
+										},
+										method: 'POST',
+										success: function (res) {
+											{
+												wx.showModal({
+													title: '',
+													content: res.data.msg,
+													confirmText: '我知道了',
+												})
+											}
+										},
+										fail: function (res) { },
+										complete: function (res) { },
+									});
+
+								}
+
+								if (that.data.passwordFlag == false) {
+									clearInterval(cancelIntervalVar);
+								}
+							},
+							100
+						);
+
 					}
+
+
+
 				},
 				fail: function (res) { },
 				complete: function (res) { },
-			})
+			});
+
 		}
 	},
 
@@ -374,6 +420,33 @@ Page({
 		});
 
 
+	},
+
+
+	getPassword: function (e) {//获取密码
+		this.setData({
+			password: e.detail.value
+		});
+		if (this.data.password.length == 6) {//密码长度6位时，自动验证钱包支付结果
+			this.data.permission = true;
+		}
+	},
+
+	getFocus: function () {//聚焦input
+		console.log('isFocus', this.data.focusOnPasswordPop)
+		this.setData({
+			focusOnPasswordPop: true
+		})
+	},
+
+	closePassword: function () {//关闭钱包输入密码遮罩
+
+		this.setData({
+			focusOnPasswordPop: false,//失去焦点
+			passwordFlag: false,
+			permission: false,
+			password: null,
+		})
 	},
 
 
