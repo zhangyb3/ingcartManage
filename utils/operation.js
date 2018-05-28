@@ -1262,7 +1262,6 @@ function reportMobileModelFault(the, qrId, phoneNum, model, success, fail) {
 	})
 }
 
-<<<<<<< HEAD
 function managerUnlockCheck(the,carId,success,fail){
 	var that = the;
 	wx.request({
@@ -1292,8 +1291,6 @@ function managerUnlockCheck(the,carId,success,fail){
 }
 
 
-=======
->>>>>>> b580e2ef75d11a3a619bc83125cebe211c26f5fc
 module.exports = {
 
 	UNLOCK_URL: UNLOCK_URL,
