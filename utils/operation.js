@@ -1320,7 +1320,7 @@ module.exports = {
 	qr2mac: qr2mac,
 
 	managerLock: managerLock,
-
+	managerUnlockCheck: managerUnlockCheck,
 	reportMobileModelFault: reportMobileModelFault,
 
 
