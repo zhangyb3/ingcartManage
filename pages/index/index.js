@@ -838,7 +838,7 @@ function showControls(the){
 				iconPath: '/images/marker.png',
 				position: {
 					left: wx.getStorageSync('windowWidth') / 2 - 18,
-					top: wx.getStorageSync('windowHeight') / 2 - 36 -80,
+					top: wx.getStorageSync('windowHeight') / 2 - 36,
 					
 					width: 36,
 					height: 36
