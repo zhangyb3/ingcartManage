@@ -272,4 +272,13 @@ Page({
 		})
 	},
 
+	proxyUnlock:function(e){
+		wx.navigateTo({
+			url: '../repository/proxy',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
+
 })

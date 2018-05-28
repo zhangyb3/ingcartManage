@@ -17,6 +17,9 @@ Page({
 
 		bleUnlock: 1,
 		switchInterval: null,
+
+		isAgent:null,
+
   },
 
   /**
@@ -28,6 +31,11 @@ Page({
 		this.data.operation = parameters.operation;
 		this.data.carId = parameters.carId;
 		this.data.qrId = parameters.qrId;
+		if(parameters.proxy != null)
+		{
+			this.data.isAgent = parameters.proxy;
+		}
+		this.data.customerPhoneNum = parameters.customerPhone;
 		if(this.data.fromPage == 'weixin')
 		{
 			wx.setStorageSync('from', 'weixin');
@@ -150,6 +158,8 @@ Page({
 									longitude: wx.getStorageSync(user.Longitude),
 									// code: couponCode,
 									ble: that.data.bleUnlock,
+									isAgent: that.data.isAgent,
+									phoneNum: that.data.customerPhoneNum,
 								},
 								method: 'POST',
 								success: function (res) {

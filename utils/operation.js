@@ -1275,6 +1275,7 @@ function managerUnlockCheck(the,carId,success,fail){
 		},
 		method: 'GET',
 		success: function (res) {
+			console.log('level !!!!!!!!!!!!!!!!!!!!!!!!!!!!', wx.getStorageSync(user.Level));
 			if (res.data.status == 200) {
 				typeof success == "function" && success(res.data.data);
 			}

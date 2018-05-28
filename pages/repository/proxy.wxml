@@ -1,0 +1,18 @@
+
+
+<view style='min-height:{{winHeight*0.25}}px;' >
+      <view class='tel-title'>输入客户电话</view>
+      <view class='input-tel'>
+           <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
+            <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
+                 {{}}
+           </view> 
+
+      </view>
+
+
+</view>
+
+
+
+<button class='hand-in'  bindtap='proxyUnlock'>代理开锁</button>

@@ -440,10 +440,10 @@ Page({
 									var qrId = parameters.id;
 									wx.setStorageSync('unlock_qr', parameters.id);
 
-									if (qrId.length == 8 )
-									{
-										operation.managerUnlockCheck(that,qrId,
-											()=>{
+									operation.managerUnlockCheck(that, qrId,
+										() => {
+											if (qrId.length == 8) {
+
 												wx.navigateTo({
 													url: 'processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock',
 													success: function (res) { },
@@ -452,16 +452,11 @@ Page({
 													},
 													complete: function (res) { },
 												});
-											},
-										);
-										
-										
-									}
-								
-									else
-									{
-										operation.managerUnlockCheck(that, qrId,
-											() => {
+
+											}
+
+											else {
+
 												// app.ingcartLockManager = null;
 												operation.qr2mac(qrId,
 													(result) => {
@@ -566,10 +561,10 @@ Page({
 														})
 													}
 												);
-											},
-										);
-										
-									}
+
+											}
+										},
+									);
 									
 																		
 								}

@@ -22,15 +22,13 @@
 
 
 
-
-
-
-
 		"pages/monitor/generateCode",
 
 		
 		"pages/store/cancelStore",
 		"pages/repository/supply",
+		"pages/repository/proxy",
+
 		"pages/monitor/carStatus",
 		"pages/monitor/carPosition",
 		"pages/monitor/carUsing",
