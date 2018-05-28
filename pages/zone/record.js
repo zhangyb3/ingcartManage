@@ -198,7 +198,7 @@ Page({
 
 								if (that.data.permission == true) {
 									clearInterval(cancelIntervalVar);
-
+									
 									//更新景区信息
 									wx.request({
 										url: config.PytheRestfulServerURL + '/update/attraction/',
@@ -209,14 +209,28 @@ Page({
 											status: that.data.status,
 											managerId: wx.getStorageSync(user.ManagerID),
 											phoneNum: that.data.servicePhone,
+											password: that.data.password,
 										},
 										method: 'POST',
 										success: function (res) {
+											that.setData({
+												passwordFlag: false,
+												permission: false,
+												password: null,
+											});
 											{
 												wx.showModal({
 													title: '',
 													content: res.data.msg,
+													showCancel: false,
 													confirmText: '我知道了',
+													success:function(res){
+														if(res.confirm)
+														{
+															
+														}
+													},
+													
 												})
 											}
 										},

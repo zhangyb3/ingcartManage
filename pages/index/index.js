@@ -1130,7 +1130,7 @@ function checkBluetooth(the){
 
 	//万一进来时没打开蓝牙
 	if (app.ingcartLockManager == null) {
-		app.ingcartLockManager = new IngcartSdk.IngcartLockManager(app.options);
+		// app.ingcartLockManager = new IngcartSdk.IngcartLockManager(app.options);
 	}
 
 }
