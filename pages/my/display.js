@@ -287,5 +287,14 @@ Page({
 			complete: function(res) {},
 		})
 	},
+	  changeGuard: function (e) {
+
+    wx.navigateTo({
+      url: '../monitor/changeGuard',
+      success: function (res) { },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
+  },
 
 })

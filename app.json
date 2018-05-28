@@ -44,7 +44,7 @@
 		"pages/monitor/modelFault",
 		"pages/monitor/mobileFault",
     "pages/monitor/closePark",
-
+    "pages/monitor/changeGuard",
 		"pages/catalog/new",
     "pages/logs/logs"
   ],
