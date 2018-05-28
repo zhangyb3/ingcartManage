@@ -17,6 +17,8 @@
 		"pages/register/accedit",
     "pages/stopFee/stopFee",
     "pages/store/storeInfo",
+  
+   
 
 
 
@@ -41,6 +43,7 @@
 		"pages/zone/record",
 		"pages/monitor/modelFault",
 		"pages/monitor/mobileFault",
+    "pages/monitor/closePark",
 
 		"pages/catalog/new",
     "pages/logs/logs"
