@@ -12,13 +12,15 @@
 </view>
 
 
-	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreManagers'  scroll-y  wx:if="{{checkType == 'manager'}}" >
-
-			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
+		<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;" wx:if="{{checkType == 'manager'}}">
 				<text style="width:50%;font-size:30rpx;text-align:center;">手机</text>
 				<text style="width:20%;font-size:30rpx;text-align:center;">等级</text>
 				<text style="width:30%;font-size:32rpx;text-align:center;color:red;">删除</text>
 			</view>
+
+	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreManagers'  scroll-y  wx:if="{{checkType == 'manager'}}" >
+
+			
 
 		<view wx:for='{{managers}}' wx:key='unique' wx:for-index="index">
 

@@ -708,7 +708,7 @@ Page({
 					else {
 						that.data.managers = that.data.managers.concat(result);
 						that.setData({
-							managers: managers,
+							managers: that.data.managers,
 							
 						});
 					}
