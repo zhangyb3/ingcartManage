@@ -139,6 +139,13 @@ Page({
 		})
 	},
 
+  closePark: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/closePark?queryAll=' + queryAll + "&use=1",
+    })
+  },
+
 	recordCarInPosition: function () {
 		wx.navigateTo({
 			url: '../monitor/recordCar',

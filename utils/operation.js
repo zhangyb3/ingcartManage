@@ -638,7 +638,6 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 													wx.request({
 														url: config.PytheRestfulServerURL + '/manage/unlock',
 														data: {
-															carId: wx.getStorageSync('unlock_qr'),
 															qrId: wx.getStorageSync('unlock_qr'),
 															managerId: wx.getStorageSync(user.ManagerID),
 															latitude: wx.getStorageSync('last_latitude'),
@@ -1263,34 +1262,6 @@ function reportMobileModelFault(the, qrId, phoneNum, model, success, fail) {
 	})
 }
 
-function managerUnlockCheck(the,carId,success,fail){
-	var that = the;
-	wx.request({
-		url: config.PytheRestfulServerURL + '/manage/first/use',
-		data: {
-			carId: carId,
-			customerId: wx.getStorageSync(user.ManagerID),
-			managerId: wx.getStorageSync(user.ManagerID),
-			level: wx.getStorageSync(user.Level),
-		},
-		method: 'GET',
-		success: function (res) {
-			if (res.data.status == 200) {
-				typeof success == "function" && success(res.data.data);
-			}
-			else
-			{
-				typeof fail == "function" && fail(res.data.data);
-			}
-		},
-		fail: function (res) { 
-			typeof fail == "function" && fail(res.data.data);
-		},
-		complete: function (res) { },
-	})
-}
-
-
 module.exports = {
 
 	UNLOCK_URL: UNLOCK_URL,
@@ -1320,8 +1291,8 @@ module.exports = {
 	qr2mac: qr2mac,
 
 	managerLock: managerLock,
-	managerUnlockCheck: managerUnlockCheck,
+
 	reportMobileModelFault: reportMobileModelFault,
-	
+
 
 }

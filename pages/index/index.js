@@ -442,101 +442,56 @@ Page({
 
 									if (qrId.length == 8 )
 									{
-										operation.managerUnlockCheck(that,qrId,
-											()=>{
-												wx.navigateTo({
-													url: 'processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock',
-													success: function (res) { },
-													fail: function (res) {
+										wx.navigateTo({
+											url: 'processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock',
+											success: function (res) { },
+											fail: function (res) {
 
-													},
-													complete: function (res) { },
-												});
 											},
-										);
-										
-										
+											complete: function (res) { },
+										});
 									}
 								
 									else
 									{
-										operation.managerUnlockCheck(that, qrId,
-											() => {
-												// app.ingcartLockManager = null;
-												operation.qr2mac(qrId,
-													(result) => {
-														console.log('!!!!!!!!!! nodelock type ', result);
-														var carId = result.mac;
-														var managerId = wx.getStorageSync(user.ManagerID);
-														var recordId = wx.getStorageSync(user.RecordID);
+									
+										// app.ingcartLockManager = null;
+										operation.qr2mac(qrId,
+											(result)=>{
+												console.log('!!!!!!!!!! nodelock type ',result);
+												var carId = result.mac;
+												var managerId = wx.getStorageSync(user.ManagerID);
+												var recordId = wx.getStorageSync(user.RecordID);
 
 
-														if (wx.getStorageSync('platform') == 'ios') {
-															//据说每次都要先关闭再打开适配器清理缓存,试一下
-															wx.closeBluetoothAdapter({
+												if (wx.getStorageSync('platform') == 'ios') 
+												{
+													//据说每次都要先关闭再打开适配器清理缓存,试一下
+													wx.closeBluetoothAdapter({
+														success: function (res) {
+
+															wx.openBluetoothAdapter({
 																success: function (res) {
 
-																	wx.openBluetoothAdapter({
+																	//开锁
+																	wx.startBluetoothDevicesDiscovery({
+																		services: ['FEE7'],
+																		allowDuplicatesKey: true,
+																		interval: 0,
 																		success: function (res) {
 
-																			//开锁
-																			wx.startBluetoothDevicesDiscovery({
-																				services: ['FEE7'],
-																				allowDuplicatesKey: true,
-																				interval: 0,
-																				success: function (res) {
-
-
-																				},
-																				fail: function (res) {
-
-																				},
-																				complete: function (res) {
-
-																				},
-																			});
-
-																			setTimeout(
-																				function () {
-																					wx.navigateTo({
-																						url: 'processing?from=index&carId=' + carId + '&qrId=' + qrId + '&operation=unlock',
-																						success: function (res) { },
-																						fail: function (res) {
-
-																						},
-																						complete: function (res) { },
-																					});
-																				},
-																				1000
-																			);
 
 																		},
 																		fail: function (res) {
 
 																		},
-																		complete: function (res) { },
+																		complete: function (res) {
+
+																		},
 																	});
 
-																},
-																fail: function (res) {
-
-																},
-																complete: function (res) {
-																},
-															})
-
-
-														}
-														else {
-
-
-															//android版开锁
-															wx.closeBluetoothAdapter({
-																success: function (res) {
-
-																	wx.openBluetoothAdapter({
-																		success: function (res) {
-
+																	setTimeout(
+																		function(){
 																			wx.navigateTo({
 																				url: 'processing?from=index&carId=' + carId + '&qrId=' + qrId + '&operation=unlock',
 																				success: function (res) { },
@@ -545,30 +500,64 @@ Page({
 																				},
 																				complete: function (res) { },
 																			});
+																		},
+																		1000
+																	);
+
+																},
+																fail: function (res) {
+
+																},
+																complete: function (res) { },
+															});
+
+														},
+														fail: function (res) {
+
+														},
+														complete: function (res) {
+														},
+													})
+
+
+												}
+												else {
+													//android版开锁
+													wx.closeBluetoothAdapter({
+														success: function(res) {
+
+															wx.openBluetoothAdapter({
+																success: function(res) {
+
+																	wx.navigateTo({
+																		url: 'processing?from=index&carId=' + carId + '&qrId=' + qrId + '&operation=unlock',
+																		success: function (res) { },
+																		fail: function (res) {
 
 																		},
-																		fail: function (res) { },
 																		complete: function (res) { },
-																	})
+																	});
+
 																},
-																fail: function (res) { },
-																complete: function (res) { },
+																fail: function(res) {},
+																complete: function(res) {},
 															})
+														},
+														fail: function(res) {},
+														complete: function(res) {},
+													})
 
-														}
+												}
 
-													},
-													(result) => {
-														wx.showModal({
-															title: '',
-															content: result,
-															confirmText: '我知道了',
-														})
-													}
-												);
 											},
+											(result)=>{
+												wx.showModal({
+													title: '',
+													content: result,
+													confirmText: '我知道了',
+												})
+											}
 										);
-										
 									}
 									
 																		
@@ -843,7 +832,7 @@ function showControls(the){
 				iconPath: '/images/marker.png',
 				position: {
 					left: wx.getStorageSync('windowWidth') / 2 - 18,
-					top: wx.getStorageSync('windowHeight') / 2 - 36,
+					top: wx.getStorageSync('windowHeight') / 2 - 36 -80,
 					
 					width: 36,
 					height: 36

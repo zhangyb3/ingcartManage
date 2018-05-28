@@ -578,7 +578,6 @@ Page({
 						url: config.PytheRestfulServerURL + '/record/maintenance',
 						data: {
 							qr_id: that.data.callRepairList[index].qrId,
-							carId: that.data.callRepairList[index].carId,
 							id: id,
 						},
 						method: 'POST',

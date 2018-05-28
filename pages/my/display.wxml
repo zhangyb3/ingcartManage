@@ -377,11 +377,25 @@
       <view class="split_line"></view>
     </view>
 
-
 		<view class="line_item_container" bindtap="mobileFaultQuery" wx:if="{{managementClass == 'cart' && level >= 4}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >查看手机故障情况</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+    <view class="line_item_container" bindtap="closePark" wx:if="{{managementClass == 'cart' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >闭园</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
