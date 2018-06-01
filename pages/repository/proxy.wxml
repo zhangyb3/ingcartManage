@@ -1,18 +1,37 @@
 
-
-<view style='min-height:{{winHeight*0.25}}px;' >
+<view style='min-height:{{winHeight*0.25}}px;' wx:if="{{remote == 0}}">
       <view class='tel-title'>输入客户电话</view>
       <view class='input-tel'>
            <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
-            <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
-                 {{}}
-           </view> 
-
+           <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
+                 {{checkResult}}
+           </view>
+					 <!-- <view style='line-height:20px;color:lightgray;font-size:12px;text-align:center;'>
+                 开始时间：{{chargingStartTime}}
+           </view> -->
       </view>
-
-
 </view>
 
 
+<view class="maintenance_car_id_container" wx:if="{{remote == 1}}">
+      <view class="maintenance_scan_image_container" bindtap="scanCar">
+        <image id="maintenance_scan_image" src="../../images/scan_call.png"></image>
+      </view>
+      <view class="maintenance_scan_car_id_container">
+        <view class="maintenance_car_id">
+          <input class="maintenance_car_id_input" placeholder="点图标扫码或手输车号" value="{{qrId}}" bindinput="getCustomerPhoneNum"/>
+        </view>
+        <!--<view class="maintenance_scan_operation" bindtap="scanFaultCar">轻触左边按钮扫码或上方手动输入车号</view>-->
+      </view>
+    </view>
 
-<button class='hand-in'  bindtap='proxyUnlock'>代理开锁</button>
+
+
+
+<button class='hand-in' style="margin-top:50px;" wx:if="{{remote == 0}}" bindtap='proxyUnlock'>代理开锁</button>
+
+
+
+
+<button class='hand-in' style="margin-top:50px;" wx:if="{{remote == 1}}" bindtap='proxyRemoteUnlock'>代理远程开锁</button>
+

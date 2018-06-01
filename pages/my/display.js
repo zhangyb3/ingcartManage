@@ -281,13 +281,24 @@ Page({
 
 	proxyUnlock:function(e){
 		wx.navigateTo({
-			url: '../repository/proxy',
+			url: '../repository/proxy?remote=0',
 			success: function(res) {},
 			fail: function(res) {},
 			complete: function(res) {},
 		})
 	},
-	  changeGuard: function (e) {
+
+	proxyRemoteUnlock: function (e) {
+		wx.navigateTo({
+			url: '../repository/proxy?remote=1',
+			success: function (res) { },
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
+
+
+	changeGuard: function (e) {
 
     wx.navigateTo({
       url: '../monitor/changeGuard',

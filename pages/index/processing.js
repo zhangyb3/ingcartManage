@@ -31,11 +31,14 @@ Page({
 		this.data.operation = parameters.operation;
 		this.data.carId = parameters.carId;
 		this.data.qrId = parameters.qrId;
+		this.data.only = parameters.only;
 		if(parameters.proxy != null)
 		{
 			this.data.isAgent = parameters.proxy;
+			wx.setStorageSync('isAgent', 1);
 		}
 		this.data.customerPhoneNum = parameters.customerPhone;
+		wx.setStorageSync('unlockPhoneNum', parameters.customerPhone);
 		if(this.data.fromPage == 'weixin')
 		{
 			wx.setStorageSync('from', 'weixin');
@@ -102,24 +105,36 @@ Page({
 							}
 							else {
 								console.log('GPRS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-								//这种模式下，每次先用蓝牙开锁，8秒后如果开锁失败改用gprs
-								app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, true);
-								var switchCount = 0;
-								that.data.switchInterval = setInterval(
-									function () {
-										if (switchCount > 9) {
-											clearInterval(that.data.switchInterval);
-											console.log('!!!!!!!!!!!!!!! switch to gprs unlock !!!!!!!!!!!!!!!!!');
-											// 下面这句调用强制使用 gprs 开锁，假如蓝牙开不了
-											app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, false);
-											that.data.bleUnlock = 0;
-										}
-										else {
-											switchCount++;
-										}
-									},
-									1000
-								);
+								
+								if(that.data.only == 'gprs')
+								{
+									console.log('only use gprs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+									//只用gprs开锁
+									app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, false);
+									that.data.bleUnlock = 0;
+								}
+								else
+								{
+									//这种模式下，每次先用蓝牙开锁，10秒后如果开锁失败改用gprs
+									app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, true);
+									var switchCount = 0;
+									that.data.switchInterval = setInterval(
+										function () {
+											if (switchCount > 12) {
+												clearInterval(that.data.switchInterval);
+												console.log('!!!!!!!!!!!!!!! switch to gprs unlock !!!!!!!!!!!!!!!!!');
+												// 下面这句调用强制使用 gprs 开锁，假如蓝牙开不了
+												app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, false);
+												that.data.bleUnlock = 0;
+											}
+											else {
+												switchCount++;
+											}
+										},
+										1000
+									);
+								}
+								
 
 							}
 
@@ -139,7 +154,7 @@ Page({
 						count++;
 
 						if (wx.getStorageSync(that.data.qrId) == 'unlock_success') {
-
+							
 							console.log('29 unlock success !!!!!!!!!!!!!!!!!!!!!!!!!');
 							clearInterval(checkUnlockingQR);
 
@@ -163,6 +178,8 @@ Page({
 								},
 								method: 'POST',
 								success: function (res) {
+									wx.setStorageSync('isAgent', 0);
+									wx.setStorageSync('unlockPhoneNum', null);
 									clearInterval(that.data.switchInterval);
 									console.log("use unlock: ", res.data.status);
 									if (res.data.status == 200) {
@@ -198,7 +215,7 @@ Page({
 						}
 
 						else if (wx.getStorageSync(that.data.qrId) == 'unlock_fail' ||
-							(count > 20 && wx.getStorageSync('unlock_mode') == 'gprs') ||
+							(count > 25 && wx.getStorageSync('unlock_mode') == 'gprs') ||
 							(count > 15 && wx.getStorageSync('unlock_mode') == 'ble'))
 						{
 

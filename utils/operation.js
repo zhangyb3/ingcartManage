@@ -643,6 +643,8 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 															latitude: wx.getStorageSync('last_latitude'),
 															longitude: wx.getStorageSync('last_longitude'),
 															ble: 1,
+															isAgent: wx.getStorageSync('isAgent'),
+															phoneNum: wx.getStorageSync('unlockPhoneNum'),
 														},
 														method: 'POST',
 														success: function(res) {

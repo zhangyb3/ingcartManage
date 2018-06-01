@@ -10,7 +10,7 @@ var IngcartSdk = require('../../lib/ingcart-lock-manager');
 var app = getApp()
 Page({
   data: {
-    scale: 18,
+    scale: 15,
     latitude: 0,
     longitude: 0,
 
@@ -39,9 +39,11 @@ Page({
 // 页面加载
   onLoad: function (parameters) {
 
-		wx.setStorageSync('unlock_mode', 'ble');
+		wx.setStorageSync('unlock_mode', 'gprs');
 		
 		wx.setStorageSync('alreadyRegister', 'no');
+
+		wx.setStorageSync('isAgent', 0);
 
 		this.data.fromPage = parameters.from;
 		
