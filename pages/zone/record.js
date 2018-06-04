@@ -206,7 +206,7 @@ Page({
 											level: that.data.zone.level,
 											price: that.data.price,
 											giving: that.data.giving,
-											status: that.data.status,
+											status: that.data.tempWhetherEndSelf.status,
 											managerId: wx.getStorageSync(user.ManagerID),
 											phoneNum: that.data.servicePhone,
 											password: that.data.password,
