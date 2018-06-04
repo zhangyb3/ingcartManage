@@ -1,57 +1,49 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-		"pages/index/processing",
+    "pages/index/processing",
     "pages/maintenance/call",
-		"pages/maintenance/records",
-		"pages/maintenance/quit",
+    "pages/maintenance/records",
+    "pages/maintenance/quit",
     "pages/scanresult/index",
     "pages/bill/list",
-		"pages/my/managementClass",
+    "pages/my/managementClass",
     "pages/my/display",
     "pages/my/history",
-		"pages/my/record_repair",
+    "pages/my/record_repair",
     "pages/wallet/total",
     "pages/wallet/charge",
     "pages/register/register",
-		"pages/register/accedit",
+    "pages/register/accedit",
     "pages/stopFee/stopFee",
     "pages/store/storeInfo",
-  
-   
-
-
-
-
-
-		"pages/monitor/generateCode",
-
-		
-		"pages/store/cancelStore",
-		"pages/repository/supply",
-		"pages/repository/proxy",
-
-		"pages/monitor/carStatus",
-		"pages/monitor/carPosition",
-		"pages/monitor/carUsing",
-		"pages/monitor/recordCar",
-		"pages/monitor/refundAll",
-		"pages/monitor/manageOperator",
-		"pages/monitor/managerRecord",
-		"pages/monitor/specialRefund",
-		"pages/monitor/statistics",
-		"pages/zone/record",
-		"pages/monitor/modelFault",
-		"pages/monitor/mobileFault",
+    "pages/monitor/generateCode",
+    "pages/store/cancelStore",
+    "pages/repository/supply",
+    "pages/repository/proxy",
+    "pages/monitor/carStatus",
+    "pages/monitor/carPosition",
+    "pages/monitor/carUsing",
+    "pages/monitor/recordCar",
+    "pages/monitor/refundAll",
+    "pages/monitor/manageOperator",
+    "pages/monitor/managerRecord",
+    "pages/monitor/specialRefund",
+    "pages/monitor/statistics",
+    "pages/zone/record",
+    "pages/monitor/modelFault",
+    "pages/monitor/mobileFault",
     "pages/monitor/closePark",
+    "pages/monitor/scanCodeRecord",
+    "pages/monitor/backRecord",
     "pages/monitor/changeGuard",
-		"pages/catalog/new",
+    "pages/catalog/new",
     "pages/logs/logs"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTitleText": "婴咖出行",
-    "navigationBarTextStyle":"white"
+    "navigationBarTextStyle": "white"
   }
 }

@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.9.91",
 	"appid": "wx84ee742232d722f1",
-	"projectname": "ingcart_manage",
+	"projectname": "gitIngcartManage",
 	"condition": {
 		"search": {
 			"current": -1,

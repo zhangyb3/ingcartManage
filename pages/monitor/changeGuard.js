@@ -24,6 +24,7 @@ Page({
 		level: '0',
 		queryAll:'no',
     managerPhone:'',
+    isShow:'show'
   },
 
   /**
@@ -291,7 +292,11 @@ Page({
 		});
 		that.data.level = that.data.tempLevel2.id;
 	},
-  
+  checkTelRight:function(){
+    this.setData({
+      isShow:'show'
+    })
+  },
 
   /**
    * 页面上拉触底事件的处理函数
@@ -300,10 +305,16 @@ Page({
 		
 
   },
+  hidden:function(){
+    var that = this;
+    that.setData({
+      isShow: 'none'
+    })
+  },
   getPhoneNum:function(e){
     var that = this;
     that.setData({
-      managerPhone: e.detail.value
+      managerPhone: e.detail.value,
     })
   },
   OpenParkSub:function(){
@@ -354,5 +365,4 @@ Page({
       complete: function (res) { },
     });
   }
-
 })

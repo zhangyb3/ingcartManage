@@ -307,5 +307,22 @@ Page({
       complete: function (res) { },
     })
   },
+  scanCodeRecord: function (e) {
 
+    wx.navigateTo({
+      url: '../monitor/scanCodeRecord',
+      success: function (res) { },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
+  },
+  backRecord: function (e) {
+
+    wx.navigateTo({
+      url: '../monitor/backRecord',
+      success: function (res) { },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
+  },
 })

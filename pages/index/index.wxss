@@ -54,3 +54,27 @@
   bottom: 0;
   height: 120px;
 }
+
+.tab-column {
+  font-size: 24rpx;
+  display: block;
+  height: 48px;
+  color: #777;
+   width: 33.33%; 
+	/* width: 50%; */
+  float: left;
+  text-align: center;
+  /* line-height: 48px; */
+}
+
+.tabCenter {
+  display: block;
+  height: 100%;
+}
+
+.tab-column cover-image {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin: 5px auto 3px;
+}
