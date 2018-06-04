@@ -452,6 +452,35 @@
       <view class="split_line"></view>
     </view>
 
+		<view class="line_item_container" bindtap="scanCodeRecord" wx:if="{{managementClass == 'cart' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >车辆扫码记录</text>
+				</view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+    		<view class="line_item_container" bindtap="backRecord" wx:if="{{managementClass == 'cart' && level >= 4}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >恢复行车记录</text>
+				</view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
 		 <!-- <view class="line_item_container" bindtap="recordOperationZone">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">

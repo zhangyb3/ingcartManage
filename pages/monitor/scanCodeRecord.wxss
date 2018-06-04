@@ -1,7 +1,5 @@
 /* pages/monitor/carStatus.wxss */
-@import '../stopFee/stopFee.wxss';
 
-@import 'carStatus.wxss';
 .row_display{
 	/* margin-top: 50px; */
 	display: flex;
@@ -97,4 +95,3 @@ picker-view-column view{text-align: center;}
 
 .choose-btn .close{color:#f93;float:left;}
 .choose-btn .sure{color:#f93;float:right;}
-

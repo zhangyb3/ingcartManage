@@ -58,6 +58,17 @@ Page({
     });
 
   },
+  stopFee: function () {
+    wx.navigateTo({
+      url: '../stopFee/stopFee',
+    })
+  },
+  usingCarStatusQuery: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=1",
+    })
+  },
 
 // 页面显示
   onShow: function(){
@@ -1156,4 +1167,5 @@ function stopUnload(the){
 		complete: function(res) {},
 	})
 }
+
 

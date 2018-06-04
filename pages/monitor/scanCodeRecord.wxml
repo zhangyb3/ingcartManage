@@ -1,26 +1,37 @@
-<view class='' style='display:{{isShow}};'>
+		<view class=''>
 					<view class='choose-name'>请选择</view>
 					<view class='getName' bindtap='chooseLevel1'>{{level1Name}}</view>
-		</view>  
+		</view> 
 		
-		 <view class='' style='display:{{isShow}};'>
+		<view class=''>
 					<view class='choose-name'>请选择</view>
 					<view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
-		</view>  
+		</view> 
+	
 
-<view style='min-height:{{winHeight*0.25}}px;cursor-spacing =0;'>
-      <view class='tel-title'>输入电话</view>
-      <view class='input-tel'>
-           <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindfocus='hidden' bindinput='getPhoneNum'></input>
-                
-      </view>
+	 <view class="row_display" style="width: 100%;height: 40px;line-height: 40px;">
+		<text style="width:40%;font-size:50rpx;text-align:center;">起始时间</text>
+		<text style="width:30%;font-size:50rpx;text-align:center;">电话号码</text>
+		<text style="width:30%;font-size:50rpx;text-align:center;">车辆编码</text>
+	</view> 
 
-      
+	
+	 <scroll-view style='width: 100%;max-height:{{deviceHeight-270}}px' lower-threshold="0"	bindscrolltolower='getMoreRecord'  scroll-y>
 
-</view>
-    <button class='hand-in' bindtap='OpenParkSub'>确定</button>
+		<view wx:for='{{carStatusList}}' wx:key='unique' wx:for-index="index">
 
-    <view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
+			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;">
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;">{{item.time}}</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;color:red;">{{item.phone_num}}</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;color:red;">{{item.car_id}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view> 
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
       <view class='pick-box'>
                  <view class='choose-btn'>
                         <text class='close' bindtap='close'>取消</text>
@@ -52,21 +63,3 @@
                  </picker-view>
            </view>
 </view>
-
-<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseOpenFlag == true}}">      
-      <view class='pick-box'>
-                 <view class='choose-btn'>
-                        <text class='close' bindtap='closeOpen'>取消</text>
-                        <text class='sure' bindtap='openFlagSure'>确定</text>
-                 </view>
-                 <view style='height:40px;line-height:40px;text-align:center;'></view>
-                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="chooseSure">
-                   <picker-view-column id="zone_column">
-                      <view wx:for="{{openOrClose}}" data-type="{{item.type}}" style="line-height: 50px" >{{item.action}}</view>
-                   </picker-view-column>
-                   
-                 </picker-view>
-           </view>
-</view> 
-
- 
