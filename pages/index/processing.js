@@ -268,6 +268,18 @@ Page({
 			}
 			else
 			{
+				wx.showModal({
+					title: '开锁提示',
+					content: '自写方法,id:' + that.data.qrId,
+					showCancel: true,
+					cancelText: '',
+					cancelColor: '',
+					confirmText: '',
+					confirmColor: '',
+					success: function(res) {},
+					fail: function(res) {},
+					complete: function(res) {},
+				});
 				console.log('!!!!!!!!!!! nodelock carId ',that.data.carId);
 				that.setData({
 					unlock_progress: true,

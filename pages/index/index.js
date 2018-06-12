@@ -455,7 +455,8 @@ Page({
 
 									operation.managerUnlockCheck(that, qrId,
 										() => {
-											if (qrId.length == 8) {
+											if (qrId.length == 8 ) 
+											{
 
 												wx.navigateTo({
 													url: '../index/processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock' ,
