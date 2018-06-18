@@ -299,7 +299,7 @@ Page({
 	scanCar: function (e) {
 		var that = this;
 		wx.scanCode({
-			onlyFromCamera: true,
+			onlyFromCamera: false,
 			success: function (res) {
 				console.log(res);
 				if (res.errMsg == 'scanCode:ok') {
@@ -405,6 +405,13 @@ Page({
 	},
 
 	managerRefundAll: function (e) {
+		wx.showLoading({
+			title: '',
+			mask: true,
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
 		var that = this;
 
 		var url = '';
@@ -422,6 +429,7 @@ Page({
 				},
 				method: 'POST',
 				success: function (res) {
+					wx.hideLoading();
 					// if (res.data.status == 200) 
 					// {
 					// 	wx.showToast({
@@ -440,9 +448,8 @@ Page({
 						wx.showModal({
 							title: '提示',
 							content: res.data.msg,
-							// showCancel: false,
+							showCancel: false,
 							confirmText: '我知道了',
-							confirmColor: '',
 							success: function (res) { },
 							fail: function (res) { },
 							complete: function (res) { },
@@ -482,6 +489,7 @@ Page({
 										},
 										method: 'POST',
 										success: function(res) {
+											wx.hideLoading();
 											that.closePassword();
 											wx.showModal({
 												title: '提示',
@@ -531,7 +539,7 @@ Page({
 			}
 
 			wx.request({
-
+				
 				// url: config.PytheRestfulServerURL + '/customer/auto/refund/',
 				url: url,
 				data: {
@@ -541,6 +549,7 @@ Page({
 				},
 				method: 'POST',
 				success: function (res) {
+					wx.hideLoading();
 					if (res.data.status == 200) {
 						wx.showToast({
 							title: res.data.msg,
@@ -557,9 +566,8 @@ Page({
 						wx.showModal({
 							title: '提示',
 							content: res.data.msg,
-							// showCancel: false,
+							showCancel: false,
 							confirmText: '我知道了',
-							confirmColor: '',
 							success: function (res) { },
 							fail: function (res) { },
 							complete: function (res) { },

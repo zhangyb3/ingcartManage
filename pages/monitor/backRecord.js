@@ -54,7 +54,7 @@ Page({
 	scanCar: function (e) {
 		var that = this;
 		wx.scanCode({
-			onlyFromCamera: true,
+			onlyFromCamera: false,
 			success: function (res) {
 				console.log(res);
 				if (res.errMsg == 'scanCode:ok') {

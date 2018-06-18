@@ -445,13 +445,20 @@ Page({
 						});
 
 						wx.scanCode({
-							onlyFromCamera: true,
+							onlyFromCamera: false,
 							success: function (res) {
 								console.log(res);
 								if (res.errMsg == 'scanCode:ok') {
 									var parameters = operation.urlProcess(res.result); console.log(parameters);
 									var qrId = parameters.id;
-									wx.setStorageSync('unlock_qr', parameters.id);
+									
+									//特殊锁处理
+									if (qrId.slice(0, 'MCA'.length) == 'MCA')
+									{
+										qrId = qrId.substring(3);
+									}
+
+									wx.setStorageSync('unlock_qr', qrId);
 
 									operation.managerUnlockCheck(that, qrId,
 										() => {
@@ -480,7 +487,8 @@ Page({
 														var recordId = wx.getStorageSync(user.RecordID);
 
 
-														if (wx.getStorageSync('platform') == 'ios') {
+														if (wx.getStorageSync('platform') == 'ios') 
+														{
 															//据说每次都要先关闭再打开适配器清理缓存,试一下
 															wx.closeBluetoothAdapter({
 																success: function (res) {
@@ -495,7 +503,7 @@ Page({
 																				interval: 0,
 																				success: function (res) {
 
-
+																					
 																				},
 																				fail: function (res) {
 
@@ -519,6 +527,7 @@ Page({
 																				1000
 																			);
 
+
 																		},
 																		fail: function (res) {
 
@@ -536,7 +545,8 @@ Page({
 
 
 														}
-														else {
+														else 
+														{
 
 
 															//android版开锁

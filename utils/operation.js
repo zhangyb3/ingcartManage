@@ -292,7 +292,8 @@ function unlock(the, managerId, carId, qrId, success, fail){
 
 	var deviceId;
 	//android、ios分情况处理
-	if (wx.getStorageSync('platform') == 'android') {
+	if (wx.getStorageSync('platform') == 'android') 
+	{
 		
 		deviceId = carId;
 		//直接开锁
@@ -307,7 +308,8 @@ function unlock(the, managerId, carId, qrId, success, fail){
 		);
 
 	}
-	if (wx.getStorageSync('platform') == 'ios') {
+	if (wx.getStorageSync('platform') == 'ios') 
+	{
 		
 		//找出跟MAC对应的deviceId
 		wx.stopBluetoothDevicesDiscovery({
@@ -414,19 +416,7 @@ function connectDevice(the, deviceId, success, fail){
 							wx.setStorageSync('characteristicIdToRead', res.characteristics[1].uuid);
 
 
-							//启用特征值订阅，监控串口
-							wx.notifyBLECharacteristicValueChange({
-								deviceId: deviceId,
-								serviceId: wx.getStorageSync('ServiceID'),
-								characteristicId: wx.getStorageSync('characteristicIdToRead'),
-								state: true,
-								success: function (res) {
-									console.log(res);
-									
-								},
-								fail: function (res) { },
-								complete: function (res) { },
-							});
+							
 
 							//读取锁连接后的随机令牌
 							getLockToken(
@@ -442,6 +432,20 @@ function connectDevice(the, deviceId, success, fail){
 									});
 								},
 							);
+
+							//启用特征值订阅，监控串口
+							wx.notifyBLECharacteristicValueChange({
+								deviceId: deviceId,
+								serviceId: wx.getStorageSync('ServiceID'),
+								characteristicId: wx.getStorageSync('characteristicIdToRead'),
+								state: true,
+								success: function (res) {
+									console.log(res);
+									
+								},
+								fail: function (res) { },
+								complete: function (res) { },
+							});
 
 							wx.onBLECharacteristicValueChange(function (res) {
 
@@ -519,14 +523,29 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 								characteristicId: wx.getStorageSync('characteristicIdToRead'),
 								state: true,
 								success: function (res) {
-									console.log('notify change',res);
+									console.log('notify change', res);
+
+
+
 								},
-								fail: function (res) { 
-									typeof fail == "function" && fail('fallback');
-								},
-								complete: function (res) { },
+								//新版物联锁的descriptor缺失，微信API返回报错信息，为防止终止流程，屏蔽
+								// fail: function (res) {
+								// 	console.log(res);
+								// 	console.log(deviceId + " , " + wx.getStorageSync('ServiceID') + " , " + wx.getStorageSync('characteristicIdToRead'));
+								// 	wx.closeBLEConnection({
+								// 		deviceId: deviceId,
+								// 		success: function (res) { },
+								// 		fail: function (res) { },
+								// 		complete: function (res) { },
+								// 	});
+
+								
+								// typeof fail == "function" && fail('notify characteristics value change fallback');
+								// },
+								
 							});
 
+							
 							//读取锁连接后的随机令牌
 							getLockToken(
 								// carId,
@@ -544,6 +563,8 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 										},
 										fail: function (res) {
 											console.log(res);
+
+
 										},
 										complete: function (res) {
 											console.log(res);
@@ -551,8 +572,8 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 									});
 								},
 							);
-							
 
+							
 							wx.onBLECharacteristicValueChange(function (res) {
 
 								console.log(`characteristic ${res.characteristicId} has changed, now is ${res.value}`);
@@ -564,7 +585,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 
 								//解密载有令牌的通信帧
 								decryptFrame(
-									wx.arrayBufferToBase64(encryptedTokenFrame), 
+									wx.arrayBufferToBase64(encryptedTokenFrame),
 									// carId,
 									qrId,
 									(res) => {
@@ -572,8 +593,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 										var tokenFrameHexStr = (ab2hex(wx.base64ToArrayBuffer(res)));
 										console.log('token: ' + tokenFrameHexStr.substring(0, 32) + ' ,head: ' + tokenFrameHexStr.slice(0, 2));
 										//如果通信帧符合，取出token备用
-										if (tokenFrameHexStr.slice(0, 4) == '0602' ) 
-										{
+										if (tokenFrameHexStr.slice(0, 4) == '0602') {
 											console.log('correct token: ' + tokenFrameHexStr.substring(0, 32));
 											wx.setStorageSync("token", tokenFrameHexStr.substring(6, 14));
 
@@ -608,7 +628,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 														value: wx.base64ToArrayBuffer(encryptedFrameStr),
 														success: function (res) {
 															console.log('write to unlock: ', res);
-															
+
 															typeof success == "function" && success('unlock');
 														},
 														fail: function (res) { },
@@ -622,8 +642,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 
 
 
-										if (tokenFrameHexStr.slice(0, 8) == '05020100') 
-										{
+										if (tokenFrameHexStr.slice(0, 8) == '05020100') {
 											//开锁成功
 											that.setData({
 												unlock_progress: false,
@@ -647,13 +666,13 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 															phoneNum: wx.getStorageSync('unlockPhoneNum'),
 														},
 														method: 'POST',
-														success: function(res) {
-															console.log('!!!!!! manager unlock',res);
+														success: function (res) {
+															console.log('!!!!!! manager unlock', res);
 														},
-														fail: function(res) {},
-														complete: function(res) {},
+														fail: function (res) { },
+														complete: function (res) { },
 													});
-													
+
 													wx.navigateBack({
 														delta: 1,
 													});
@@ -662,8 +681,8 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 												complete: function (res) { },
 											});
 
-											
-											
+
+
 											//更新开锁状态
 											// wx.getLocation({
 											// 	type: 'gcj02',
@@ -689,7 +708,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 											// 							delta: 1,
 											// 						})
 
-																
+
 											// 					});
 
 											// 				typeof success == "function" && success('unlock');
@@ -703,8 +722,8 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 											// 	fail: function(res) {},
 											// 	complete: function(res) {},
 											// })
-											
-											
+
+
 										}
 										if (tokenFrameHexStr.slice(0, 8) == '05020101') {
 											//开锁失败
@@ -717,7 +736,7 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 											//检测到关锁成功信号
 											wx.setStorageSync('executeLock', 'yes');
 											managerLock(that);
-	
+
 										}
 
 									}
@@ -725,21 +744,32 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 
 
 							});
-
 							
 							
 
 
 						},
 						fail: function (res) { 
-							typeof fail == "function" && fail('fallback');
+							wx.closeBLEConnection({
+								deviceId: deviceId,
+								success: function (res) { },
+								fail: function (res) { },
+								complete: function (res) { },
+							});
+							typeof fail == "function" && fail('get device characteristics fallback');
 						},
 						complete: function (res) { },
 					})
 
 				},
 				fail: function (res) { 
-					typeof fail == "function" && fail('fallback');
+					wx.closeBLEConnection({
+						deviceId: deviceId,
+						success: function (res) { },
+						fail: function (res) { },
+						complete: function (res) { },
+					});
+					typeof fail == "function" && fail('get devices fallback');
 				},
 				complete: function (res) { },
 			})
@@ -747,7 +777,13 @@ function unlockOperation(the, deviceId, carId, qrId, success, fail, complete){
 		},
 		fail: function (res) {
 			console.log('connect false');
-			typeof fail == "function" && fail('fallback');
+			wx.closeBLEConnection({
+				deviceId: deviceId,
+				success: function (res) { },
+				fail: function (res) { },
+				complete: function (res) { },
+			});
+			typeof fail == "function" && fail('connect fallback');
 		},
 		complete: function (res) { },
 	});

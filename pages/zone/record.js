@@ -187,6 +187,7 @@ Page({
 				cancelText: '取消',
 				confirmText: '确定',
 				success: function (res) {
+
 					if (res.confirm) {
 						that.setData({
 							passwordFlag: true,
@@ -197,6 +198,7 @@ Page({
 							function () {
 
 								if (that.data.permission == true) {
+									console.log('clear!!!!!!!!!');
 									clearInterval(cancelIntervalVar);
 									
 									//更新景区信息
@@ -206,7 +208,7 @@ Page({
 											level: that.data.zone.level,
 											price: that.data.price,
 											giving: that.data.giving,
-											status: that.data.tempWhetherEndSelf.status,
+											status: that.data.status,
 											managerId: wx.getStorageSync(user.ManagerID),
 											phoneNum: that.data.servicePhone,
 											password: that.data.password,
@@ -357,6 +359,7 @@ Page({
 		that.setData({
 			chooseWhetherEndSelf: false,
 			endSelf: that.data.tempWhetherEndSelf.name,
+			status: that.data.tempWhetherEndSelf.status,
 			whetherEndSelf: that.data.tempWhetherEndSelf
 		});
 

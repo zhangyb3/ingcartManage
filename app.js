@@ -74,7 +74,7 @@ App({
       })
     }
   },
-
+	clockCount: 0,
 	ingcartLockManager: null,
   
   globalData: {
