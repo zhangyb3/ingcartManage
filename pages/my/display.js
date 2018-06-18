@@ -139,6 +139,13 @@ Page({
 		})
 	},
 
+  carPowerStatusQuery: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=2",
+    })
+  },
+
 	carUsingQuery: function () {
 		wx.navigateTo({
 			url: '../monitor/carUsing',

@@ -59,7 +59,26 @@
 		
 	</scroll-view>
 	
+	<view class="row_display" style="width: 100%;height: 40px;line-height: 40px;" wx:if="{{use == 2}}">
+		
+		<text style="width:60%;font-size:50rpx;text-align:center;">车辆编码</text>
+		<text style="width:40%;font-size:50rpx;text-align:center;">电量</text>
+	</view>
 
+	<scroll-view style='width: 100%;max-height:{{deviceHeight-230}}px' lower-threshold="0"	bindscrolltolower='getMorePowerStatus' wx:if="{{use == 2}}" scroll-y>
+
+		<view wx:for='{{powerStatusList}}' wx:key='unique' wx:for-index="index">
+
+			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;">
+				
+				<text style="width:60%;font-size:32rpx;text-align:center;color:red;">{{item.id}}</text>
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:red;" wx:if="{{item.battery<=36}}">{{item.battery}}</text>
+        <text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:green;" wx:if="{{item.battery>36}}">{{item.battery}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view>
 
 	
 

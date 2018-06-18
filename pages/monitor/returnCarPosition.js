@@ -81,7 +81,7 @@ Page({
 	returnCarPosition: function (e) {
 		var that = this;
 		wx.request({
-      url: config.PytheRestfulTestServerURL + '/update/return/loc',
+      url: config.PytheRestfulServerURL + '/update/return/loc',
 			data: {
 				code: that.data.code,
 				longitude: that.data.longitude,
