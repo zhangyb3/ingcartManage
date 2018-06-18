@@ -89,6 +89,12 @@ Page({
 		})
 	},
 
+  toReturnCarPosition: function () {
+    wx.navigateTo({
+      url: '../monitor/returnCarPosition'
+    })
+  },
+
 	carPositionQuery: function () {
 		wx.navigateTo({
 			url: '../monitor/carPosition?operation=query'
