@@ -115,14 +115,16 @@ Page({
 											level2Name: that.data.level2[0].name,
 											level: that.data.level2[0].id,
 										})
-										
+                   
 										var url;
 										if (that.data.use == 1) {
 											url = config.PytheRestfulServerURL + '/count/car/condition';
 										}
 										if (that.data.use == 0) {
 											url = config.PytheRestfulServerURL + '/select/car/counter';
-                    } if (that.data.use == 2) {
+                    } 
+                    if (that.data.use == 2) {
+                     
                       url = config.PytheRestfulServerURL + '/select/car/power';
                       wx.request({
                         url: url,
@@ -133,8 +135,9 @@ Page({
                         },
                         method: 'GET',
                         success: function (res) {
+                         
                           if (res.data.status == 200) {
-                            var result = res.data;
+                            var result = res.data.data;
                             if (result == null) {
                               that.data.pageNum = that.data.pageNum - 1;
                             }
@@ -230,7 +233,9 @@ Page({
           method: 'GET',
           success: function (res) {
             if (res.data.status == 200) {
-              var result = res.data;
+              console.log("22222" + res.data.data)
+              
+              var result = res.data.data;
               if (result == null) {
                 that.data.pageNum = that.data.pageNum - 1;
               }
@@ -427,7 +432,7 @@ Page({
               method: 'GET',
               success: function (res) {
                 if (res.data.status == 200) {
-                  var result = res.data;
+                  var result = res.data.data;
                   if (result == null) {
                     that.data.pageNum = that.data.pageNum - 1;
                   }
@@ -531,7 +536,7 @@ Page({
         method: 'GET',
         success: function (res) {
           if (res.data.status == 200) {
-            var result = res.data;
+            var result = res.data.data;
             if (result == null) {
               that.data.pageNum = that.data.pageNum - 1;
             }
@@ -659,7 +664,7 @@ Page({
       method: 'GET',
       success: function (res) {
         if (res.data.status == 200) {
-          var result = res.data;
+          var result = res.data.data;
           if (result == null) {
             that.data.pageNum = that.data.pageNum - 1;
           }
