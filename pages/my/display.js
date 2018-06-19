@@ -146,6 +146,13 @@ Page({
     })
   },
 
+  netUnlock: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=3",
+    })
+  },
+
 	carUsingQuery: function () {
 		wx.navigateTo({
 			url: '../monitor/carUsing',
