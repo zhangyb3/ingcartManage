@@ -23,7 +23,7 @@ Page({
 		});
 
 		wx.getLocation({
-			type: 'gcj02',
+			type: 'wgs84',
 			altitude: true,
 			success: function(res) {
 				that.setData({
@@ -179,7 +179,7 @@ Page({
 			url: config.PytheRestfulServerURL + '/select/car/location/',
 			data: {
 				qrId: that.data.qrId,
-				
+				carId: that.data.qrId,
 			},
 			method: 'POST',
 			success: function(res) {
@@ -189,16 +189,27 @@ Page({
 				{
 					result = res.data.data;
 					var cartPoints = [];
-					for(var count = 0; count < result.lng_lat.length; count++)
+					var count = 0;
+					for(; count < result.lng_lat.length; count++)
 					{
 						cartPoints[count] = {};
 						cartPoints[count].longitude = result.lng_lat[count].lng;
 						cartPoints[count].latitude = result.lng_lat[count].lat;
+
 					}
+
+					var markers = [];
+					markers[0].longitude = result.lng_lat[0].lng;
+					markers[0].latitude = result.lng_lat[0].lat;
+					markers[0].iconPath= '/images/start.png';
+					markers[count].longitude = result.lng_lat[count].lng;
+					markers[count].latitude = result.lng_lat[count].lat;
+					markers[count].iconPath = '/images/end.png';
 					
 					var pages = getCurrentPages();
 					var indexPage = pages[0];
 					indexPage.data.cartPoints = cartPoints;
+					indexPage.data.markers.concat(markers);
 					wx.navigateBack({
 						delta: 5,
 					});

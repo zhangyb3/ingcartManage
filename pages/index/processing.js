@@ -50,6 +50,24 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+		// wx.closeSocket();
+		// app.ingcartLockManager.reinit();
+		// wx.getLocation({
+		// 	type: 'wgs84',
+		// 	altitude: true,
+		// 	success: function (res) {
+		// 		console.log("unlock location", res);
+		// 		if (res.latitude != null) {
+		// 			wx.setStorageSync(user.Latitude, res.latitude);
+		// 		}
+		// 		if (res.longitude != null) {
+		// 			wx.setStorageSync(user.Longitude, res.longitude);
+		// 		}
+		// 	},
+		// 	fail: function (res) { },
+		// 	complete: function (res) { },
+		// });
+
 		setInterval(
 			function () {
 				app.clockCount++;
@@ -91,6 +109,7 @@ Page({
 							console.log('stop clock', app.clockCount);
 							console.log(' unlock success !!!!!!!!!!!!!!!!!!!!!!!!!');
 							clearInterval(checkUnlockingQR);
+
 
 							var couponCode = null;
 							if (wx.getStorageSync('using_coupon_code') != 'no') {
@@ -148,9 +167,11 @@ Page({
 
 						}
 
-						else if (wx.getStorageSync(that.data.qrId) == 'unlock_fail' ||
+						else if (
+							wx.getStorageSync(that.data.qrId) == 'unlock_fail' ||
 							(count > 25 && wx.getStorageSync('unlock_mode') == 'gprs') ||
-							(count > 15 && wx.getStorageSync('unlock_mode') == 'ble'))
+							(count > 15 && wx.getStorageSync('unlock_mode') == 'ble')
+							)
 						{
 
 							clearInterval(checkUnlockingQR);
@@ -198,16 +219,7 @@ Page({
 					1000
 				);
 
-				wx.getLocation({
-					type: "gcj02",
-					success: (res) => {
-						console.log("unlock location", res);
-						if (res.latitude != null) {
-							wx.setStorageSync(user.Latitude, res.latitude);
-						}
-						if (res.longitude != null) {
-							wx.setStorageSync(user.Longitude, res.longitude);
-						}
+						
 
 						var preZero = '';
 						if (that.data.qrId.length == 7) {
@@ -216,7 +228,7 @@ Page({
 						if (that.data.qrId.length == 8) {
 							preZero = '00';
 						}
-						console.log(preZero + that.data.qrId + ',' + res.latitude + ',' + res.longitude);
+						
 
 						if (wx.getStorageSync('unlock_mode') == 'ble') {
 							
@@ -226,8 +238,6 @@ Page({
 						if (wx.getStorageSync('unlock_mode') == 'gprs') {
 							if (that.data.qrId.length == 7) {
 
-								wx.closeSocket();
-								app.ingcartLockManager.reinit();
 								console.log('start clock', app.clockCount);
 								
 								console.log(" node lock !!!!!!!!!!!!!!!!!!!!!");
@@ -236,6 +246,7 @@ Page({
 							
 							else {
 								console.log('GPRS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+								
 
 								if (that.data.only == 'gprs') {
 									console.log('only use gprs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -244,6 +255,7 @@ Page({
 									that.data.bleUnlock = 0;
 								}
 								else {
+									console.log('start clock', app.clockCount);
 									//这种模式下，每次先用蓝牙开锁，10秒后如果开锁失败改用gprs
 									app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB, true);
 									var switchCount = 0;
@@ -272,9 +284,7 @@ Page({
 							unlock_progress: true,
 						});
 
-					},
-
-				});
+					
 
 			}
 			else
@@ -492,6 +502,7 @@ Page({
 
 
 	unlockCB: function (progress) {
+		console.log("unlock clock : ", app.clockCount);
 		var that = this;
 		console.log("unlock progress", progress );
 		if (progress < 100)

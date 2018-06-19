@@ -34,6 +34,7 @@ Page({
 
 		//计时中标记不可点击
 		markerClickable: true,
+		markers:[],
   },
 
 // 页面加载
@@ -106,7 +107,7 @@ Page({
 				() => {
 
 					wx.hideLoading();
-					checkBluetooth(that);
+					// checkBluetooth(that);
 					refreshPage(that);
 
 					// checkUsingCarStatus(that,
@@ -238,7 +239,7 @@ Page({
 		{
 			var that = this;
 			
-			checkBluetooth(that);
+			// checkBluetooth(that);
 			
 			// wx.showLoading({
 			// 	title: '加载中',
@@ -437,10 +438,10 @@ Page({
 					// if (wx.getStorageSync(user.UsingCar) == null || wx.getStorageSync(user.UsingCarStatus) == 2)
 					{
 						wx.getLocation({
-							type: "gcj02",
+							type: "wgs84",
 							success: (res) => {
-								wx.setStorageSync('last_latitude', res.latitude);
-								wx.setStorageSync('last_longitude', res.longitude);
+								wx.setStorageSync('Latitude', res.latitude);
+								wx.setStorageSync('Longitude', res.longitude);
 							}
 						});
 
@@ -797,7 +798,7 @@ function refreshPage(the){
 
   // 2.获取并设置当前位置经纬度
   wx.getLocation({
-    type: "gcj02",
+    type: "wgs84",
     success: (res) => {
       that.setData({
         longitude: res.longitude,
@@ -926,21 +927,21 @@ function showNearbyCars(longitude,latitude,the){
       }
       else
       {
-        var markers = result.data;
-        for (var k = 0; k < markers.length; k++) 
+        that.data.markers = result.data;
+        for (var k = 0; k < that.data.markers.length; k++) 
         {
-          if (markers[k].type == 0)
+					if (that.data.markers[k].type == 0)
           {
-            markers[k].iconPath = '/images/car.png';
+						that.data.markers[k].iconPath = '/images/car.png';
           }
-          if (markers[k].type == 1) {
-            markers[k].iconPath = '/images/store.png';
+					if (that.data.markers[k].type == 1) {
+						that.data.markers[k].iconPath = '/images/store.png';
           }
-          markers[k].width = 43;
-          markers[k].height = 47;
+					that.data.markers[k].width = 43;
+					that.data.markers[k].height = 47;
         }
         that.setData({
-          markers: markers,
+					markers: that.data.markers,
         });
       }
     },
@@ -1149,7 +1150,7 @@ function checkBluetooth(the){
 				 },
 				fail: function (res) { },
 				complete: function (res) { 
-					checkBluetooth(that);
+					// checkBluetooth(that);
 				},
 			})
 		},

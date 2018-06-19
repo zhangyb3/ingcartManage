@@ -40,8 +40,8 @@ App({
     wx.getLocation({
       type: "gcj02",
       success: (res) => {
-        wx.setStorageSync('last_latitude', res.latitude);
-        wx.setStorageSync('last_longitude', res.longitude);
+        wx.setStorageSync('Latitude', res.latitude);
+        wx.setStorageSync('Longitude', res.longitude);
       }
     });
 
