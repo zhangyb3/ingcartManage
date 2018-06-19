@@ -25,6 +25,7 @@ Page({
 
 		this.setData({
 			level: wx.getStorageSync(user.Level),
+      operation: parameters.operation,
 		});
 
 		var that = this;
@@ -89,9 +90,10 @@ Page({
 		})
 	},
 
-  toReturnCarPosition: function () {
+  toReturnCarPosition: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
     wx.navigateTo({
-      url: '../monitor/returnCarPosition'
+      url: '../monitor/returnCarPosition?queryAll=' + queryAll,
     })
   },
 
@@ -143,6 +145,13 @@ Page({
     var queryAll = e.currentTarget.dataset.all;
     wx.navigateTo({
       url: '../monitor/carStatus?queryAll=' + queryAll + "&use=2",
+    })
+  },
+
+  netUnlock: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=3",
     })
   },
 

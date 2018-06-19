@@ -12,6 +12,7 @@ Page({
 		pageNum: 1,
 		carStatusList:[],
     powerStatusList:[],
+    qrids:[],
 		chooseLevel1: false,
 		chooseLevel2: false,
 		tempLevel1: null,
@@ -138,6 +139,9 @@ Page({
                          
                           if (res.data.status == 200) {
                             var result = res.data.data;
+                            that.setData({
+                              powerStatusList: [],
+                            });
                             if (result == null) {
                               that.data.pageNum = that.data.pageNum - 1;
                             }
@@ -152,7 +156,39 @@ Page({
                           }
                         }
                       });
-                    }else{
+                    } else if (that.data.use == 3){
+                      url = config.PytheRestfulServerURL + '/select/netlocks';
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+                            that.setData({
+                              qrids: [],
+                            });
+                            if (result == null) {
+                              that.data.pageNum = that.data.pageNum - 1;
+                            }
+                            else {
+                              that.data.qrids = that.data.qrids.concat(result);
+
+                              that.setData({
+                                qrids: that.data.qrids,
+                              });
+                            }
+
+                          }
+                        }
+                      });
+                    }
+                    else{
                       wx.request({
                         url: url,
                         data: {
@@ -233,9 +269,11 @@ Page({
           method: 'GET',
           success: function (res) {
             if (res.data.status == 200) {
-              console.log("22222" + res.data.data)
               
               var result = res.data.data;
+              that.setData({
+                powerStatusList: [],
+              });
               if (result == null) {
                 that.data.pageNum = that.data.pageNum - 1;
               }
@@ -244,6 +282,37 @@ Page({
 
                 that.setData({
                   powerStatusList: that.data.powerStatusList,
+                });
+              }
+
+            }
+          }
+        });
+      } else if (that.data.use == 3) {
+        url = config.PytheRestfulServerURL + '/select/netlocks';
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+
+            if (res.data.status == 200) {
+              var result = res.data.data;
+              that.setData({
+                qrids: [],
+              });
+              if (result == null) {
+                that.data.pageNum = that.data.pageNum - 1;
+              }
+              else {
+                that.data.qrids = that.data.qrids.concat(result);
+
+                that.setData({
+                  qrids: that.data.qrids,
                 });
               }
 
@@ -380,10 +449,13 @@ Page({
 		});
 		that.data.level = that.data.tempLevel1.c1Id;
 		that.data.carStatusList = [];
-
+    that.data.qrids = [];
+    that.data.powerStatusList = [];
 		if (that.data.level != '0') {
 			that.setData({
 				carStatusList: [],
+        qrids:[],
+        powerStatusList:[],
 			});
 			wx.request({
 				url: config.PytheRestfulServerURL + '/select/two/level',
@@ -433,6 +505,9 @@ Page({
               success: function (res) {
                 if (res.data.status == 200) {
                   var result = res.data.data;
+                  that.setData({
+                    powerStatusList: [],
+                  });
                   if (result == null) {
                     that.data.pageNum = that.data.pageNum - 1;
                   }
@@ -441,6 +516,37 @@ Page({
 
                     that.setData({
                       powerStatusList: that.data.powerStatusList,
+                    });
+                  }
+
+                }
+              }
+            });
+          } else if (that.data.use == 3) {
+            url = config.PytheRestfulServerURL + '/select/netlocks';
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+                  that.setData({
+                    qrids: [],
+                  });
+                  if (result == null) {
+                    that.data.pageNum = that.data.pageNum - 1;
+                  }
+                  else {
+                    that.data.qrids = that.data.qrids.concat(result);
+
+                    that.setData({
+                      qrids: that.data.qrids,
                     });
                   }
 
@@ -516,6 +622,8 @@ Page({
 		});
 		that.data.level = that.data.tempLevel2.id;
 		that.data.carStatusList = [];
+    that.data.qrids = [];
+    that.data.powerStatusList = [];
 
 		var url;
 		if (that.data.use == 1) {
@@ -537,6 +645,9 @@ Page({
         success: function (res) {
           if (res.data.status == 200) {
             var result = res.data.data;
+            that.setData({
+              powerStatusList: [],
+            });
             if (result == null) {
               that.data.pageNum = that.data.pageNum - 1;
             }
@@ -545,6 +656,37 @@ Page({
 
               that.setData({
                 powerStatusList: that.data.powerStatusList,
+              });
+            }
+
+          }
+        }
+      });
+    } else if (that.data.use == 3) {
+      url = config.PytheRestfulServerURL + '/select/netlocks';
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+
+          if (res.data.status == 200) {
+            var result = res.data.data;
+            that.setData({
+              qrids: [],
+            });
+            if (result == null) {
+              that.data.pageNum = that.data.pageNum - 1;
+            }
+            else {
+              that.data.qrids = that.data.qrids.concat(result);
+
+              that.setData({
+                qrids: that.data.qrids,
               });
             }
 
@@ -680,6 +822,75 @@ Page({
       }
     });
   },
+  getMoreCarsQrld: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+    var url = config.PytheRestfulServerURL + '/select/netlocks';
+    wx.request({
+      url: url,
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.qrids = that.data.qrids.concat(result);
 
+            that.setData({
+              qrids: that.data.qrids,
+            });
+          }
 
+        }
+      }
+    });
+  },
+
+  unlock:function(e){
+    console.log("网络开锁。。。。。。。。。。。")
+    console.log(e.currentTarget.dataset.qrid)
+    var mid = wx.getStorageSync(user.ManagerID)
+    var url = config.PytheRestfulServerURL + '/manage/web/unlock';
+    console.log(mid)
+    wx.request({
+      url: url,
+      data: {
+        managerId: wx.getStorageSync(user.ManagerID),
+        carId: e.currentTarget.dataset.qrid,
+      },
+      method: 'POST',
+      success: function (res) {
+        if (res.data.status == 200) {
+          wx.showToast({
+            title: res.data.msg,
+            icon: '',
+            image: '',
+            duration: 1500,
+            mask: true,
+            success: function (res) { },
+            fail: function (res) { },
+            complete: function (res) { },
+          });
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: res.data.msg,
+            showCancel: false,
+            confirmText: '我知道了',
+
+          });
+        }
+
+      }
+      
+    });
+
+  }
 })
