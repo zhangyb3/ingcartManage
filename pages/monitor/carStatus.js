@@ -11,7 +11,7 @@ Page({
 		deviceHeight: 0,
 		pageNum: 1,
 		carStatusList:[],
-
+    powerStatusList:[],
 		chooseLevel1: false,
 		chooseLevel2: false,
 		tempLevel1: null,
@@ -115,53 +115,86 @@ Page({
 											level2Name: that.data.level2[0].name,
 											level: that.data.level2[0].id,
 										})
-										
+                   
 										var url;
 										if (that.data.use == 1) {
 											url = config.PytheRestfulServerURL + '/count/car/condition';
 										}
 										if (that.data.use == 0) {
 											url = config.PytheRestfulServerURL + '/select/car/counter';
-										}
-										wx.request({
-											url: url,
-											data: {
-												level: that.data.level,
-												pageNum: 1,
-												pageSize: 10,
-											},
-											method: 'GET',
-											success: function (res) {
-												if (res.data.status == 200) {
-													var result = res.data.data;
+                    } 
+                    if (that.data.use == 2) {
+                     
+                      url = config.PytheRestfulServerURL + '/select/car/power';
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+                         
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+                            if (result == null) {
+                              that.data.pageNum = that.data.pageNum - 1;
+                            }
+                            else {
+                              that.data.powerStatusList = that.data.powerStatusList.concat(result);
 
-													that.setData({
-														carStatusList: [],
-													});
-													if (result.user == null) {
-														that.data.pageNum = 1;
-														that.setData({
-															carStatusList: [],
-															carMargin: 0,
-															endNum: result.end_num,
-														});
-													}
-													else {
-														if(that.data.use == 1)
-															that.data.carStatusList = that.data.carStatusList.concat(result.user);
-														if (that.data.use == 0)
-															that.data.carStatusList = that.data.carStatusList.concat(result);
+                              that.setData({
+                                powerStatusList: that.data.powerStatusList,
+                              });
+                            }
 
-														that.setData({
-															carStatusList: that.data.carStatusList,
-															carMargin: result.size,
-															endNum: result.end_num,
-														});
-													}
+                          }
+                        }
+                      });
+                    }else{
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
 
-												}
-											}
-										});
+                            that.setData({
+                              carStatusList: [],
+                            });
+                            if (result.user == null) {
+                              that.data.pageNum = 1;
+                              that.setData({
+                                carStatusList: [],
+                                carMargin: 0,
+                                endNum: result.end_num,
+                              });
+                            }
+                            else {
+                              if (that.data.use == 1)
+                                that.data.carStatusList = that.data.carStatusList.concat(result.user);
+                              if (that.data.use == 0)
+                                that.data.carStatusList = that.data.carStatusList.concat(result);
+
+                              that.setData({
+                                carStatusList: that.data.carStatusList,
+                                carMargin: result.size,
+                                endNum: result.end_num,
+                              });
+                            }
+
+                          }
+                        }
+                      });
+                    }
+
+
 									}
 								},
 								fail: function (res) { },
@@ -188,41 +221,72 @@ Page({
 			if (that.data.use == 0) {
 				url = config.PytheRestfulServerURL + '/select/car/counter';
 			}
-			wx.request({
-				url: url,
-				data: {
-					level: that.data.level,
-					pageNum: 1,
-					pageSize: 10,
-				},
-				method: 'GET',
-				success: function (res) {
-					if (res.data.status == 200) {
-						var result = res.data.data;
-						that.setData({
-							carStatusList: [],
-						});
-						that.setData({
-							carMargin: result.size,
-							endNum: result.end_num,
-						});
+      if (that.data.use == 2) {
+        url = config.PytheRestfulServerURL + '/select/car/power';
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+            if (res.data.status == 200) {
+              console.log("22222" + res.data.data)
+              
+              var result = res.data.data;
+              if (result == null) {
+                that.data.pageNum = that.data.pageNum - 1;
+              }
+              else {
+                that.data.powerStatusList = that.data.powerStatusList.concat(result);
 
-						if(that.data.use == 1)
-						{
-							that.setData({
-								carStatusList: result.user,
-							});
-						}
-						if (that.data.use == 0) {
-							that.setData({
-								carStatusList: result,
-							});
-						}
-						
+                that.setData({
+                  powerStatusList: that.data.powerStatusList,
+                });
+              }
 
-					}
-				}
-			});
+            }
+          }
+        });
+      }else{
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+            if (res.data.status == 200) {
+              var result = res.data.data;
+              that.setData({
+                carStatusList: [],
+              });
+              that.setData({
+                carMargin: result.size,
+                endNum: result.end_num,
+              });
+
+              if (that.data.use == 1) {
+                that.setData({
+                  carStatusList: result.user,
+                });
+              }
+              if (that.data.use == 0) {
+                that.setData({
+                  carStatusList: result,
+                });
+              }
+
+
+            }
+          }
+        });
+      }
+
 		}
 	
   },
@@ -356,47 +420,76 @@ Page({
 					if (that.data.use == 0) {
 						url = config.PytheRestfulServerURL + '/select/car/counter';
 					}
-					wx.request({
-						url: url,
-						data: {
-							level: that.data.level,
-							pageNum: 1,
-							pageSize: 10,
-						},
-						method: 'GET',
-						success: function (res) {
-							if (res.data.status == 200) {
-								var result = res.data.data;
-								
-								that.setData({
-									carStatusList: [],
-								});
-								if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) 
-								{
-									that.data.pageNum = 1;
-									that.setData({
-										carStatusList: [],
-										carMargin: 0,
-										endNum: result.end_num,
-									});
-								}
-								else 
-								{console.log('fukck');
-									if(that.data.use == 1)
-										that.data.carStatusList = that.data.carStatusList.concat(result.user);
-									if (that.data.use == 0)
-										that.data.carStatusList = that.data.carStatusList.concat(result);
+          if (that.data.use == 2) {
+            url = config.PytheRestfulServerURL + '/select/car/power';
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+                  if (result == null) {
+                    that.data.pageNum = that.data.pageNum - 1;
+                  }
+                  else {
+                    that.data.powerStatusList = that.data.powerStatusList.concat(result);
 
-									that.setData({
-										carStatusList: that.data.carStatusList,
-										carMargin: result.size,
-										endNum: result.end_num,
-									});
-								}
+                    that.setData({
+                      powerStatusList: that.data.powerStatusList,
+                    });
+                  }
 
-							}
-						}
-					});
+                }
+              }
+            });
+          }else{
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+
+                  that.setData({
+                    carStatusList: [],
+                  });
+                  if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) {
+                    that.data.pageNum = 1;
+                    that.setData({
+                      carStatusList: [],
+                      carMargin: 0,
+                      endNum: result.end_num,
+                    });
+                  }
+                  else {
+                    console.log('fukck');
+                    if (that.data.use == 1)
+                      that.data.carStatusList = that.data.carStatusList.concat(result.user);
+                    if (that.data.use == 0)
+                      that.data.carStatusList = that.data.carStatusList.concat(result);
+
+                    that.setData({
+                      carStatusList: that.data.carStatusList,
+                      carMargin: result.size,
+                      endNum: result.end_num,
+                    });
+                  }
+
+                }
+              }
+            });
+          }
+
 				},
 				fail: function (res) { },
 				complete: function (res) { },
@@ -431,46 +524,75 @@ Page({
 		if (that.data.use == 0) {
 			url = config.PytheRestfulServerURL + '/select/car/counter';
 		}
-		wx.request({
-			url: url,
-			data: {
-				level: that.data.level,
-				pageNum: 1,
-				pageSize: 10,
-			},
-			method: 'GET',
-			success: function (res) {
-				if (res.data.status == 200) {
-					var result = res.data.data;
+    if (that.data.use == 2) {
+      url = config.PytheRestfulServerURL + '/select/car/power';
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.status == 200) {
+            var result = res.data.data;
+            if (result == null) {
+              that.data.pageNum = that.data.pageNum - 1;
+            }
+            else {
+              that.data.powerStatusList = that.data.powerStatusList.concat(result);
 
-					that.setData({
-						carStatusList: [],
-					});
-					if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) 
-					{
-						that.data.pageNum = 1;
-						that.setData({
-							carStatusList: [],
-							carMargin: 0,
-							endNum: result.end_num,
-						});
-					}
-					else {
-						if (that.data.use == 1)
-							that.data.carStatusList = that.data.carStatusList.concat(result.user);
-						if (that.data.use == 0)
-							that.data.carStatusList = that.data.carStatusList.concat(result);
-						
-						that.setData({
-							carStatusList: that.data.carStatusList,
-							carMargin: result.size,
-							endNum: result.end_num,
-						});
-					}
+              that.setData({
+                powerStatusList: that.data.powerStatusList,
+              });
+            }
 
-				}
-			}
-		});
+          }
+        }
+      });
+    }else{
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.status == 200) {
+            var result = res.data.data;
+
+            that.setData({
+              carStatusList: [],
+            });
+            if ((result.user == null && that.data.use == 1) || (result == null && that.data.use == 0)) {
+              that.data.pageNum = 1;
+              that.setData({
+                carStatusList: [],
+                carMargin: 0,
+                endNum: result.end_num,
+              });
+            }
+            else {
+              if (that.data.use == 1)
+                that.data.carStatusList = that.data.carStatusList.concat(result.user);
+              if (that.data.use == 0)
+                that.data.carStatusList = that.data.carStatusList.concat(result);
+
+              that.setData({
+                carStatusList: that.data.carStatusList,
+                carMargin: result.size,
+                endNum: result.end_num,
+              });
+            }
+
+          }
+        }
+      });
+    }
+
 	},
   
 
@@ -493,6 +615,7 @@ Page({
 		if (that.data.use == 0) {
 			url = config.PytheRestfulServerURL + '/select/car/counter';
 		}
+    
 		wx.request({
 			url: url,
 			data: {
@@ -527,7 +650,36 @@ Page({
 			}
 		});
 	},
-	
+  getMorePowerStatus: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+    var url = config.PytheRestfulServerURL + '/select/car/power';
+    wx.request({
+      url: url,
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.powerStatusList = that.data.powerStatusList.concat(result);
+
+            that.setData({
+              powerStatusList: that.data.powerStatusList,
+            });
+          }
+
+        }
+      }
+    });
+  },
 
 
 })

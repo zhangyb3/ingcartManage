@@ -38,7 +38,8 @@
     "pages/monitor/backRecord",
     "pages/monitor/changeGuard",
     "pages/catalog/new",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/monitor/returnCarPosition"
   ],
   "window": {
     "backgroundTextStyle": "light",

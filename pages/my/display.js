@@ -89,6 +89,12 @@ Page({
 		})
 	},
 
+  toReturnCarPosition: function () {
+    wx.navigateTo({
+      url: '../monitor/returnCarPosition'
+    })
+  },
+
 	carPositionQuery: function () {
 		wx.navigateTo({
 			url: '../monitor/carPosition?operation=query'
@@ -132,6 +138,13 @@ Page({
 			url: '../monitor/carStatus?queryAll=' + queryAll + "&use=0",
 		})
 	},
+
+  carPowerStatusQuery: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=2",
+    })
+  },
 
 	carUsingQuery: function () {
 		wx.navigateTo({

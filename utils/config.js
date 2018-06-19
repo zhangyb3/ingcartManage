@@ -8,6 +8,7 @@ var PytheFileServerURL = 'https://file.pythe.cn';
 // var PytheSearchServerURL = "https://searching.haowen.mobi:8443/search";
 var PytheSearchServerURL = "https://www.haowen.mobi/rest/index/search";
 
+
 module.exports = {
     AppID : AppID,
 
@@ -17,4 +18,5 @@ module.exports = {
     PytheRestfulServerURL : PytheRestfulServerURL,
     PytheFileServerURL : PytheFileServerURL,
     PytheSearchServerURL : PytheSearchServerURL,
+
 }
