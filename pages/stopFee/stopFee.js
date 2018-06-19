@@ -214,6 +214,13 @@ Page({
 	},
 
 	managerStopFee:function(e){
+		wx.showLoading({
+			title: '',
+			mask: true,
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
 		var that = this;
 		wx.request({
 			url: config.PytheRestfulServerURL + '/manage/urgent/refund/',//小程序版退费
@@ -225,6 +232,7 @@ Page({
 			},
 			method: 'POST',
 			success: function (res) {
+				wx.hideLoading();
 				if(res.data.status == 200)
 				{
 					wx.showToast({
