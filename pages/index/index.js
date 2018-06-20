@@ -467,7 +467,7 @@ Page({
 											var lockLevel = result.car_level;
 
 
-											if (qrId.length == 8 ) 
+											if (lockLevel >= 3 ) 
 											{
 												wx.showLoading({
 													title: '开锁中...',
