@@ -20,6 +20,7 @@ Page({
 
 		isAgent:null,
 
+		clockCountInterval:null,
   },
 
   /**
@@ -50,6 +51,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+		
 		wx.closeSocket();
 		app.ingcartLockManager.reinit();
 
@@ -70,7 +72,7 @@ Page({
 			complete: function (res) { },
 		})
 
-		setInterval(
+		this.data.clockCountInterval = setInterval(
 			function () {
 				app.clockCount++;
 
@@ -111,6 +113,8 @@ Page({
 						if (wx.getStorageSync(that.data.qrId) == 'unlock_success') 
 						{
 							console.log('stop clock', app.clockCount);
+							clearInterval(that.data.clockCountInterval);
+							app.clockCount = 0;
 							console.log(' unlock success !!!!!!!!!!!!!!!!!!!!!!!!!');
 							clearInterval(checkUnlockingQR);
 

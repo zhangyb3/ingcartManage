@@ -111,22 +111,24 @@ Page({
 
 								operation.managerUnlockCheck(that, qrId,
 									() => {
-										if (qrId.length == 8) {
+										// if (qrId.length == 8) 
+										// {
 
-											wx.navigateTo({
-												url: '../index/processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock' + '&proxy=1' + '&customerPhone=' + that.data.customerPhoneNum,
-												success: function (res) { },
-												fail: function (res) {
+										// 	wx.navigateTo({
+										// 		url: '../index/processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock' + '&proxy=1' + '&customerPhone=' + that.data.customerPhoneNum,
+										// 		success: function (res) { },
+										// 		fail: function (res) {
 
-												},
-												complete: function (res) { },
-											});
+										// 		},
+										// 		complete: function (res) { },
+										// 	});
 
-										}
+										// }
 
-										else {
+										// else 
+										{
 
-											// app.ingcartLockManager = null;
+
 											operation.qr2mac(qrId,
 												(result) => {
 													console.log('!!!!!!!!!! nodelock type ', result);
@@ -288,7 +290,8 @@ Page({
 						var qrId = that.data.customerCarId.toString();
 						operation.managerUnlockCheck(that, qrId,
 							() => {
-								if (qrId.length == 8) {
+								if (qrId.length == 8) 
+								{
 
 									wx.navigateTo({
 										url: '../index/processing?from=index&carId=' + qrId + '&qrId=' + qrId + '&operation=unlock' + '&proxy=1' + '&customerPhone=' + that.data.customerPhoneNum + '&only=gprs',
