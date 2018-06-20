@@ -51,7 +51,7 @@ function sendVerificationCode(registerPhonenumber)
         console.log(res);
         typeof success == "function" && success(res)
       },
-      fail: function() {
+      fail: function(res) {
         console.log(res);
         typeof success == "function" && fail(res)
       },

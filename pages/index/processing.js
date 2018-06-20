@@ -235,7 +235,7 @@ Page({
 						
 
 						if (wx.getStorageSync('unlock_mode') == 'ble') {
-							
+							console.log('start clock', app.clockCount);
 							// 下面这句调用强制使用蓝牙开锁
 							app.ingcartLockManager.unlock(preZero + that.data.qrId, wx.getStorageSync(user.Latitude), wx.getStorageSync(user.Longitude), that.unlockCB, that.unlockFailCB, that.lockCB,true);
 						}
