@@ -199,9 +199,12 @@ Page({
 					}
 
 					var markers = [];
+          markers[0] = {};
 					markers[0].longitude = result.lng_lat[0].lng;
 					markers[0].latitude = result.lng_lat[0].lat;
 					markers[0].iconPath= '/images/start.png';
+          count--;
+          markers[count] = {};
 					markers[count].longitude = result.lng_lat[count].lng;
 					markers[count].latitude = result.lng_lat[count].lat;
 					markers[count].iconPath = '/images/end.png';
