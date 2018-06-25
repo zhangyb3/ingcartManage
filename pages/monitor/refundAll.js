@@ -550,6 +550,7 @@ Page({
 				method: 'POST',
 				success: function (res) {
 					wx.hideLoading();
+					console.log(JSON.stringify(res.data));
 					if (res.data.status == 200) {
 						wx.showToast({
 							title: res.data.msg,

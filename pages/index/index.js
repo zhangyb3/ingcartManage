@@ -501,27 +501,30 @@ Page({
 														}
 														else {
 															wx.hideLoading();
+															
+															doUnlock(that, qrId);
 
 															console.log("redirect to progress page !!!!!!!!!!!!!!!!");
-															setTimeout(
-																function () {
-																	wx.hideLoading();
+															// setTimeout(
+															// 	function () 
+															// 	{
+															// 		wx.hideLoading();
 
-																	checkUsingCarStatus(that,
-																		(result) => {
+															// 		checkUsingCarStatus(that,
+															// 			(result) => {
 
 
-																			{
-																				console.log("progress page", qrId);
-																				doUnlock(that, qrId);
-																			}
+															// 				{
+															// 					console.log("progress page", qrId);
+															// 					doUnlock(that, qrId);
+															// 				}
 
-																		},
-																	);
+															// 			},
+															// 		);
 
-																},
-																2000
-															);
+															// 	},
+															// 	2000
+															// );
 
 														}
 
