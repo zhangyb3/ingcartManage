@@ -77,10 +77,26 @@ Page({
 		refundRecords: [],
 		pageNum: 1,
 		pageSize: 10,
+    reason:'',
+    showDialog: false,
+    items: [],
+    vtype:'天气异常'
 	},
 
+  radioChange: function (e) {
+    var that = this
+    that.setData({
+      vtype: e.detail.value,
+      showDialog: !this.data.showDialog
+    })
+    console.log("选择的退款原因为:"+this.data.vtype)
+  },
+  toggleDialog() {
+    this.setData({
+      showDialog: !this.data.showDialog
+    });
+  },
 	onLoad: function (parameters) {
-
 		var that = this;
 		that.data.operatorLevel = parameters.operatorLevel;
 		that.data.refundType = parameters.type;
@@ -113,6 +129,25 @@ Page({
 		that.setData({
 			refundType: parameters.type,
 		});
+
+   
+    wx.request({
+      url: config.PytheRestfulServerURL + '/select/reasons/level',
+      data: {
+          status:1
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+            console.log(res.data)
+            that.setData({
+              items: res.data.data,
+            });
+        }
+      },
+      fail: function (res) { },
+      complete: function (res) { },
+    });
 
 	},
 
@@ -403,7 +438,11 @@ Page({
 
 		// }
 	},
-
+  reasonInput: function (e) {
+    this.setData({
+      reason: e.detail.value
+    })
+  },
 	managerRefundAll: function (e) {
 		wx.showLoading({
 			title: '',
@@ -425,6 +464,7 @@ Page({
 				data: {
 					phoneNum: that.data.customerPhoneNum,
 					managerId: wx.getStorageSync(user.ManagerID),
+          refundReason: this.data.vtype,
 					// date: that.data._year + '-' + that.data._month + '-' + that.data._day + ' ' + that.data._hour + ':' + that.data._minute + ':00',
 				},
 				method: 'POST',
@@ -485,6 +525,7 @@ Page({
 										data: {
 											password: that.data.password,
 											managerId: wx.getStorageSync(user.ManagerID),
+                      refundReason:this.data.vtype,
 											
 										},
 										method: 'POST',
@@ -545,6 +586,7 @@ Page({
 				data: {
 					phoneNum: that.data.customerPhoneNum,
 					managerId: wx.getStorageSync(user.ManagerID),
+          refundReason: this.data.vtype,
 					// date: that.data._year + '-' + that.data._month + '-' + that.data._day + ' ' + that.data._hour + ':' + that.data._minute + ':00',
 				},
 				method: 'POST',
