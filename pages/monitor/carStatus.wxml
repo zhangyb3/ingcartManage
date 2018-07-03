@@ -72,8 +72,8 @@
 			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;">
 				
 				<text style="width:60%;font-size:32rpx;text-align:center;color:red;">{{item.id}}</text>
-				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:red;" wx:if="{{item.battery<=36}}">{{item.battery}}</text>
-        <text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:green;" wx:if="{{item.battery>36}}">{{item.battery}}</text>
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:orange;" wx:if="{{item.level==0}}">{{item.battery}}</text>
+        <text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;color:green;" wx:if="{{item.level==1}}">{{item.battery}}</text>
 			</view>
 
 		</view>

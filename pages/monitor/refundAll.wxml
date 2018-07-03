@@ -5,15 +5,44 @@
 				<view class="maintenance_scan_car_id_container">
 					<view class="maintenance_car_id">
 						<input class="maintenance_car_id_input" placeholder="输入手机号或车号" value="{{qrId}}" bindinput="getCustomerPhoneNum"/>
-					</view>
-					
+					</view>		
 				</view>
 			</view>
+<view class="maintenance_car_id_container" wx:if="{{refundType == 'distance'}}" style='background:white'>
+<view class='input-tel'>
+           <view class='tel-title'>选择退款原因</view>
+           <button  bindtap="toggleDialog" value='{{vtype}}' style='height:65rpx;margin-top:40rpx;font-size:30rpx;text-align:center;'>{{vtype}}</button>
+</view>
+</view>
+
+
+
+<view class="free-dialog {{ showDialog ? 'free-dialog--show' : '' }}">
+    <view class="free-dialog__mask" bindtap="toggleDialog" />
+    <view class="free-dialog__container">
+      <view style="padding: 5% 5% 15%;">
+        <form bindsubmit='submit' bindreset="reset">
+           <radio-group class='free-radios' bindchange="radioChange">
+            <label class="free-radio" bindtap="click" wx:for="{{items}}" wx:key="{{items}}" data-id="{{index}}" style="width:230rpx;" >
+              <radio value="{{item.description}}" name="{{item.description}}" ></radio>
+              <label class="free-text">{{item.description}}</label>
+            </label>
+          </radio-group> 
+        </form>
+
+      </view>
+    </view>
+  </view>
+
+
+
 
 <view style='min-height:{{winHeight*0.25}}px;' wx:if="{{refundType != 'faultToGift' && refundType != 'no_distance_batch' && refundType != 'distance' && refundType != 'queryRefund'}}">
       <view class='tel-title'>输入客户电话</view>
       <view class='input-tel'>
            <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
+           <view class='tel-title'>选择退款原因</view>
+           <button  bindtap="toggleDialog" value='{{vtype}}' style='height:65rpx;margin-top:40rpx;font-size:30rpx;text-align:center;'>{{vtype}}</button>
            <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
                  {{checkResult}}
            </view>
@@ -37,11 +66,15 @@
 					<view class="maintenance_car_id">
 						<input class="maintenance_car_id_input" placeholder="输入手机号或车号" value="{{qrId}}" bindinput="getCustomerPhoneNum"/>
 					</view>
-					
 				</view>
 			</view>
-
-
+			<view class="maintenance_car_id_container" style='margin-top:50px;' wx:if="{{refundType == 'faultToGift'}}" style='background:white'>	
+        <view class='input-tel'>
+                  <view class='tel-title'>选择退款原因</view>
+                  <button  bindtap="toggleDialog" value='{{vtype}}' style='height:65rpx;margin-top:40rpx;font-size:30rpx;text-align:center;'> 
+                  {{vtype}}</button>
+        </view>
+</view>
 	<view style='margin-top:10px;width: 100%;' wx:if="{{refundType == 'no_distance_batch'}}">
 
 		<view class="row_display" style="height: 40px;line-height: 40px;border: 1px solid lightgray;">
@@ -62,7 +95,6 @@
 		</view>
 		
 	</scroll-view>
-
 	</view>
 
 
@@ -90,7 +122,7 @@
 
 	</view>
 
-<button class='hand-in' wx:if="{{refundType != 'queryRefund'}}" bindtap='managerRefundAll'>确定</button>
+<button class='hand-in' wx:if="{{refundType != 'queryRefund'}}" bindtap='managerRefundAll' style='margin-top:80rpx;'>确定</button>
 
 <view id="refund_hint" hidden="{{refundType == 'faultToGift' || refundType == 'queryRefund'}}">提示：{{refundHint}}</view>
 

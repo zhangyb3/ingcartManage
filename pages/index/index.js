@@ -481,7 +481,7 @@ Page({
 													data: {
 														managerId: wx.getStorageSync(user.ManagerID),
 														qrId: qrId,
-														carId: qrId +10000,
+														carId: qrId,
 													},
 													method: 'POST',
 													success: function (res) {
