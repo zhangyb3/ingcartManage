@@ -1,64 +1,80 @@
-		<view class=''>
-					<view class='choose-name'>请选择</view>
-					<view class='getName' bindtap='chooseLevel1'>{{level1Name}}</view>
-		</view> 
-		
-		<view class=''>
-					<view class='choose-name'>请选择</view>
-					<view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
-		</view> 
+<view class=''>
+  <view class='choose-name'>请选择</view>
+  <view class='getName' bindtap='chooseLevel1'>{{level1Name}}</view>
+</view>
 
-    <view class=''>
-					<view class='choose-name'>开/闭园</view>
-					<view class='getName' bindtap='chooseOpenPark'>{{openPark}}</view>
-		</view> 
-    <button class='hand-in' bindtap='OpenParkSub' >确定</button>
+<view class=''>
+  <view class='choose-name'>请选择</view>
+  <view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
+</view>
 
-    <view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
-      <view class='pick-box'>
-                 <view class='choose-btn'>
-                        <text class='close' bindtap='close'>取消</text>
-                        <text class='sure' bindtap='sureLevel1'>确定</text>
-                 </view>
-                 <view style='height:40px;line-height:40px;text-align:center;'></view>
-                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel1">
-                   <picker-view-column id="city_column">
-                      <view wx:for="{{level1}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
-                   </picker-view-column>
-                   
-                 </picker-view>
-           </view>
+<view class=''>
+  <view class='choose-name'>开园时间</view>
+  <view class="section getName">
+    <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindStartTimeChange">
+      <view class="picker">
+        {{startTime}}
+      </view>
+    </picker>
+  </view>
+</view>
+<view class=''>
+  <view class='choose-name'>闭园时间</view>
+  <view class="section getName">
+    <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindCloseTimeChange">
+      <view class="picker">
+        {{closeTime}}
+      </view>
+    </picker>
+  </view>
+</view>
+<button class='hand-in' bindtap='OpenParkSub'>确定</button>
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">
+  <view class='pick-box'>
+    <view class='choose-btn'>
+      <text class='close' bindtap='close'>取消</text>
+      <text class='sure' bindtap='sureLevel1'>确定</text>
+    </view>
+    <view style='height:40px;line-height:40px;text-align:center;'></view>
+    <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel1">
+      <picker-view-column id="city_column">
+        <view wx:for="{{level1}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
+      </picker-view-column>
+
+    </picker-view>
+  </view>
 </view>
 
 
-<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel2 == true}}">      
-      <view class='pick-box'>
-                 <view class='choose-btn'>
-                        <text class='close' bindtap='close'>取消</text>
-                        <text class='sure' bindtap='sureLevel2'>确定</text>
-                 </view>
-                 <view style='height:40px;line-height:40px;text-align:center;'></view>
-                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel2">
-                   <picker-view-column id="zone_column">
-                      <view wx:for="{{level2}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
-                   </picker-view-column>
-                   
-                 </picker-view>
-           </view>
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel2 == true}}">
+  <view class='pick-box'>
+    <view class='choose-btn'>
+      <text class='close' bindtap='close'>取消</text>
+      <text class='sure' bindtap='sureLevel2'>确定</text>
+    </view>
+    <view style='height:40px;line-height:40px;text-align:center;'></view>
+    <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel2">
+      <picker-view-column id="zone_column">
+        <view wx:for="{{level2}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+      </picker-view-column>
+
+    </picker-view>
+  </view>
 </view>
 
-<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseOpenFlag == true}}">      
-      <view class='pick-box'>
-                 <view class='choose-btn'>
-                        <text class='close' bindtap='closeOpen'>取消</text>
-                        <text class='sure' bindtap='openFlagSure'>确定</text>
-                 </view>
-                 <view style='height:40px;line-height:40px;text-align:center;'></view>
-                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="chooseSure">
-                   <picker-view-column id="zone_column">
-                      <view wx:for="{{openOrClose}}" data-type="{{item.type}}" style="line-height: 50px" >{{item.action}}</view>
-                   </picker-view-column>
-                   
-                 </picker-view>
-           </view>
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseOpenFlag == true}}">
+  <view class='pick-box'>
+    <view class='choose-btn'>
+      <text class='close' bindtap='closeOpen'>取消</text>
+      <text class='sure' bindtap='openFlagSure'>确定</text>
+    </view>
+    <view style='height:40px;line-height:40px;text-align:center;'></view>
+    <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="chooseSure">
+      <picker-view-column id="zone_column">
+        <view wx:for="{{openOrClose}}" data-type="{{item.type}}" style="line-height: 50px">{{item.action}}</view>
+      </picker-view-column>
+
+    </picker-view>
+  </view>
 </view>

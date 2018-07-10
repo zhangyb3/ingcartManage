@@ -36,6 +36,7 @@ Page({
 
 		shwoFilter:true,
 		queryAll:'no',
+    parkConditions:[]
   },
 
   /**
@@ -178,6 +179,41 @@ Page({
 												}
 											});
 										}
+                    if (that.data.checkType == 'parkDetails') {
+                      console.log("开闭园详情")
+                      wx.request({
+                        url: config.PytheRestfulServerURL + '/select/park/condition/level',
+                        data: {
+                          level: that.data.level,
+                          pageNum: that.data.pageNum,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+
+
+                            if (result == null || result.length == 0) {
+                              that.data.pageNum = 1;
+                              that.setData({
+                                parkConditions: [],
+
+                              });
+                            }
+                            else {
+                              that.data.parkConditions = that.data.parkConditions.concat(result);
+                              that.setData({
+                                parkConditions: that.data.parkConditions,
+
+                              });
+                            }
+
+                          }
+                        }
+                      });
+
+                    }
 										if (that.data.checkType == 'cart') {
 											wx.request({
 												url: config.PytheRestfulServerURL + '/select/operator/condition',
@@ -320,6 +356,43 @@ Page({
 					}
 				});
 			}
+      if (that.data.checkType == 'parkDetails') {
+        that.setData({
+          parkConditions: [],
+
+        });
+        wx.request({
+          url: config.PytheRestfulServerURL + '/select/park/condition/level',
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+            if (res.data.status == 200) {
+              var result = res.data.data;
+
+
+              if (result == null || result.length == 0) {
+                that.data.pageNum = 1;
+                that.setData({
+                  parkConditions: [],
+
+                });
+              }
+              else {
+                that.data.parkConditions = that.data.parkConditions.concat(result);
+                that.setData({
+                  parkConditions: that.data.parkConditions,
+
+                });
+              }
+
+            }
+          }
+        });
+      }
 			if (that.data.checkType == 'cart') {
 				that.setData({
 					carts: [],
@@ -525,6 +598,44 @@ Page({
 							}
 						});
 					}
+          if (that.data.checkType == 'parkDetails') {
+            console.log("闭园：")
+            that.setData({
+              parkConditions: [],
+
+            });
+            wx.request({
+              url: config.PytheRestfulServerURL + '/select/park/condition/level',
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+
+
+                  if (result == null || result.length == 0) {
+                    that.data.pageNum = 1;
+                    that.setData({
+                      parkConditions: [],
+
+                    });
+                  }
+                  else {
+                    that.data.parkConditions = that.data.parkConditions.concat(result);
+                    that.setData({
+                      parkConditions: that.data.parkConditions,
+
+                    });
+                  }
+
+                }
+              }
+            });
+          }
 					if (that.data.checkType == 'cart') {
 						that.setData({
 							carts: [],
@@ -635,6 +746,43 @@ Page({
 				}
 			});
 		}
+    if (that.data.checkType == 'parkDetails') {
+      that.setData({
+        parkConditions: [],
+
+      });
+      wx.request({
+        url: config.PytheRestfulServerURL + '/select/park/condition/level',
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.status == 200) {
+            var result = res.data.data;
+
+
+            if (result == null || result.length == 0) {
+              that.data.pageNum = 1;
+              that.setData({
+                parkConditions: [],
+
+              });
+            }
+            else {
+              that.data.parkConditions = that.data.parkConditions.concat(result);
+              that.setData({
+                parkConditions: that.data.parkConditions,
+
+              });
+            }
+
+          }
+        }
+      });
+    }
 		if(that.data.checkType == 'cart')
 		{
 			that.setData({
@@ -708,7 +856,7 @@ Page({
 					else {
 						that.data.managers = that.data.managers.concat(result);
 						that.setData({
-							managers: managers,
+              managers: that.data.managers,
 							
 						});
 					}
@@ -717,6 +865,39 @@ Page({
 			}
 		});
 	},
+  getMoreParkDetails: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+
+
+    wx.request({
+      url: config.PytheRestfulServerURL + '/select/park/condition/level',
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+
+
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.parkConditions = that.data.parkConditions.concat(result);
+            that.setData({
+              parkConditions: that.data.parkConditions,
+
+            });
+          }
+
+        }
+      }
+    });
+  },
 
 	//删除管理员
 	deleteManager: function (e) {
@@ -804,7 +985,7 @@ Page({
 						}
 						that.data.carts = that.data.carts.concat(result);
 						that.setData({
-							carts: carts,
+              carts: that.data.carts,
 
 						});
 					}
@@ -847,7 +1028,7 @@ Page({
 						}
 						that.data.attractions = that.data.attractions.concat(result);
 						that.setData({
-							attractions: attractions,
+              attractions: that.data.attractions,
 
 						});
 					}

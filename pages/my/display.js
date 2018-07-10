@@ -329,6 +329,12 @@ Page({
       complete: function (res) { },
     })
   },
+  parkDetails: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/managerRecord?checkType=parkDetails&queryAll=' + queryAll,
+    })
+  },
   scanCodeRecord: function (e) {
 
     wx.navigateTo({
