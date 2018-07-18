@@ -148,6 +148,13 @@ Page({
     })
   },
 
+  carOnlineStatusQuery: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=4",
+    })
+  },
+
   netUnlock: function (e) {
     var queryAll = e.currentTarget.dataset.all;
     wx.navigateTo({

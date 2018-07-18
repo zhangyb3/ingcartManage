@@ -13,6 +13,7 @@ Page({
 		carStatusList:[],
     powerStatusList:[],
     qrids:[],
+    onlineStatusList: [],
 		chooseLevel1: false,
 		chooseLevel2: false,
 		tempLevel1: null,
@@ -187,6 +188,37 @@ Page({
                           }
                         }
                       });
+                    } else if (that.data.use == 4) {
+                      url = config.PytheRestfulServerURL + '/select/device/online/level';
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+                            that.setData({
+                              onlineStatusList: [],
+                            });
+                            if (result == null) {
+                              that.data.pageNum = that.data.pageNum - 1;
+                            }
+                            else {
+                              that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                              that.setData({
+                                onlineStatusList: that.data.onlineStatusList,
+                              });
+                            }
+
+                          }
+                        }
+                      });
                     }
                     else{
                       wx.request({
@@ -319,7 +351,39 @@ Page({
             }
           }
         });
-      }else{
+      } else if (that.data.use == 4) {
+        url = config.PytheRestfulServerURL + '/select/device/online/level';
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+
+            if (res.data.status == 200) {
+              var result = res.data.data;
+              that.setData({
+                onlineStatusList: [],
+              });
+              if (result == null) {
+                that.data.pageNum = that.data.pageNum - 1;
+              }
+              else {
+                that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                that.setData({
+                  onlineStatusList: that.data.onlineStatusList,
+                });
+              }
+
+            }
+          }
+        });
+      }
+      else{
         wx.request({
           url: url,
           data: {
@@ -553,7 +617,39 @@ Page({
                 }
               }
             });
-          }else{
+          } else if (that.data.use == 4) {
+            url = config.PytheRestfulServerURL + '/select/device/online/level';
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+                  that.setData({
+                    onlineStatusList: [],
+                  });
+                  if (result == null) {
+                    that.data.pageNum = that.data.pageNum - 1;
+                  }
+                  else {
+                    that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                    that.setData({
+                      onlineStatusList: that.data.onlineStatusList,
+                    });
+                  }
+
+                }
+              }
+            });
+          }
+          else{
             wx.request({
               url: url,
               data: {
@@ -693,7 +789,39 @@ Page({
           }
         }
       });
-    }else{
+    } else if (that.data.use == 4) {
+      url = config.PytheRestfulServerURL + '/select/device/online/level';
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+
+          if (res.data.status == 200) {
+            var result = res.data.data;
+            that.setData({
+              onlineStatusList: [],
+            });
+            if (result == null) {
+              that.data.pageNum = that.data.pageNum - 1;
+            }
+            else {
+              that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+              that.setData({
+                onlineStatusList: that.data.onlineStatusList,
+              });
+            }
+
+          }
+        }
+      });
+    }
+    else{
       wx.request({
         url: url,
         data: {
@@ -815,6 +943,40 @@ Page({
 
             that.setData({
               powerStatusList: that.data.powerStatusList,
+            });
+          }
+
+        }
+      }
+    });
+  },
+  getMoreOnlineStatus: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+    url = config.PytheRestfulServerURL + '/select/device/online/level';
+    wx.request({
+      url: url,
+      data: {
+        level: that.data.level,
+        pageNum: 1,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+
+        if (res.data.status == 200) {
+          var result = res.data.data;
+          that.setData({
+            onlineStatusList: [],
+          });
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+            that.setData({
+              onlineStatusList: that.data.onlineStatusList,
             });
           }
 

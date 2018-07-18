@@ -100,7 +100,26 @@
 	</scroll-view>
 	
 
+	<view class="row_display" style="width: 100%;height: 40px;line-height: 40px;" wx:if="{{use == 4}}">
+		<text style="width:40%;font-size:50rpx;text-align:center;">车辆编码</text>
+		<text style="width:30%;font-size:50rpx;text-align:center;">景区名称</text>
+		<text style="width:30%;font-size:50rpx;text-align:center;">客户电话</text>
+	</view>
 
+	
+	<scroll-view style='width: 100%;max-height:{{deviceHeight-270}}px' lower-threshold="0"	bindscrolltolower='getMoreOnlineStatus' wx:if="{{use == 4}}" scroll-y>
+
+		<view wx:for='{{onlineStatusList}}' wx:key='unique' wx:for-index="index">
+
+			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;">
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;">{{item.id}}</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;color:red;">{{item.name}}</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;color:red;">{{item.phoneNum}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view>
 
 <view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">      
       <view class='pick-box'>
