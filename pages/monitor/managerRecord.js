@@ -154,6 +154,7 @@ Page({
 													level: that.data.level,
 													pageNum: 1,
 													pageSize: 10,
+                          operaterLevel: wx.getStorageSync(user.Level)
 												},
 												method: 'GET',
 												success: function (res) {
@@ -222,6 +223,7 @@ Page({
 													level: that.data.level,
 													pageNum: 1,
 													pageSize: 10,
+                          operaterLevel: wx.getStorageSync(user.Level)
 												},
 												method: 'GET',
 												success: function (res) {
@@ -331,6 +333,7 @@ Page({
 						level: that.data.level,
 						pageNum: 1,
 						pageSize: 10,
+            operaterLevel: wx.getStorageSync(user.Level)
 					},
 					method: 'GET',
 					success: function (res) {
@@ -405,6 +408,7 @@ Page({
 						level: that.data.level,
 						pageNum: 1,
 						pageSize: 10,
+            operaterLevel: wx.getStorageSync(user.Level)
 					},
 					method: 'GET',
 					success: function (res) {
@@ -573,6 +577,7 @@ Page({
 								level: that.data.level,
 								pageNum: 1,
 								pageSize: 10,
+                operaterLevel: wx.getStorageSync(user.Level)
 							},
 							method: 'GET',
 							success: function (res) {
@@ -648,6 +653,7 @@ Page({
 								level: that.data.level,
 								pageNum: 1,
 								pageSize: 10,
+                operaterLevel: wx.getStorageSync(user.Level)
 							},
 							method: 'GET',
 							success: function (res) {
@@ -721,6 +727,7 @@ Page({
 					level: that.data.level,
 					pageNum: 1,
 					pageSize: 10,
+          operaterLevel: wx.getStorageSync(user.Level)
 				},
 				method: 'GET',
 				success: function (res) {
@@ -796,6 +803,7 @@ Page({
 					level: that.data.level,
 					pageNum: 1,
 					pageSize: 10,
+          operaterLevel: wx.getStorageSync(user.Level)
 				},
 				method: 'GET',
 				success: function (res) {
@@ -844,6 +852,7 @@ Page({
 				level: that.data.level,
 				pageNum: that.data.pageNum,
 				pageSize: 10,
+        operaterLevel: wx.getStorageSync(user.Level)
 			},
 			method: 'GET',
 			success: function (res) {
@@ -963,6 +972,7 @@ Page({
 				level: that.data.level,
 				pageNum: that.data.pageNum,
 				pageSize: 10,
+        operaterLevel: wx.getStorageSync(user.Level)
 			},
 			method: 'GET',
 			success: function (res) {
