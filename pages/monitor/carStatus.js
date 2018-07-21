@@ -22,7 +22,7 @@ Page({
 		level2: [],
 		
 		winHeight: 0,
-		level: '0',
+		level: '',
 		queryAll:'no',
   },
 
@@ -221,6 +221,7 @@ Page({
                       });
                     }
                     else{
+                      console.log("carStatusList1" + that.data.level)
                       wx.request({
                         url: url,
                         data: {
@@ -384,6 +385,7 @@ Page({
         });
       }
       else{
+        console.log("carStatusList1" + that.data.level)
         wx.request({
           url: url,
           data: {
