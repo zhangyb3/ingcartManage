@@ -26,7 +26,7 @@ Page({
 		tempLevel2: null,
 		level1: [],
 		level2: [],
-		level: '0',
+		level: '',
   },
 
   /**

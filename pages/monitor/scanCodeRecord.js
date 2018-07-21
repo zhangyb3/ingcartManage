@@ -20,7 +20,7 @@ Page({
     level2: [],
 
     winHeight: 0,
-    level: '0',
+    level: '',
     queryAll: 'no',
     carStatusList: [],
   },

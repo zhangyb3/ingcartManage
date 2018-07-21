@@ -23,7 +23,7 @@ Page({
 		tempLevel2: null,
 		level1: [],
 		level2: [],
-		level: '0',
+		level: '',
 
 		checkType:null,
 		act:null,
@@ -147,6 +147,7 @@ Page({
 										
 
 										if (that.data.checkType == 'manager') {
+                      console.log("level" + that.data.level)
 											wx.request({
 												url: config.PytheRestfulServerURL + '/select/add/record',
 												data: {
