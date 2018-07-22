@@ -248,9 +248,22 @@ Page({
                             else {
                               if (that.data.use == 1)
                                 that.data.carStatusList = that.data.carStatusList.concat(result.user);
+                              that.setData({
+                                carStatusList: that.data.carStatusList,
+                                carMargin: result.size,
+                                endNum: result.end_num,
+                              });
+                            }
+                            if (result==null){
+                              that.data.pageNum = 1;
+                              that.setData({
+                                carStatusList: [],
+                                carMargin: 0,
+                                endNum: result.end_num,
+                              });
+                            }else{
                               if (that.data.use == 0)
                                 that.data.carStatusList = that.data.carStatusList.concat(result);
-
                               that.setData({
                                 carStatusList: that.data.carStatusList,
                                 carMargin: result.size,
