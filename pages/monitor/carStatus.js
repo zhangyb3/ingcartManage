@@ -292,7 +292,11 @@ Page({
 			fail: function (res) { },
 			complete: function (res) { },
 		});
-
+    if (wx.getStorageSync(user.Level)>=4){
+      that.setData({
+        level:'0'
+      })
+    }
 		if (that.data.level == '0')
 		{
 			var url;

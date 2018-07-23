@@ -58,6 +58,11 @@ Page({
    */
   onShow: function () {
 		var that = this;
+    if (wx.getStorageSync(user.Level) >= 4) {
+      that.setData({
+        level: '0'
+      })
+    }
 		wx.request({
 			url: config.PytheRestfulServerURL + '/select/one/level',
 			data: {
