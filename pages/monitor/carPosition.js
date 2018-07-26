@@ -176,7 +176,7 @@ Page({
 			complete: function(res) {},
 		})
 		wx.request({
-			url: config.PytheRestfulServerURL + '/select/car/location/',
+      url: config.PytheRestfulServerURL + '/select/car/orbit/',
 			data: {
 				qrId: that.data.qrId,
 				carId: that.data.qrId,
@@ -187,7 +187,8 @@ Page({
 				var result;
 				if(res.data.status == 200)
 				{
-					result = res.data.data;
+          result = res.data.data;
+          console.log('zhaozha1' + result.lng_lat)
 					var cartPoints = [];
 					var count = 0;
 					for(; count < result.lng_lat.length; count++)
@@ -195,24 +196,32 @@ Page({
 						cartPoints[count] = {};
 						cartPoints[count].longitude = result.lng_lat[count].lng;
 						cartPoints[count].latitude = result.lng_lat[count].lat;
+            // cartPoints[count].type = 5;
+            // cartPoints[count].color = '#3E97FAAA';
+            // cartPoints[count].borderWidth = 20;
+            // cartPoints[count].dottedLine = true;
+            // cartPoints[count].borderColor = '#3E97FAAA';
 
 					}
 
 					var markers = [];
-          markers[0] = {};
-					markers[0].longitude = result.lng_lat[0].lng;
-					markers[0].latitude = result.lng_lat[0].lat;
-					markers[0].iconPath= '/images/start.png';
-          count--;
-          markers[count] = {};
-					markers[count].longitude = result.lng_lat[count].lng;
-					markers[count].latitude = result.lng_lat[count].lat;
-					markers[count].iconPath = '/images/end.png';
-					
+          var start = {};
+          start.longitude = cartPoints[0].longitude;
+          start.latitude = cartPoints[0].latitude;
+          start.type = 2
+          start.id = 1000000000
+          var end = {};
+          end.longitude = cartPoints[result.lng_lat.length - 1].longitude;
+          end.latitude = cartPoints[result.lng_lat.length - 1].latitude;
+          end.type = 3
+          end.id = 1000000001
+          markers.push(start)
+          markers.push(end)
+          console.log(markers)
+          console.log(cartPoints)
 					var pages = getCurrentPages();
 					var indexPage = pages[0];
-					indexPage.data.cartPoints = cartPoints;
-					indexPage.data.markers.concat(markers);
+          indexPage.orbit(cartPoints, markers)
 					wx.navigateBack({
 						delta: 5,
 					});
