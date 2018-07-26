@@ -13,6 +13,8 @@ Page({
 		carStatusList:[],
     powerStatusList:[],
     qrids:[],
+    onlineStatusList: [],
+    distanceList:[],
 		chooseLevel1: false,
 		chooseLevel2: false,
 		tempLevel1: null,
@@ -21,7 +23,7 @@ Page({
 		level2: [],
 		
 		winHeight: 0,
-		level: '0',
+		level: '',
 		queryAll:'no',
   },
 
@@ -187,8 +189,71 @@ Page({
                           }
                         }
                       });
+                    } else if (that.data.use == 4) {
+                      url = config.PytheRestfulServerURL + '/select/device/online/level';
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+                            that.setData({
+                              onlineStatusList: [],
+                            });
+                            if (result == null) {
+                              that.data.pageNum = that.data.pageNum - 1;
+                            }
+                            else {
+                              that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                              that.setData({
+                                onlineStatusList: that.data.onlineStatusList,
+                              });
+                            }
+
+                          }
+                        }
+                      });
+                    } else if (that.data.use == 5) {
+                      url = config.PytheRestfulServerURL + '/select/distance/level';
+                      wx.request({
+                        url: url,
+                        data: {
+                          level: that.data.level,
+                          pageNum: 1,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+                            that.setData({
+                              distanceList: [],
+                            });
+                            if (result == null) {
+                              that.data.pageNum = that.data.pageNum - 1;
+                            }
+                            else {
+                              that.data.distanceList = that.data.distanceList.concat(result);
+
+                              that.setData({
+                                distanceList: that.data.distanceList,
+                              });
+                            }
+
+                          }
+                        }
+                      });
                     }
                     else{
+                      console.log("carStatusList1" + that.data.level)
                       wx.request({
                         url: url,
                         data: {
@@ -215,9 +280,22 @@ Page({
                             else {
                               if (that.data.use == 1)
                                 that.data.carStatusList = that.data.carStatusList.concat(result.user);
+                              that.setData({
+                                carStatusList: that.data.carStatusList,
+                                carMargin: result.size,
+                                endNum: result.end_num,
+                              });
+                            }
+                            if (result==null){
+                              that.data.pageNum = 1;
+                              that.setData({
+                                carStatusList: [],
+                                carMargin: 0,
+                                endNum: result.end_num,
+                              });
+                            }else{
                               if (that.data.use == 0)
                                 that.data.carStatusList = that.data.carStatusList.concat(result);
-
                               that.setData({
                                 carStatusList: that.data.carStatusList,
                                 carMargin: result.size,
@@ -246,7 +324,11 @@ Page({
 			fail: function (res) { },
 			complete: function (res) { },
 		});
-
+    if (wx.getStorageSync(user.Level)>=4){
+      that.setData({
+        level:'0'
+      })
+    }
 		if (that.data.level == '0')
 		{
 			var url;
@@ -319,7 +401,71 @@ Page({
             }
           }
         });
-      }else{
+      } else if (that.data.use == 4) {
+        url = config.PytheRestfulServerURL + '/select/device/online/level';
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+
+            if (res.data.status == 200) {
+              var result = res.data.data;
+              that.setData({
+                onlineStatusList: [],
+              });
+              if (result == null) {
+                that.data.pageNum = that.data.pageNum - 1;
+              }
+              else {
+                that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                that.setData({
+                  onlineStatusList: that.data.onlineStatusList,
+                });
+              }
+
+            }
+          }
+        });
+      } else if (that.data.use == 5) {
+        url = config.PytheRestfulServerURL + '/select/distance/level';
+        wx.request({
+          url: url,
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+
+            if (res.data.status == 200) {
+              var result = res.data.data;
+              that.setData({
+                distanceList: [],
+              });
+              if (result == null) {
+                that.data.pageNum = that.data.pageNum - 1;
+              }
+              else {
+                that.data.distanceList = that.data.distanceList.concat(result);
+
+                that.setData({
+                  distanceList: that.data.distanceList,
+                });
+              }
+
+            }
+          }
+        });
+      }
+      else{
+        console.log("carStatusList1" + that.data.level)
         wx.request({
           url: url,
           data: {
@@ -553,7 +699,70 @@ Page({
                 }
               }
             });
-          }else{
+          } else if (that.data.use == 4) {
+            url = config.PytheRestfulServerURL + '/select/device/online/level';
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+                  that.setData({
+                    onlineStatusList: [],
+                  });
+                  if (result == null) {
+                    that.data.pageNum = that.data.pageNum - 1;
+                  }
+                  else {
+                    that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+                    that.setData({
+                      onlineStatusList: that.data.onlineStatusList,
+                    });
+                  }
+
+                }
+              }
+            });
+          } else if (that.data.use == 5) {
+            url = config.PytheRestfulServerURL + '/select/distance/level';
+            wx.request({
+              url: url,
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+                  that.setData({
+                    distanceList: [],
+                  });
+                  if (result == null) {
+                    that.data.pageNum = that.data.pageNum - 1;
+                  }
+                  else {
+                    that.data.distanceList = that.data.distanceList.concat(result);
+
+                    that.setData({
+                      distanceList: that.data.distanceList,
+                    });
+                  }
+
+                }
+              }
+            });
+          }
+          else{
             wx.request({
               url: url,
               data: {
@@ -693,7 +902,70 @@ Page({
           }
         }
       });
-    }else{
+    } else if (that.data.use == 4) {
+      url = config.PytheRestfulServerURL + '/select/device/online/level';
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+
+          if (res.data.status == 200) {
+            var result = res.data.data;
+            that.setData({
+              onlineStatusList: [],
+            });
+            if (result == null) {
+              that.data.pageNum = that.data.pageNum - 1;
+            }
+            else {
+              that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+              that.setData({
+                onlineStatusList: that.data.onlineStatusList,
+              });
+            }
+
+          }
+        }
+      });
+    } else if (that.data.use == 5) {
+      url = config.PytheRestfulServerURL + '/select/distance/level';
+      wx.request({
+        url: url,
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+
+          if (res.data.status == 200) {
+            var result = res.data.data;
+            that.setData({
+              distanceList: [],
+            });
+            if (result == null) {
+              that.data.pageNum = that.data.pageNum - 1;
+            }
+            else {
+              that.data.distanceList = that.data.distanceList.concat(result);
+
+              that.setData({
+                distanceList: that.data.distanceList,
+              });
+            }
+
+          }
+        }
+      });
+    }
+    else{
       wx.request({
         url: url,
         data: {
@@ -780,7 +1052,6 @@ Page({
 							that.data.carStatusList = that.data.carStatusList.concat(result.user);
 						if (that.data.use == 0)
 							that.data.carStatusList = that.data.carStatusList.concat(result);
-
 						that.setData({
 							carStatusList: that.data.carStatusList,
 							carMargin: result.size,
@@ -815,6 +1086,70 @@ Page({
 
             that.setData({
               powerStatusList: that.data.powerStatusList,
+            });
+          }
+
+        }
+      }
+    });
+  },
+  getMoreOnlineStatus: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+    url = config.PytheRestfulServerURL + '/select/device/online/level';
+    wx.request({
+      url: url,
+      data: {
+        level: that.data.level,
+        pageNum: 1,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+
+        if (res.data.status == 200) {
+          var result = res.data.data;
+          that.setData({
+            onlineStatusList: [],
+          });
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.onlineStatusList = that.data.onlineStatusList.concat(result);
+
+            that.setData({
+              onlineStatusList: that.data.onlineStatusList,
+            });
+          }
+
+        }
+      }
+    });
+  },
+  getMoreDistances: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+    var url = config.PytheRestfulServerURL + '/select/distance/level';
+    wx.request({
+      url: url,
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.distanceList = that.data.distanceList.concat(result);
+
+            that.setData({
+              distanceList: that.data.distanceList,
             });
           }
 

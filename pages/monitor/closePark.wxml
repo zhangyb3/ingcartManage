@@ -8,7 +8,7 @@
   <view class='getName' bindtap='chooseLevel2'>{{level2Name}}</view>
 </view>
 
-<view class=''>
+ <view class=''>
   <view class='choose-name'>开园时间</view>
   <view class="section getName">
     <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindStartTimeChange">
@@ -27,7 +27,8 @@
       </view>
     </picker>
   </view>
-</view>
+</view> 
+
 <button class='hand-in' bindtap='OpenParkSub'>确定</button>
 
 <view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if="{{chooseLevel1 == true}}">

@@ -148,6 +148,20 @@ Page({
     })
   },
 
+  carOnlineStatusQuery: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=4",
+    })
+  },
+
+  carDistance: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=5",
+    })
+  },
+
   netUnlock: function (e) {
     var queryAll = e.currentTarget.dataset.all;
     wx.navigateTo({

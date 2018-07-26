@@ -35,6 +35,7 @@ Page({
 		//计时中标记不可点击
 		markerClickable: true,
 		markers:[],
+    cartPoints: [],
   },
 
 // 页面加载
@@ -718,6 +719,14 @@ Page({
 		});
 		showControls(this);
   },
+  orbit : function (cartPoints, markers) {
+    console.log('zhaozhaTest')
+    var that = this;
+    that.setData({
+      cartPoints: cartPoints,
+      markers: markers
+    })
+  },
 
   onUnload:function(){
 
@@ -878,18 +887,31 @@ function showNearbyCars(longitude,latitude,the){
       }
       else
       {
-        that.data.markers = result.data;
+        that.data.markers = that.data.markers.concat(result.data);
+        console.log('zhaoz' + that.data.markers[0].id)
         for (var k = 0; k < that.data.markers.length; k++) 
         {
 					if (that.data.markers[k].type == 0)
           {
-						that.data.markers[k].iconPath = '/images/car.png';
+            that.data.markers[k].iconPath = '/images/car.png';
+            that.data.markers[k].width = 43;
+            that.data.markers[k].height = 47;
           }
 					if (that.data.markers[k].type == 1) {
 						that.data.markers[k].iconPath = '/images/store.png';
+            that.data.markers[k].width = 43;
+            that.data.markers[k].height = 47;
           }
-					that.data.markers[k].width = 43;
-					that.data.markers[k].height = 47;
+          if (that.data.markers[k].type == 2){
+            that.data.markers[k].iconPath = '/images/start.png';
+            that.data.markers[k].width = 40;
+            that.data.markers[k].height = 50;
+          }
+          if (that.data.markers[k].type == 3) {
+            that.data.markers[k].iconPath = '/images/end.png';
+            that.data.markers[k].width = 40;
+            that.data.markers[k].height = 50;
+          }
         }
         that.setData({
 					markers: that.data.markers,

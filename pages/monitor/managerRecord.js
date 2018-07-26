@@ -23,7 +23,7 @@ Page({
 		tempLevel2: null,
 		level1: [],
 		level2: [],
-		level: '0',
+		level: '',
 
 		checkType:null,
 		act:null,
@@ -99,6 +99,12 @@ Page({
 			level1: [],
 			level2: [],
 		});
+    if (wx.getStorageSync(user.Level) >= 4) {
+      that.setData({
+        level: '0'
+      })
+    }
+
 		wx.request({
 			url: config.PytheRestfulServerURL + '/select/one/level',
 			data: {
@@ -147,12 +153,14 @@ Page({
 										
 
 										if (that.data.checkType == 'manager') {
+                      console.log("level" + that.data.level)
 											wx.request({
 												url: config.PytheRestfulServerURL + '/select/add/record',
 												data: {
 													level: that.data.level,
 													pageNum: 1,
 													pageSize: 10,
+                          operaterLevel: wx.getStorageSync(user.Level)
 												},
 												method: 'GET',
 												success: function (res) {
@@ -221,6 +229,7 @@ Page({
 													level: that.data.level,
 													pageNum: 1,
 													pageSize: 10,
+                          operaterLevel: wx.getStorageSync(user.Level)
 												},
 												method: 'GET',
 												success: function (res) {
@@ -330,6 +339,7 @@ Page({
 						level: that.data.level,
 						pageNum: 1,
 						pageSize: 10,
+            operaterLevel: wx.getStorageSync(user.Level)
 					},
 					method: 'GET',
 					success: function (res) {
@@ -404,6 +414,7 @@ Page({
 						level: that.data.level,
 						pageNum: 1,
 						pageSize: 10,
+            operaterLevel: wx.getStorageSync(user.Level)
 					},
 					method: 'GET',
 					success: function (res) {
@@ -572,6 +583,7 @@ Page({
 								level: that.data.level,
 								pageNum: 1,
 								pageSize: 10,
+                operaterLevel: wx.getStorageSync(user.Level)
 							},
 							method: 'GET',
 							success: function (res) {
@@ -647,6 +659,7 @@ Page({
 								level: that.data.level,
 								pageNum: 1,
 								pageSize: 10,
+                operaterLevel: wx.getStorageSync(user.Level)
 							},
 							method: 'GET',
 							success: function (res) {
@@ -720,6 +733,7 @@ Page({
 					level: that.data.level,
 					pageNum: 1,
 					pageSize: 10,
+          operaterLevel: wx.getStorageSync(user.Level)
 				},
 				method: 'GET',
 				success: function (res) {
@@ -795,6 +809,7 @@ Page({
 					level: that.data.level,
 					pageNum: 1,
 					pageSize: 10,
+          operaterLevel: wx.getStorageSync(user.Level)
 				},
 				method: 'GET',
 				success: function (res) {
@@ -843,6 +858,7 @@ Page({
 				level: that.data.level,
 				pageNum: that.data.pageNum,
 				pageSize: 10,
+        operaterLevel: wx.getStorageSync(user.Level)
 			},
 			method: 'GET',
 			success: function (res) {
@@ -962,6 +978,7 @@ Page({
 				level: that.data.level,
 				pageNum: that.data.pageNum,
 				pageSize: 10,
+        operaterLevel: wx.getStorageSync(user.Level)
 			},
 			method: 'GET',
 			success: function (res) {
