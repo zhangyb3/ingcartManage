@@ -188,14 +188,14 @@ Page({
 				if(res.data.status == 200)
 				{
           result = res.data.data;
-          console.log('zhaozha1' + result.lng_lat)
+          console.log('zhaozha1' + result)
 					var cartPoints = [];
 					var count = 0;
-					for(; count < result.lng_lat.length; count++)
+					for(; count < result.length; count++)
 					{
 						cartPoints[count] = {};
-						cartPoints[count].longitude = result.lng_lat[count].lng;
-						cartPoints[count].latitude = result.lng_lat[count].lat;
+						cartPoints[count].longitude = result[count].lng;
+						cartPoints[count].latitude = result[count].lat;
             // cartPoints[count].type = 5;
             // cartPoints[count].color = '#3E97FAAA';
             // cartPoints[count].borderWidth = 20;
@@ -211,8 +211,8 @@ Page({
           start.type = 2
           start.id = 1000000000
           var end = {};
-          end.longitude = cartPoints[result.lng_lat.length - 1].longitude;
-          end.latitude = cartPoints[result.lng_lat.length - 1].latitude;
+          end.longitude = cartPoints[result.length - 1].longitude;
+          end.latitude = cartPoints[result.length - 1].latitude;
           end.type = 3
           end.id = 1000000001
           markers.push(start)

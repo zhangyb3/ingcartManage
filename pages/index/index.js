@@ -36,6 +36,7 @@ Page({
 		markerClickable: true,
 		markers:[],
     cartPoints: [],
+    concatStatus:false,
   },
 
 // 页面加载
@@ -719,10 +720,12 @@ Page({
 		});
 		showControls(this);
   },
+
   orbit : function (cartPoints, markers) {
     console.log('zhaozhaTest')
     var that = this;
     that.setData({
+      concatStatus: true,
       cartPoints: cartPoints,
       markers: markers
     })
@@ -755,14 +758,13 @@ function refreshPage(the){
   var that = the;
   // 1.获取定时器，用于判断是否已经在计费
   // this.timer = options.timer;
-
   // 2.获取并设置当前位置经纬度
   wx.getLocation({
     type: "wgs84",
     success: (res) => {
       that.setData({
         longitude: res.longitude,
-        latitude: res.latitude
+        latitude: res.latitude,
       });
 
       // 4.请求服务器，显示附近的单车，用marker标记
@@ -887,8 +889,13 @@ function showNearbyCars(longitude,latitude,the){
       }
       else
       {
-        that.data.markers = that.data.markers.concat(result.data);
-        console.log('zhaoz' + that.data.markers[0].id)
+        if (that.data.concatStatus){
+          that.data.markers = that.data.markers.concat(result.data);
+        }else{
+          that.data.markers = result.data;
+        }
+        // that.data.markers = that.data.markers.concat(result.data);
+        // that.data.markers = result.data;
         for (var k = 0; k < that.data.markers.length; k++) 
         {
 					if (that.data.markers[k].type == 0)
@@ -903,16 +910,18 @@ function showNearbyCars(longitude,latitude,the){
             that.data.markers[k].height = 47;
           }
           if (that.data.markers[k].type == 2){
-            that.data.markers[k].iconPath = '/images/start.png';
-            that.data.markers[k].width = 40;
-            that.data.markers[k].height = 50;
-          }
-          if (that.data.markers[k].type == 3) {
             that.data.markers[k].iconPath = '/images/end.png';
             that.data.markers[k].width = 40;
             that.data.markers[k].height = 50;
           }
+          if (that.data.markers[k].type == 3) {
+            that.data.markers[k].iconPath = '/images/start.png';
+            that.data.markers[k].width = 40;
+            that.data.markers[k].height = 50;
+          }
         }
+        console.log('start' + that.data.markers[0].iconPath)
+        console.log('end' + that.data.markers[1].iconPath)
         that.setData({
 					markers: that.data.markers,
         });
