@@ -221,6 +221,7 @@
       </view>
       <view class="split_line"></view>
     </view>
+<<<<<<< HEAD
 
 		<view class="line_item_container" bindtap="parkDetails" data-all='yes' wx:if="{{managementClass == 'person' && level >= 4}}" >
       <view class="line_item">
@@ -236,6 +237,8 @@
       </view>
       <view class="split_line"></view>
     </view>
+=======
+>>>>>>> 125191e9cad767073a215e981a9b9abebace8683
 		
 		<!-- <view class="line_item_container" bindtap="toRecordRepair">
       <view class="line_item">
