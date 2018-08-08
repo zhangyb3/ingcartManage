@@ -31,6 +31,10 @@ Page({
 				status: 2,
 				name: '热点',
 			},
+      {
+        status: 3,
+        name: '公众号',
+      },
 		],
 		servicePhone:null,
 		mode:null,
