@@ -314,6 +314,9 @@ Page({
 							if (result[count].status == 2) {
 								result[count].status = '热点结算';
 							}
+              if (result[count].status == 3) {
+                result[count].status = '公众号结算';
+              }
 						}
 						that.data.attractions = that.data.attractions.concat(result);
 						that.setData({
@@ -1013,7 +1016,7 @@ Page({
 	},
 
 
-	getMoreAttracions: function () {
+  getMoreAttractions: function () {
 		var that = this;
 		that.data.pageNum = that.data.pageNum + 1;
 
@@ -1042,6 +1045,12 @@ Page({
 							if (result[count].status == 1) {
 								result[count].status = '自动结算';
 							}
+              if (result[count].status == 2) {
+                result[count].status = '热点结算';
+              }
+              if (result[count].status == 3) {
+                result[count].status = '公众号结算';
+              }
 						}
 						that.data.attractions = that.data.attractions.concat(result);
 						that.setData({
