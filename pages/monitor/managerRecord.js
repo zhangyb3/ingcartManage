@@ -36,7 +36,9 @@ Page({
 
 		shwoFilter:true,
 		queryAll:'no',
-    parkConditions:[]
+    parkConditions:[],
+    noStrokes: [],
+    noStrokesLock: [],
   },
 
   /**
@@ -48,7 +50,7 @@ Page({
 		that.data.queryAll = parameters.queryAll;
 		that.getDevice();
 		
-		if(that.data.checkType == 'attraction')
+    if (that.data.checkType == 'attraction' || that.data.checkType == 'managerNoStroke')
 		{
 			that.setData({
 				showFilter: false,
@@ -187,6 +189,76 @@ Page({
 												}
 											});
 										}
+                    if (that.data.checkType == 'managerNoStrokeLock') {
+                      console.log("我来了~~~~~~~")
+                      wx.request({
+                        url: config.PytheRestfulServerURL + '/select/lockstatus/level',
+                        data: {
+                          level: that.data.level,
+                          pageNum: that.data.pageNum,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+
+                            console.log("我来了");
+                            if (result == null || result.length == 0) {
+                              that.data.pageNum = 1;
+                              that.setData({
+                                noStrokesLock: [],
+
+                              });
+                            }
+                            else {
+                              that.data.noStrokesLock = that.data.noStrokesLock.concat(result);
+                              that.setData({
+                                noStrokesLock: that.data.noStrokesLock,
+
+                              });
+                            }
+
+                          }
+                        }
+                      });
+
+                    }
+                    if (that.data.checkType == 'managerNoStroke') {
+                      console.log("我来了~~~~~~~")
+                      wx.request({
+                        url: config.PytheRestfulServerURL + '/select/recharge/level',
+                        data: {
+                          level: that.data.level,
+                          pageNum: that.data.pageNum,
+                          pageSize: 10,
+                        },
+                        method: 'GET',
+                        success: function (res) {
+                          if (res.data.status == 200) {
+                            var result = res.data.data;
+
+                            console.log("我来了");
+                            if (result == null || result.length == 0) {
+                              that.data.pageNum = 1;
+                              that.setData({
+                                noStrokes: [],
+
+                              });
+                            }
+                            else {
+                              that.data.noStrokes = that.data.noStrokes.concat(result);
+                              that.setData({
+                                noStrokes: that.data.noStrokes,
+
+                              });
+                            }
+
+                          }
+                        }
+                      });
+
+                    }
                     if (that.data.checkType == 'parkDetails') {
                       console.log("开闭园详情")
                       wx.request({
@@ -369,6 +441,80 @@ Page({
 					}
 				});
 			}
+      if (that.data.checkType == 'managerNoStrokeLock') {
+        console.log("我来了~~~~~~~")
+        that.setData({
+          noStrokesLock: [],
+
+        });
+        wx.request({
+          url: config.PytheRestfulServerURL + '/select/lockstatus/level',
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+            if (res.data.status == 200) {
+              var result = res.data.data;
+
+              if (result == null || result.length == 0) {
+                that.data.pageNum = 1;
+                that.setData({
+                  noStrokesLock: [],
+
+                });
+              }
+              else {
+                that.data.noStrokesLock = that.data.noStrokesLock.concat(result);
+                that.setData({
+                  noStrokesLock: that.data.noStrokesLock,
+
+                });
+              }
+
+            }
+          }
+        });
+      }
+      if (that.data.checkType == 'managerNoStroke') {
+        console.log("我来了~~~~~~~")
+        that.setData({
+          noStrokes: [],
+
+        });
+        wx.request({
+          url: config.PytheRestfulServerURL + '/select/recharge/level',
+          data: {
+            level: that.data.level,
+            pageNum: 1,
+            pageSize: 10,
+          },
+          method: 'GET',
+          success: function (res) {
+            if (res.data.status == 200) {
+              var result = res.data.data;
+
+              if (result == null || result.length == 0) {
+                that.data.pageNum = 1;
+                that.setData({
+                  noStrokes: [],
+
+                });
+              }
+              else {
+                that.data.noStrokes = that.data.noStrokes.concat(result);
+                that.setData({
+                  noStrokes: that.data.noStrokes,
+
+                });
+              }
+
+            }
+          }
+        });
+      }
       if (that.data.checkType == 'parkDetails') {
         that.setData({
           parkConditions: [],
@@ -613,8 +759,83 @@ Page({
 							}
 						});
 					}
+          if (that.data.checkType == 'managerNoStrokeLock') {
+            console.log("我来了~~~~~~~")
+            that.setData({
+              noStrokesLock: [],
+
+            });
+            wx.request({
+              url: config.PytheRestfulServerURL + '/select/lockstatus/level',
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+
+
+                  if (result == null || result.length == 0) {
+                    that.data.pageNum = 1;
+                    that.setData({
+                      noStrokesLock: [],
+
+                    });
+                  }
+                  else {
+                    that.data.noStrokesLock = that.data.noStrokesLock.concat(result);
+                    that.setData({
+                      noStrokesLock: that.data.noStrokesLock,
+
+                    });
+                  }
+
+                }
+              }
+            });
+          }
+          if (that.data.checkType == 'managerNoStroke') {
+            console.log("我来了~~~~~~~")
+            that.setData({
+              noStrokes: [],
+
+            });
+            wx.request({
+              url: config.PytheRestfulServerURL + '/select/recharge/level',
+              data: {
+                level: that.data.level,
+                pageNum: 1,
+                pageSize: 10,
+              },
+              method: 'GET',
+              success: function (res) {
+                if (res.data.status == 200) {
+                  var result = res.data.data;
+
+
+                  if (result == null || result.length == 0) {
+                    that.data.pageNum = 1;
+                    that.setData({
+                      noStrokes: [],
+
+                    });
+                  }
+                  else {
+                    that.data.noStrokes = that.data.noStrokes.concat(result);
+                    that.setData({
+                      noStrokes: that.data.noStrokes,
+
+                    });
+                  }
+
+                }
+              }
+            });
+          }
           if (that.data.checkType == 'parkDetails') {
-            console.log("闭园：")
             that.setData({
               parkConditions: [],
 
@@ -763,6 +984,83 @@ Page({
 				}
 			});
 		}
+    if (that.data.checkType == 'managerNoStrokeLock') {
+      console.log("我来了~~~~~~~")
+      that.setData({
+        noStrokesLock: [],
+
+      });
+      wx.request({
+        url: config.PytheRestfulServerURL + '/select/lockstatus/level',
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.status == 200) {
+            var result = res.data.data;
+
+
+            if (result == null || result.length == 0) {
+              that.data.pageNum = 1;
+              that.setData({
+                noStrokesLock: [],
+
+              });
+            }
+            else {
+              that.data.noStrokesLock = that.data.noStrokesLock.concat(result);
+              that.setData({
+                noStrokesLock: that.data.noStrokesLock,
+
+              });
+            }
+
+          }
+        }
+      });
+    }
+
+    if (that.data.checkType == 'managerNoStroke') {
+      console.log("我来了~~~~~~~")
+      that.setData({
+        noStrokes: [],
+
+      });
+      wx.request({
+        url: config.PytheRestfulServerURL + '/select/recharge/level',
+        data: {
+          level: that.data.level,
+          pageNum: 1,
+          pageSize: 10,
+        },
+        method: 'GET',
+        success: function (res) {
+          if (res.data.status == 200) {
+            var result = res.data.data;
+
+
+            if (result == null || result.length == 0) {
+              that.data.pageNum = 1;
+              that.setData({
+                noStrokes: [],
+
+              });
+            }
+            else {
+              that.data.noStrokes = that.data.noStrokes.concat(result);
+              that.setData({
+                noStrokes: that.data.noStrokes,
+
+              });
+            }
+
+          }
+        }
+      });
+    }
     if (that.data.checkType == 'parkDetails') {
       that.setData({
         parkConditions: [],
@@ -909,6 +1207,76 @@ Page({
             that.data.parkConditions = that.data.parkConditions.concat(result);
             that.setData({
               parkConditions: that.data.parkConditions,
+
+            });
+          }
+
+        }
+      }
+    });
+  },
+
+
+  getMoreNoStroke: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+
+
+    wx.request({
+      url: config.PytheRestfulServerURL + '/select/recharge/level',
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+
+
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.noStrokes = that.data.noStrokes.concat(result);
+            that.setData({
+              noStrokes: that.data.noStrokes,
+
+            });
+          }
+
+        }
+      }
+    });
+  },
+
+
+  getMoreNoStrokeLock: function () {
+    var that = this;
+    that.data.pageNum = that.data.pageNum + 1;
+
+
+    wx.request({
+      url: config.PytheRestfulServerURL + '/select/lockstatus/level',
+      data: {
+        level: that.data.level,
+        pageNum: that.data.pageNum,
+        pageSize: 10,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          var result = res.data.data;
+
+
+          if (result == null) {
+            that.data.pageNum = that.data.pageNum - 1;
+          }
+          else {
+            that.data.noStrokesLock = that.data.noStrokesLock.concat(result);
+            that.setData({
+              noStrokesLock: that.data.noStrokesLock,
 
             });
           }

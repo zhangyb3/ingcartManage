@@ -247,6 +247,20 @@ Page({
 		})
 	},
 
+  managerNoStroke: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/managerRecord?checkType=managerNoStroke&queryAll=' + queryAll,
+    })
+  },
+
+  managerNoStrokeLock: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/managerRecord?checkType=managerNoStrokeLock&queryAll=' + queryAll,
+    })
+  },
+
 	managerRecord: function (e) {
 		var queryAll = e.currentTarget.dataset.all;
 		wx.navigateTo({

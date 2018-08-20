@@ -32,7 +32,43 @@
 		
 	</scroll-view>
 
+	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreNoStroke'  scroll-y  wx:if="{{checkType == 'managerNoStroke'}}" >
 
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
+				<text style="width:40%;font-size:30rpx;text-align:center;">时间</text>
+				<text style="width:30%;font-size:30rpx;text-align:center;">手机</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;">金额</text>
+			</view>
+
+		<view wx:for='{{noStrokes}}' wx:key='unique' wx:for-index="index">
+
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;">
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;">{{item.comefrom}}</text>
+				<text style="width:30%;font-size:30rpx;text-align:center;color:lightgray;">{{item.phoneNum}}</text>
+        <text style="width:30%;font-size:30rpx;text-align:center;color:lightgray;">{{item.amount}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view>
+
+  	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreNoStrokeLock'  scroll-y  wx:if="{{checkType == 'managerNoStrokeLock'}}" >
+
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
+				<text style="width:60%;font-size:30rpx;text-align:center;">园区</text>
+				<text style="width:40%;font-size:30rpx;text-align:center;">车辆编号</text>
+			</view>
+
+		<view wx:for='{{noStrokesLock}}' wx:key='unique' wx:for-index="index">
+
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;">
+				<text style="width:60%;font-size:30rpx;text-align:center;color:lightgray;">{{item.description}}</text>
+				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;">{{item.id}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view>
 
 
 

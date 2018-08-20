@@ -39,4 +39,9 @@
 		<text style="width:50%;font-size:36rpx;text-align:center;color:red;">{{record.status}}</text>
 	</view>
 
+  <view class="row_display" style="height: 50px;line-height: 50px;border: 1px solid lightgray;">
+		<text style="width:50%;font-size:36rpx;text-align:center;color:lightgray;">车锁情况：</text>
+		<text style="width:50%;font-size:36rpx;text-align:center;color:red;">{{record.lockstatus}}</text>
+	</view>
+
 </view>
