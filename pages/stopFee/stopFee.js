@@ -68,6 +68,8 @@ Page({
 		chargingStartTime: '尚未查询',
 		qr: '尚未查询',
 		phone: '尚未查询',
+    lock_status: '尚未查询',
+    park: '尚未查询',
   },
   onLoad: function () {
     var that=this;
@@ -183,6 +185,8 @@ Page({
 							chargingStartTime: result.start_time,
 							qr: result.qr_id,
 							phone: result.phone_num,
+              lock_status: result.lock_status,
+              park: result.park,
 						});
 					}
 					if (res.data.status == 400) {
@@ -289,6 +293,8 @@ Page({
 									chargingStartTime: result.start_time,
 									qr: result.qr_id,
 									phone: result.phone_num,
+                  park: result.park,
+                  lock_status: result.lock_status,
 								});
 							}
 							if (res.data.status == 400) {

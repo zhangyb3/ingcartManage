@@ -28,6 +28,12 @@
 					 <view style='line-height:20px;color:lightgray;font-size:12px;text-align:center;'>
                  手机：{{phone}}
            </view>
+          <view style='line-height:20px;color:lightgray;font-size:12px;text-align:center;'>
+                 车锁状态：{{lock_status}}
+           </view>
+          <view style='line-height:20px;color:lightgray;font-size:12px;text-align:center;'>
+                 景区：{{park}}
+           </view>
       </view> 
 
 
