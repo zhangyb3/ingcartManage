@@ -1096,12 +1096,12 @@ Page({
   getMoreOnlineStatus: function () {
     var that = this;
     that.data.pageNum = that.data.pageNum + 1;
-    url = config.PytheRestfulServerURL + '/select/device/online/level';
+    var url = config.PytheRestfulServerURL + '/select/device/online/level';
     wx.request({
       url: url,
       data: {
         level: that.data.level,
-        pageNum: 1,
+        pageNum: that.data.pageNum,
         pageSize: 10,
       },
       method: 'GET',
@@ -1109,9 +1109,6 @@ Page({
 
         if (res.data.status == 200) {
           var result = res.data.data;
-          that.setData({
-            onlineStatusList: [],
-          });
           if (result == null) {
             that.data.pageNum = that.data.pageNum - 1;
           }
