@@ -389,6 +389,9 @@ Page({
               if (result[count].status == 3) {
                 result[count].status = '公众号结算';
               }
+              if (result[count].status == 4) {
+                result[count].status = '公众号(不判断)';
+              }
 						}
 						that.data.attractions = that.data.attractions.concat(result);
 						that.setData({
@@ -1418,6 +1421,9 @@ Page({
               }
               if (result[count].status == 3) {
                 result[count].status = '公众号结算';
+              }
+              if (result[count].status == 4) {
+                result[count].status = '公众号(不判断)';
               }
 						}
 						that.data.attractions = that.data.attractions.concat(result);
