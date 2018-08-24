@@ -35,6 +35,10 @@ Page({
         status: 3,
         name: '公众号',
       },
+      {
+        status: 4,
+        name: '公众号(不判断)',
+      },
 		],
 		servicePhone:null,
 		mode:null,
