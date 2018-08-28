@@ -158,14 +158,20 @@ Page({
                           }
                         }
                       });
-                    } else if (that.data.use == 3){
+                    } else if (that.data.use == 3 || that.data.use == 31){
                       url = config.PytheRestfulServerURL + '/select/netlocks';
+                      var lockType = 2;
+                      if (that.data.use==31){
+                        lockType = 3
+                      }
+
                       wx.request({
                         url: url,
                         data: {
                           level: that.data.level,
                           pageNum: 1,
                           pageSize: 10,
+                          locktype: lockType
                         },
                         method: 'GET',
                         success: function (res) {
@@ -370,14 +376,20 @@ Page({
             }
           }
         });
-      } else if (that.data.use == 3) {
+      } else if (that.data.use == 3 || that.data.use == 31) {
         url = config.PytheRestfulServerURL + '/select/netlocks';
+        var lockType = 2;
+        if (that.data.use == 31) {
+          lockType = 3
+        }
+
         wx.request({
           url: url,
           data: {
             level: that.data.level,
             pageNum: 1,
             pageSize: 10,
+            locktype: lockType
           },
           method: 'GET',
           success: function (res) {
@@ -668,14 +680,20 @@ Page({
                 }
               }
             });
-          } else if (that.data.use == 3) {
+          } else if (that.data.use == 3 || that.data.use == 31) {
             url = config.PytheRestfulServerURL + '/select/netlocks';
+            var lockType = 2;
+            if (that.data.use == 31) {
+              lockType = 3
+            }
+
             wx.request({
               url: url,
               data: {
                 level: that.data.level,
                 pageNum: 1,
                 pageSize: 10,
+                locktype: lockType
               },
               method: 'GET',
               success: function (res) {
@@ -871,14 +889,20 @@ Page({
           }
         }
       });
-    } else if (that.data.use == 3) {
+    } else if (that.data.use == 3 || that.data.use == 31) {
       url = config.PytheRestfulServerURL + '/select/netlocks';
+      var lockType = 2;
+      if (that.data.use == 31) {
+        lockType = 3
+      }
+
       wx.request({
         url: url,
         data: {
           level: that.data.level,
           pageNum: 1,
           pageSize: 10,
+          locktype: lockType
         },
         method: 'GET',
         success: function (res) {
@@ -1158,12 +1182,18 @@ Page({
     var that = this;
     that.data.pageNum = that.data.pageNum + 1;
     var url = config.PytheRestfulServerURL + '/select/netlocks';
+    var lockType = 2;
+    if (that.data.use == 31) {
+      lockType = 3
+    }
+
     wx.request({
       url: url,
       data: {
         level: that.data.level,
         pageNum: that.data.pageNum,
         pageSize: 10,
+        locktype: lockType
       },
       method: 'GET',
       success: function (res) {
@@ -1222,6 +1252,44 @@ Page({
 
       }
       
+    });
+
+  },
+  reset: function (e) {
+    var mid = wx.getStorageSync(user.ManagerID)
+    var url = config.PytheRestfulServerURL + '/reset/carId';
+    console.log(mid)
+    wx.request({
+      url: url,
+      data: {
+        managerId: wx.getStorageSync(user.ManagerID),
+        carId: e.currentTarget.dataset.qrid,
+      },
+      method: 'GET',
+      success: function (res) {
+        if (res.data.status == 200) {
+          wx.showToast({
+            title: res.data.msg,
+            icon: '',
+            image: '',
+            duration: 1500,
+            mask: true,
+            success: function (res) { },
+            fail: function (res) { },
+            complete: function (res) { },
+          });
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: res.data.msg,
+            showCancel: false,
+            confirmText: '我知道了',
+
+          });
+        }
+
+      }
+
     });
 
   }

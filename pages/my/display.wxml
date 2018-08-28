@@ -238,7 +238,37 @@
       <view class="split_line"></view>
     </view>
 
-		
+		<view class="line_item_container" bindtap="updateOperationZoneMessage" data-all='no' wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >更新景区信息(短信+分成)</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+    <view class="line_item_container" bindtap="attractionMore" data-all='yes' wx:if="{{managementClass == 'person'  && level >= 5}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >查询景区信息(短信+分成)</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+
 		<!-- <view class="line_item_container" bindtap="toRecordRepair">
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
@@ -397,6 +427,21 @@
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >测试网络开锁</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view>
+
+    <view class="line_item_container" bindtap="netReset" data-all='yes' wx:if="{{managementClass == 'cart' && level >= 1}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >电机复位</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -756,6 +801,20 @@
       <view class="split_line"></view>
     </view> 
 
+		<view class="line_item_container" data-type='no_distance' bindtap="refundAll" wx:if="{{managementClass == 'expense'}}" >
+      <view class="line_item">
+        <view class="line_include_item_container repair_entrance">
+          <text >行程回补</text>
+        </view>
+        <view class="line_include_item_container repair_quantity">
+          <text></text>
+        </view>
+        <view class="line_include_item_container repair_operation">
+          <image id="operation" src="../../images/more.png"></image>
+        </view>
+      </view>
+      <view class="split_line"></view>
+    </view> 
 
 		 <!-- <view class="line_item_container" bindtap="specialRefund" >
       <view class="line_item">

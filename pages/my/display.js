@@ -169,6 +169,13 @@ Page({
     })
   },
 
+  netReset: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/carStatus?queryAll=' + queryAll + "&use=31",
+    })
+  },
+
 	carUsingQuery: function () {
 		wx.navigateTo({
 			url: '../monitor/carUsing',
@@ -199,6 +206,12 @@ Page({
 			url: '../zone/record?mode=update',
 		})
 	},
+
+  updateOperationZoneMessage: function () {
+    wx.navigateTo({
+      url: '../zone/recordMessage?mode=update',
+    })
+  },
 
 	callRepair: function () {
 		wx.navigateTo({
@@ -246,6 +259,13 @@ Page({
 			url: '../monitor/managerRecord?checkType=attraction&queryAll=' + queryAll,
 		})
 	},
+
+  attractionMore: function (e) {
+    var queryAll = e.currentTarget.dataset.all;
+    wx.navigateTo({
+      url: '../monitor/managerRecord?checkType=attractionMore&queryAll=' + queryAll,
+    })
+  },
 
   managerNoStroke: function (e) {
     var queryAll = e.currentTarget.dataset.all;

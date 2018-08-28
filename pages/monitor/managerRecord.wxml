@@ -32,7 +32,7 @@
 		
 	</scroll-view>
 
-	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreNoStroke'  scroll-y  wx:if="{{checkType == 'managerNoStroke'}}" >
+	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20" scroll-y  wx:if="{{checkType == 'managerNoStroke'}}" >
 
 			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
 				<text style="width:40%;font-size:30rpx;text-align:center;">时间</text>
@@ -132,6 +132,27 @@
 				<text style="width:18%;font-size:30rpx;text-align:center;color:gray;">{{item.price}}</text>
 				<text style="width:18%;font-size:30rpx;text-align:center;color:lightgray;">{{item.giving}}</text>
 				<text style="width:24%;font-size:24rpx;text-align:center;color:red;">{{item.status}}</text>
+			</view>
+
+		</view>
+		
+	</scroll-view>
+
+
+  	<scroll-view style='margin-top:20px;width: 100%;height:450px' lower-threshold="20"	bindscrolltolower='getMoreAttractions'  scroll-y  wx:if="{{checkType == 'attractionMore'}}" >
+
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
+				<text style="width:40%;font-size:30rpx;text-align:center;">景区</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;">短信</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;">分成</text>
+			</view>
+
+		<view wx:for='{{attractions}}' wx:key='unique' wx:for-index="index">
+
+			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;">
+				<text style="width:40%;font-size:24rpx;text-align:center;color:red;">{{item.name}}</text>
+				<text style="width:30%;font-size:30rpx;text-align:center;color:gray;">{{item.messageFlag}}</text>
+				<text style="width:30%;font-size:30rpx;text-align:center;color:lightgray;">{{item.shareScale}}</text>
 			</view>
 
 		</view>

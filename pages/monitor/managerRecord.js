@@ -50,7 +50,7 @@ Page({
 		that.data.queryAll = parameters.queryAll;
 		that.getDevice();
 		
-    if (that.data.checkType == 'attraction' || that.data.checkType == 'managerNoStroke')
+    if (that.data.checkType == 'attractionMore' ||that.data.checkType == 'attraction' || that.data.checkType == 'managerNoStroke')
 		{
 			that.setData({
 				showFilter: false,
@@ -353,7 +353,7 @@ Page({
 			complete: function (res) { },
 		});
 
-		if(that.data.checkType == 'attraction')
+    if (that.data.checkType == 'attraction' || that.data.checkType == 'attractionMore')
 		{
 			wx.request({
 				url: config.PytheRestfulServerURL + '/select/area/level',
@@ -365,7 +365,7 @@ Page({
 				success: function(res) {
 					var result = res.data.data;
 
-
+          console.log(result)
 					if (result == null || result.length == 0) {
 						that.data.pageNum = 1;
 						that.setData({
@@ -391,6 +391,24 @@ Page({
               }
               if (result[count].status == 4) {
                 result[count].status = '公众号(不判断)';
+              }
+              if (result[count].messageFlag == 1) {
+                result[count].messageFlag = '有短信';
+              }
+              if (result[count].messageFlag == 0) {
+                result[count].messageFlag = '无短信';
+              }
+              if (result[count].messageFlag == null) {
+                result[count].messageFlag = '未设置';
+              }
+              if (result[count].shareScale != null) {
+                result[count].shareScale = '婴咖' + result[count].shareScale+"成";
+              }
+              if (result[count].shareScale == '婴咖0成') {
+                result[count].shareScale = '不分成';
+              }
+              if (result[count].shareScale == null) {
+                result[count].shareScale = '未设置';
               }
 						}
 						that.data.attractions = that.data.attractions.concat(result);
@@ -1409,6 +1427,7 @@ Page({
 						that.data.pageNum = that.data.pageNum - 1;
 					}
 					else {
+            console.log(result)
 						for (var count = 0; count < result.length; count++) {
 							if (result[count].status == 0) {
 								result[count].status = '人工结算';
@@ -1424,6 +1443,24 @@ Page({
               }
               if (result[count].status == 4) {
                 result[count].status = '公众号(不判断)';
+              }
+              if (result[count].messageFlag == 1) {
+                result[count].messageFlag = '有短信';
+              }
+              if (result[count].messageFlag == 0) {
+                result[count].messageFlag = '无短信';
+              }
+              if (result[count].messageFlag == null) {
+                result[count].messageFlag = '未设置';
+              }
+              if (result[count].shareScale != null) {
+                result[count].shareScale = '婴咖' + result[count].shareScale + "成";
+              }
+              if (result[count].shareScale == '婴咖0成') {
+                result[count].shareScale = '不分成';
+              }
+              if (result[count].shareScale == null) {
+                result[count].shareScale = '未设置';
               }
 						}
 						that.data.attractions = that.data.attractions.concat(result);

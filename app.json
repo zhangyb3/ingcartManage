@@ -31,6 +31,7 @@
     "pages/monitor/specialRefund",
     "pages/monitor/statistics",
     "pages/zone/record",
+    "pages/zone/recordMessage",
     "pages/monitor/modelFault",
     "pages/monitor/mobileFault",
     "pages/monitor/closePark",

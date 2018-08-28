@@ -1,0 +1,77 @@
+<scroll-view class='scroll' bindscroll='scroll' scroll-y scroll-top="{{scrollTop}}" style='height:{{scrollViewHeight}}px;'>
+<view class='store-info' style='min-height:{{winHeight}}px;padding-bottom:{{addPadding}}px;'>
+      
+			<view class='' wx:if="{{mode == 'update'}}">
+						<view class='choose-name'>选择景区</view>
+						<view class='getName' bindtap='selectZone'>{{zoneName}}</view>
+			</view>
+      <view class=''>
+						<view class='choose-name'>有无短信</view>
+						<view class='getName' value="{{endSelf || ''}}" bindtap='whetherEndSelf'>{{endSelf}}</view>
+			</view> 
+      <view style='min-height:{{winHeight*0.25}}px;'>
+          <view class='tel-title'>输入分成比例</view>
+          <view class='input-tel'>
+              <input type='number' placeholder='分成比例' bindblur='checkTelRight' bindinput='getPrice'></input>
+          </view>
+          <view class='tel-title'>提示：0为不分成，1为婴咖1景区9</view>
+      </view>
+
+      <button class='hand-in' bindtap='managerRecordOperationZone'>提交</button>
+</view>
+
+</scroll-view>
+
+
+
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:{{chooseLevel}};'>      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureLevel'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeLevel">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{levels}}" wx:key='unique' style="line-height: 50px">{{item.c1Name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if='{{chooseWhetherEndSelf}}'>      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureWhetherEndSelf'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeWhetherEndSelf">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{whetherEndSelfs}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+<view class='chooe-time' style='height:{{winHeight}}px;display:block;' wx:if='{{chooseZone}}'>      
+      <view class='pick-box'>
+                 <view class='choose-btn'>
+                        <text class='close' bindtap='close'>取消</text>
+                        <text class='sure' bindtap='sureZone'>确定</text>
+                 </view>
+                 <view style='height:40px;line-height:40px;text-align:center;'></view>
+                 <picker-view indicator-style="height: 50px;" style="width:100%;height: 200px;margin:0 auto;" value="{{value}}" bindchange="changeZone">
+                   <picker-view-column id="city_column">
+                      <view wx:for="{{zones}}" wx:key='unique' style="line-height: 50px">{{item.name}}</view>
+                   </picker-view-column>
+                   
+                 </picker-view>
+           </view>
+</view>
+
+<import src="../section/password_pop.wxml" />
+<template is="password_pop"  data="{{passwordFlag,password,focusOnPasswordPop}}"></template>
