@@ -239,6 +239,14 @@ Page({
 		})
 	},
 
+  recover: function (e) {
+    var refundType = e.currentTarget.dataset.type;
+
+    wx.navigateTo({
+      url: '../monitor/refundAll?type=' + refundType,
+    })
+  },
+
 	specialRefund: function () {
 		wx.navigateTo({
 			url: '../monitor/specialRefund?operatorLevel=2',

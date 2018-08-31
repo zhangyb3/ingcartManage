@@ -771,10 +771,10 @@
       <view class="split_line"></view>
     </view>
 
-    <view class="line_item_container" data-type='faultToGift' bindtap="managerNoStroke" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+    <view class="line_item_container"  bindtap="managerNoStroke" wx:if="{{managementClass == 'expense' && level >= 4}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >充值无行程（充值查询）</text>
+          <text >充值查询（充值无行程）</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -786,10 +786,10 @@
       <view class="split_line"></view>
     </view>
 
-     <view class="line_item_container" data-type='faultToGift' bindtap="managerNoStrokeLock" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+     <view class="line_item_container"  bindtap="managerNoStrokeLock" wx:if="{{managementClass == 'expense' && level >= 4}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >充值无行程（车锁查询）</text>
+          <text >车锁开(无用户关联）</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
@@ -801,10 +801,10 @@
       <view class="split_line"></view>
     </view> 
 
-		<view class="line_item_container" data-type='no_distance' bindtap="refundAll" wx:if="{{managementClass == 'expense'}}" >
+		<view class="line_item_container" data-type='recover' bindtap="recover" wx:if="{{managementClass == 'expense' && level >= 4}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >行程回补</text>
+          <text >恢复行程（物联锁）</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>

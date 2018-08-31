@@ -424,6 +424,7 @@ Page({
 				tempZone: that.data.zones[0],
 			})
 		}
+    // console.log(that.data.tempZone.status)
 		that.setData({
 			chooseZone: false,
 			zoneName: that.data.tempZone.name,
@@ -431,8 +432,8 @@ Page({
 			price: that.data.tempZone.price,
 			giving: that.data.tempZone.giving,
 			servicePhone: that.data.tempZone.phoneNum,
-			endSelf: that.data.whetherEndSelfs[that.data.tempZone.status].name,
-			status: that.data.tempZone.status,
+			// endSelf: that.data.whetherEndSelfs[that.data.tempZone.status].name,
+			status: 1,
 		});
 
 

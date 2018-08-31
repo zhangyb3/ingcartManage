@@ -78,6 +78,7 @@ Page({
 		pageNum: 1,
 		pageSize: 10,
     reason:'',
+    carNo: '',
     showDialog: false,
     items: [],
     vtype:'天气异常'
@@ -168,6 +169,10 @@ Page({
 					barTitle = '全额退款（无条件）';
 					refundHint = '用于处理客户纠纷问题（有行程且已结束退款才能生效）';
 					break;
+        case 'recover':
+          barTitle = '恢复行程（物联锁）';
+          refundHint = '确定用户充值，使用的车号后恢复行程';
+          break;
 				case 'no_distance_batch':
 					barTitle = '批量退款（当天无行程）';
 					refundHint = '必须当天无行程才能退款';
@@ -443,6 +448,11 @@ Page({
       reason: e.detail.value
     })
   },
+  carNoInput: function (e) {
+    this.setData({
+      carNo: e.detail.value
+    })
+  },
 	managerRefundAll: function (e) {
 		wx.showLoading({
 			title: '',
@@ -499,7 +509,48 @@ Page({
 				fail: function (res) { },
 				complete: function (res) { },
 			});
-		}
+    }else  if (that.data.refundType == 'recover') {
+      url = config.PytheRestfulServerURL + '/recover/record';
+      console.log("我是29，手机号+车辆")
+      console.log(that.data.customerPhoneNum)
+      console.log(that.data.carNo)
+      wx.request({
+        url: url,
+        data: {
+          phoneNum: that.data.customerPhoneNum,
+          carId: that.data.carNo,
+        },
+        method: 'POST',
+        success: function (res) {
+          wx.hideLoading();
+          if (res.data.status == 200) 
+          {
+            wx.showModal({
+              title: '提示',
+              content: "已恢复",
+              showCancel: false,
+              confirmText: '我知道了',
+              success: function (res) { },
+              fail: function (res) { },
+              complete: function (res) { },
+            })
+          }
+          if (res.data.status == 400) {
+            wx.showModal({
+              title: '提示',
+              content: "恢复出错",
+              showCancel: false,
+              confirmText: '我知道了',
+              success: function (res) { },
+              fail: function (res) { },
+              complete: function (res) { },
+            })
+          }
+        },
+        fail: function (res) { },
+        complete: function (res) { },
+      });
+    }
 		else if (that.data.refundType == 'no_distance_batch'){
 			wx.showModal({
 				title: '提示',

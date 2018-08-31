@@ -37,7 +37,7 @@
 
 
 
-<view style='min-height:{{winHeight*0.25}}px;' wx:if="{{refundType != 'faultToGift' && refundType != 'no_distance_batch' && refundType != 'distance' && refundType != 'queryRefund'}}">
+<!-- <view style='min-height:{{winHeight*0.25}}px;' wx:if="{{refundType != 'faultToGift' && refundType != 'recover' && refundType != 'no_distance_batch' && refundType != 'distance' && refundType != 'queryRefund'}}">
       <view class='tel-title'>输入客户电话</view>
       <view class='input-tel'>
            <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
@@ -46,19 +46,26 @@
            <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
                  {{checkResult}}
            </view>
-					 <!-- <view style='line-height:20px;color:lightgray;font-size:12px;text-align:center;'>
-                 开始时间：{{chargingStartTime}}
-           </view> -->
       </view>
+</view> -->
 
-      <!-- <view class=''>
-           <view class='choose-stop-title'>选择停止时间</view>
-           <view class='getTime' bindtap='getTime'>{{_year}}-{{_month}}-{{_day}} {{_hour}}:{{_minute}}</view>          
-      </view>  -->
 
+<view style='min-height:{{winHeight*0.25}}px;' wx:if="{{refundType == 'unconditional' || refundType == 'no_distance' }}">
+      <view class='tel-title'>输入客户电话</view>
+      <view class='input-tel'>
+           <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
+           <view class='tel-title'>选择退款原因</view>
+           <button  bindtap="toggleDialog" value='{{vtype}}' style='height:65rpx;margin-top:40rpx;font-size:30rpx;text-align:center;'>{{vtype}}</button>
+           <view style='line-height:20px;color:red;font-size:12px;text-align:center;display:block;'>
+                 {{checkResult}}
+           </view>
+      </view>
 </view>
 
-			<view class="maintenance_car_id_container" style='margin-top:50px;' wx:if="{{refundType == 'faultToGift'}}">			
+
+
+
+			 <view class="maintenance_car_id_container" style='margin-top:50px;' wx:if="{{refundType == 'faultToGift'}}">			
 				<view class="maintenance_scan_image_container" bindtap="scanCar">
 					<image id="maintenance_scan_image" src="../../images/scan_call.png"></image>
 				</view>
@@ -74,7 +81,22 @@
                   <button  bindtap="toggleDialog" value='{{vtype}}' style='height:65rpx;margin-top:40rpx;font-size:30rpx;text-align:center;'> 
                   {{vtype}}</button>
         </view>
+</view> 
+
+
+<view style='min-height:{{winHeight*0.25}}px;' wx:if="{{ refundType == 'recover' }}">
+      <view class='tel-title'>输入客户电话</view>
+      <view class='input-tel'>
+           <input type='number' placeholder='电话号码' bindblur='checkTelRight' bindinput='getCustomerPhoneNum'></input>
+      </view>
+            <view class='tel-title'>输入使用车号</view>
+      <view class='input-tel'>
+           <input type='number' placeholder='使用车号' bindblur='checkTelRight' bindinput='carNoInput'></input>
+      </view>
 </view>
+
+
+
 	<view style='margin-top:10px;width: 100%;' wx:if="{{refundType == 'no_distance_batch'}}">
 
 		<view class="row_display" style="height: 40px;line-height: 40px;border: 1px solid lightgray;">
