@@ -289,7 +289,7 @@
     <view class="line_item_container" bindtap="stopFee" wx:if="{{managementClass == 'expense'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >停止计费</text>
+          <text >手动退押金</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>

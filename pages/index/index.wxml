@@ -78,7 +78,7 @@
         <cover-view class='tab-column' bindtap='stopFee'>
           <cover-view class='tabCenter' style='float:left;'>
             <cover-image src='../../images/myWallet.png'></cover-image>
-            <cover-view class=''>停止计费</cover-view>
+            <cover-view class=''>手动退押金</cover-view>
           </cover-view>
         </cover-view>
 
