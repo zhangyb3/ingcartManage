@@ -11,23 +11,13 @@
  <view class=''>
   <view class='choose-name'>开园时间</view>
   <view class="section getName">
-    <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindStartTimeChange">
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{openOrCloseArray}}">
       <view class="picker">
-        {{startTime}}
+        当前选择：{{openOrCloseArray[index]}}
       </view>
     </picker>
   </view>
 </view>
-<view class=''>
-  <view class='choose-name'>闭园时间</view>
-  <view class="section getName">
-    <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindCloseTimeChange">
-      <view class="picker">
-        {{closeTime}}
-      </view>
-    </picker>
-  </view>
-</view> 
 
 <button class='hand-in' bindtap='OpenParkSub'>确定</button>
 

@@ -19,10 +19,11 @@ Page({
     tempLevel2: null,
     level1: [],
     level2: [],
-
+    index: 1,
     winHeight: 0,
     level: '0',
     queryAll: 'no',
+    openOrCloseArray: ['闭园', '开园'],
     openOrClose: [{ "action": "开园", "type": "1" }, { "action": "闭园", "type": "0" }],
     flag: 1,
     openPark: '',
@@ -209,7 +210,11 @@ Page({
     }
 
   },
-
+  bindPickerChange: function (e) {
+    this.setData({
+      index: e.detail.value
+    })
+  },
   //  取消按钮
   close: function () {
     var that = this;
@@ -346,28 +351,29 @@ Page({
     if (tempLevel2 != null && level2Name !=''){
       finalLevel = tempLevel2.id
     }
-    var date = new Date();
-    console.log(this.getNowFormatDate())
-    var startTime = this.getNowFormatDate() + " " + this.data.startTime + ":00"
-    var closeTime = this.getNowFormatDate() + " " + this.data.closeTime + ":00"
-    console.log("zhaozha" + startTime)
-    console.log("zhaozha" + closeTime)
-    if (startTime > closeTime) {
-      wx.showModal({
-        title: '提示',
-        content: '开园时间早于闭园时间',
-        showCancel: false,
-        confirmText: '我知道了',
-      });
-    }else{
-      console.log("闭园请求")
-      console.log(flag)
-      console.log(finalLevel);
+    // var date = new Date();
+    // console.log(this.getNowFormatDate())
+    // var startTime = this.getNowFormatDate() + " " + this.data.startTime + ":00"
+    // var closeTime = this.getNowFormatDate() + " " + this.data.closeTime + ":00"
+    // console.log("zhaozha" + startTime)
+    // console.log("zhaozha" + closeTime)
+    // if (startTime > closeTime) {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '开园时间早于闭园时间',
+    //     showCancel: false,
+    //     confirmText: '我知道了',
+    //   });
+    // }else{
+      // console.log("闭园请求")
+      // console.log(flag)
+      // console.log(finalLevel);
       wx.request({
         url: config.PytheRestfulServerURL + '/close/attraction',
         data: {
-          startTime: startTime,
-          closeTime: closeTime,
+          // startTime: startTime,
+          // closeTime: closeTime,
+          status:this.data.index,
           level: finalLevel
         },
         method: 'POST',
@@ -399,7 +405,7 @@ Page({
         },
         complete: function (res) { },
       });
-    }
+    // }
  
   },
   bindStartTimeChange: function (e) {

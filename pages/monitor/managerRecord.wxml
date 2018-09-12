@@ -15,17 +15,17 @@
 	<scroll-view style='margin-top:20px;width: 100%;height:300px' lower-threshold="20"	bindscrolltolower='getMoreParkDetails'  scroll-y  wx:if="{{checkType == 'parkDetails'}}" >
 
 			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
-				<text style="width:40%;font-size:30rpx;text-align:center;">景区</text>
-				<text style="width:30%;font-size:30rpx;text-align:center;">开园时间</text>
-				<text style="width:30%;font-size:32rpx;text-align:center;">闭园时间</text>
+				<text style="width:50%;font-size:30rpx;text-align:center;">景区</text>
+        <text style="width:50%;font-size:30rpx;text-align:center;">开闭情况</text>
+				<!-- <text style="width:30%;font-size:30rpx;text-align:center;">开园时间</text>
+				<text style="width:30%;font-size:32rpx;text-align:center;">闭园时间</text> -->
 			</view>
 
 		<view wx:for='{{parkConditions}}' wx:key='unique' wx:for-index="index">
 
 			<view class="row_display" style="height: 40px;line-height: 40px;border-top: 1px solid lightgray;">
-				<text style="width:40%;font-size:30rpx;text-align:center;color:lightgray;">{{item.name}}</text>
-				<text style="width:30%;font-size:30rpx;text-align:center;color:lightgray;">{{item.startTime}}</text>
-        <text style="width:30%;font-size:30rpx;text-align:center;color:lightgray;">{{item.closeTime}}</text>
+				<text style="width:50%;font-size:30rpx;text-align:center;color:lightgray;">{{item.name}}</text>
+				<text style="width:50%;font-size:30rpx;text-align:center;color:lightgray;">{{item.status}}</text>
 			</view>
 
 		</view>
