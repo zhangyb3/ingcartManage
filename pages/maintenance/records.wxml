@@ -14,7 +14,7 @@
     
       <view class='tk-noteList' wx:for='{{callRepairList}}' wx:key='unique' >
 				<view class="tk-note-item" wx:if="{{visibles[index]}}" >
-            <view class='tk-note-title' style='color:red;' data-cart='{{item}}'  bindtap='findTargetOnMap'>车辆编号：{{item.qrId}}</view>
+            <view class='tk-note-title' style='color:red;' data-cart='{{item}}'  bindtap='findTargetOnMap'>车辆编号：{{item.carId}}</view>
             <view class='tk-note-subtitle' style='{{notesHeight[index]}}' data-cart='{{item}}'  bindtap='findTargetOnMap'>{{item.type}}</view>
 
             <view class='notes-info' >

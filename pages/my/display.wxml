@@ -654,7 +654,7 @@
 		<view class="line_item_container" bindtap="checkCallRepair" wx:if="{{managementClass == 'maintenance'}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
-          <text >查看报修纪录</text>
+          <text >查看报修记录</text>
         </view>
         <view class="line_include_item_container repair_quantity">
           <text></text>
