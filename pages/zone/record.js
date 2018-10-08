@@ -39,6 +39,10 @@ Page({
         status: 4,
         name: '公众号(不判断)',
       },
+      {
+        status: 5,
+        name: '公众号(车锁)',
+      },
 		],
 		servicePhone:null,
 		mode:null,
