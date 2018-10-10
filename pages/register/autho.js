@@ -39,31 +39,15 @@ Page({
       }
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getSetting({
-        success(res) {
-          if (res.authSetting['scope.userInfo']) {
-            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-            wx.getUserInfo({
-              success: res => {
-                app.globalData.userInfo = res.userInfo
-                this.setData({
-                  userInfo: res.userInfo,
-                  hasUserInfo: true
-                })
-              }
-            })
-          } else {
-            wx.navigateTo({
-              url: '/pages/register/autho',
-            })
-          }
-        }, fail(res) {
-          wx.navigateTo({
-            url: '/pages/register/autho',
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          this.setData({
+            userInfo: res.userInfo,
+            hasUserInfo: true
           })
         }
       })
-
     }
   },
   getUserInfo: function(e) {
@@ -94,7 +78,7 @@ Page({
 
 		if (e.detail.errMsg == 'getPhoneNumber:ok') {
 			wx.request({
-				url: config.PytheRestfulServerURL + '/manage/register/',
+				url: config.PytheRestfulServerURL + '/customer/register/',
 				data: {
 
 					name: wx.getStorageSync('wxNickName'),
@@ -139,7 +123,13 @@ Page({
 						//判断注册是否成功，成功则返回index页面
 						wx.setStorageSync('alreadyRegister', 'yes');
 
-
+						wx.showLoading({
+							title: '登录中',
+							mask: true,
+							success: function (res) { },
+							fail: function (res) { },
+							complete: function (res) { },
+						})
 						operation.loginSystem(
 							that,
 							() => {
@@ -150,6 +140,7 @@ Page({
 
 							}
 						);
+
 
 					}
 					else if (res.data.status == 202) {
@@ -194,105 +185,27 @@ Page({
 
 	},
 
-
-	redirectToNormalRegister: function (e) {
+	redirectToNormalRegister:function(e){
 		wx.redirectTo({
 			url: 'register',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
+
+	redirectToAgreement: function (e) {
+		wx.navigateTo({
+			url: '../agreement/agreement',
 			success: function (res) { },
 			fail: function (res) { },
 			complete: function (res) { },
 		})
 	},
-
-	getUserInfo: function (e) {
-		wx.login({
-			success: function (loginRes) {
-				console.log("登录获取code", loginRes);
-				wx.setStorage({
-					key: user.js_code,
-					data: loginRes.code,
-				});
-
-
-				wx.request({
-					url: config.PytheRestfulServerURL + '/wxSession/request',
-					data: {
-						code: loginRes.code,
-						// AppID: config.AppID,
-						// AppSecret: config.AppSecret,
-						userType: 1,//旧版wx.ingcart.com没有此参数
-					},
-					complete: function (res) {
-						if (res.statusCode != 200) {//失败
-							console.error("登录失败", res);
-							var data = res.data || { msg: '无法请求服务器' };
-							if (typeof fail == "function") {
-								fail();
-							} else {
-								wx.showModal({
-									title: '提示',
-									content: data.msg,
-									showCancel: false
-								});
-							}
-						} else {//成功
-
-							var login_result = res.data.data;
-
-							console.log("登录成功", res);
-
-							wx.setStorageSync('SessionID', res.data.data.session_id);
-							wx.setStorageSync('OpenID', res.data.data.openid);
-							wx.setStorageSync('SessionKey', res.data.data.session_key);
-
-							console.log('session key : ' + wx.getStorageSync('SessionKey'));
-							console.log('openid : ' + wx.getStorageSync('OpenID'));
-
-              wx.getSetting({
-                success(res) {
-                  if (res.authSetting['scope.userInfo']) {
-                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-                    wx.getUserInfo({
-                      withCredentials: true,
-                      success: function (res) { },
-                      fail: function (res) { },
-                      complete: function (res) {
-                        console.log("encryptedData", res.encryptedData);
-                        var session_key = wx.getStorageSync("SessionKey");
-                        var encryptedData = res.encryptedData;
-                        var iv = res.iv;
-
-                        var pc = new WXBizDataCrypt(config.AppID, session_key)
-                        var result = pc.decryptData(encryptedData, iv);
-                        console.log("!!!decode: " + JSON.stringify(result));
-                        wx.setStorageSync(user.UnionID, result.unionId);
-
-
-                      },
-                    })
-                  } else {
-                    wx.navigateTo({
-                      url: '/pages/register/autho',
-                    })
-                  }
-                }, fail(res) {
-                  wx.navigateTo({
-                    url: '/pages/register/autho',
-                  })
-                }
-              })
-
-
-
-
-
-
-						}
-					}
-				})
-			}
-		})
-	},
-	
+  bindGetUserInfo(e) {
+    wx.navigateTo({
+      url: '/pages/index/index',
+    })
+  }
 	
 })

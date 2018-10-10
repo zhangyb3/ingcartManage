@@ -41,7 +41,6 @@ Page({
 
 // 页面加载
   onLoad: function (parameters) {
-
 		wx.setStorageSync('unlock_mode', 'ble');
 		
 		wx.setStorageSync('alreadyRegister', 'no');
