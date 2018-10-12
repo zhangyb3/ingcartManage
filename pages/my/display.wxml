@@ -786,7 +786,7 @@
       <view class="split_line"></view>
     </view>
 
-     <view class="line_item_container"  bindtap="managerNoStrokeLock" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+     <view class="line_item_container"  bindtap="managerNoStrokeLock" wx:if="{{managementClass == 'expense' && level >= 1}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >车锁开(无用户关联）</text>
@@ -801,7 +801,7 @@
       <view class="split_line"></view>
     </view> 
 
-		<view class="line_item_container" data-type='recover' bindtap="recover" wx:if="{{managementClass == 'expense' && level >= 4}}" >
+		<view class="line_item_container" data-type='recover' bindtap="recover" wx:if="{{managementClass == 'expense' && level >= 5}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >恢复行程（物联锁）</text>
