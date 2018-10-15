@@ -1217,8 +1217,12 @@ Page({
   },
 
   unlock:function(e){
+    var that = this;
     console.log("网络开锁。。。。。。。。。。。")
     console.log(e.currentTarget.dataset.qrid)
+    that.setData({
+      colorId: e.currentTarget.dataset.qrid
+    })
     var mid = wx.getStorageSync(user.ManagerID)
     var url = config.PytheRestfulServerURL + '/manage/web/unlock';
     console.log(mid)
@@ -1257,13 +1261,8 @@ Page({
 
   },
   reset: function (e) {
-    var that = this;
     var mid = wx.getStorageSync(user.ManagerID)
     var url = config.PytheRestfulServerURL + '/reset/carId';
-    console.log(e.currentTarget.dataset.qrid)
-    that.setData({
-      colorId: e.currentTarget.dataset.qrid
-    })
     wx.request({
       url: url,
       data: {
