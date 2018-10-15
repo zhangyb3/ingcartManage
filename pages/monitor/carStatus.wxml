@@ -82,9 +82,10 @@
 
 
 	<view class="row_display" style="width: 100%;height: 40px;line-height: 40px;" wx:if="{{use == 3 || use == 31}}">
-		
-		<text style="width:100%;font-size:50rpx;text-align:center;" bindtap='unlock'>车辆编码</text>
-
+		<text style="width:100%;font-size:50rpx;text-align:center;" wx:if="{{use == 31}}">车辆编码</text>
+		<text style="width:40%;font-size:50rpx;text-align:center;" wx:if="{{use == 3}}">车辆编码</text>
+    <text style="width:30%;font-size:50rpx;text-align:center;" wx:if="{{use == 3}}">开关</text>
+    <text style="width:30%;font-size:50rpx;text-align:center;" wx:if="{{use == 3}}">锁状态</text>
 	</view>
 
 	<scroll-view style='width: 100%;max-height:{{deviceHeight-230}}px' lower-threshold="0"	bindscrolltolower='getMoreCarsQrld' wx:if="{{use == 3 || use == 31}}" scroll-y>
@@ -92,12 +93,18 @@
 		<view wx:for='{{qrids}}' wx:key='unique' wx:for-index="index">
 
 			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;" wx:if="{{use == 3}}">
-				<text style="width:100%;font-size:32rpx;text-align:center;color:red;" bindtap='unlock' data-qrid="{{item.id}}">{{item.id}}</text>
+				<text style="width:40%;font-size:32rpx;text-align:center;color:red;" bindtap='unlock' data-qrid="{{item.id}}">{{item.id}}</text>
+        <text style="width:30%;font-size:32rpx;text-align:center;" bindtap='unlock' 
+        data-lockstatus="{{item.lockstatus > 0 ? '关' : '开'}}">{{item.lockstatus > 0 ? '关' : '开'}}</text>
+        <text style="width:30%;font-size:32rpx;text-align:center;" bindtap='unlock' 
+        data-online="{{item.online}}">{{item.online}}</text>
 			</view>
 
 			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;" wx:if="{{use == 31}}">
 				<text style="width:100%;font-size:32rpx;text-align:center;color:red;" bindtap='reset' data-qrid="{{item.id}}">{{item.id}}</text>
 			</view>
+
+
 
 		</view>
 		

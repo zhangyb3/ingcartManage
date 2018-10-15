@@ -423,7 +423,7 @@
     </view>
 
 
-  		<view class="line_item_container" bindtap="netUnlock" data-all='yes' wx:if="{{managementClass == 'cart' && level >= 2}}" >
+  	<view class="line_item_container" bindtap="netUnlock" data-all='yes' wx:if="{{managementClass == 'cart' && level >= 2}}" >
       <view class="line_item">
         <view class="line_include_item_container repair_entrance">
           <text >测试网络开锁</text>
