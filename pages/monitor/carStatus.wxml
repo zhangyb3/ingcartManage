@@ -93,7 +93,7 @@
 		<view wx:for='{{qrids}}' wx:key='unique' wx:for-index="index">
 
 			<view class="row_display" style="height: 60px;line-height: 60px;border-top: 1px solid lightgray;" wx:if="{{use == 3}}">
-				<text style="width:40%;font-size:32rpx;text-align:center;color:red;" bindtap='unlock' data-qrid="{{item.id}}">{{item.id}}</text>
+				<text style="{{colorId == item.id ? 'width:40%;font-size:32rpx;text-align:center;color:black;' : 'width:100%;font-size:32rpx;text-align:center;color:red;'}}" bindtap='unlock' data-qrid="{{item.id}}">{{item.id}}</text>
         <text style="width:30%;font-size:32rpx;text-align:center;" bindtap='unlock' 
         data-lockstatus="{{item.lockstatus > 0 ? '关' : '开'}}">{{item.lockstatus > 0 ? '关' : '开'}}</text>
         <text style="width:30%;font-size:32rpx;text-align:center;" bindtap='unlock' 

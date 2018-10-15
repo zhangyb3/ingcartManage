@@ -25,6 +25,7 @@ Page({
 		winHeight: 0,
 		level: '',
 		queryAll:'no',
+    colorId:''
   },
 
   /**
@@ -1256,9 +1257,13 @@ Page({
 
   },
   reset: function (e) {
+    var that = this;
     var mid = wx.getStorageSync(user.ManagerID)
     var url = config.PytheRestfulServerURL + '/reset/carId';
-    console.log(mid)
+    console.log(e.currentTarget.dataset.qrid)
+    that.setData({
+      colorId: e.currentTarget.dataset.qrid
+    })
     wx.request({
       url: url,
       data: {
