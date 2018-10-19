@@ -392,6 +392,9 @@ Page({
               if (result[count].status == 4) {
                 result[count].status = '公众号(不判断)';
               }
+              if (result[count].status == 5) {
+                result[count].status = '公众号(车锁)';
+              }
               if (result[count].messageFlag == 1) {
                 result[count].messageFlag = '有短信';
               }
@@ -1443,6 +1446,9 @@ Page({
               }
               if (result[count].status == 4) {
                 result[count].status = '公众号(不判断)';
+              }
+              if (result[count].status == 5) {
+                result[count].status = '公众号(车锁)';
               }
               if (result[count].messageFlag == 1) {
                 result[count].messageFlag = '有短信';
